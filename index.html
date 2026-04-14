@@ -13,7 +13,14 @@
             <img src="A.png" alt="Z Production Logo" class="logo-img">
             <span class="logo-text">PhyZone</span>
         </div>
-        <ul class="nav-links">
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
             <li><a href="#">Beranda</a></li>
             <li><a href="#katalog">Katalog Simulasi</a></li>
             <li><a href="#kontak">Kontak</a></li>
@@ -93,5 +100,24 @@
         <p>&copy; 2026 Z-PhyZone Virtual Laboratory.</p>
     </footer>
 
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        const navItems = document.querySelectorAll('.nav-links a');
+
+        // Membuka/Menutup menu saat tombol hamburger diklik
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Menutup menu otomatis saat salah satu link diklik
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>

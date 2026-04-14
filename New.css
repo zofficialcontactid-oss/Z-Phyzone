@@ -19,7 +19,8 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     line-height: 1.6;
-    scroll-behavior: smooth; /* Tambahan agar scroll ke bagian kontak mulus */
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Mencegah layar geser ke kanan saat menu terbuka di HP */
 }
 
 /* Navbar Styling */
@@ -280,63 +281,77 @@ footer {
     color: var(--text-muted);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 /* =========================================
-   RESPONSIVE DESIGN (SUPPORT UNTUK HANDPHONE)
+   MOBILE RESPONSIVE & HAMBURGER MENU
    ========================================= */
 
-@media screen and (max-width: 768px) {
-    /* Menyesuaikan Navbar agar susunannya ke bawah di layar kecil */
-    .navbar {
+/* Gaya dasar tombol hamburger (disembunyikan di layar besar) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+    z-index: 101; 
+}
+
+.hamburger span {
+    width: 30px;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Pengaturan khusus untuk layar HP */
+@media (max-width: 768px) {
+    /* Tampilkan tombol hamburger */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Ubah susunan menu menjadi ke bawah dan sembunyikan di luar layar kanan */
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        width: 100%;
+        background-color: rgba(18, 31, 51, 0.95);
+        backdrop-filter: blur(10px);
         flex-direction: column;
-        padding: 15px;
-        gap: 15px;
+        align-items: center;
+        padding: 2rem 0;
+        gap: 2rem;
+        transition: right 0.4s ease-in-out;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Saat menu aktif (diklik), geser masuk ke layar */
+    .nav-links.active {
+        right: 0;
+    }
+
+    /* Animasi tombol hamburger berubah menjadi tanda "X" saat aktif */
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Menyesuaikan ukuran teks agar tidak kebesaran di HP */
+    .hero h1 {
+        font-size: 2.2rem;
     }
     
-    .nav-links {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-        font-size: 0.95rem;
-    }
-
-    /* Menyesuaikan Hero Section (Teks Utama) */
-    .hero {
-        height: auto;
-        min-height: 70vh;
-        padding: 60px 20px;
-    }
-
-    .hero h1 {
-        font-size: 2.2rem; /* Mengecilkan ukuran judul di HP */
-    }
-
     .hero p {
-        font-size: 1rem; /* Mengecilkan ukuran deskripsi */
-        margin-bottom: 20px;
+        font-size: 1rem;
     }
-
-    /* Mengecilkan jarak padding antar section di HP */
-    .catalog-section, .contact-section {
-        padding: 3rem 5%;
-    }
-
+    
     .catalog-section h2, .contact-section h2 {
         font-size: 2rem;
-    }
-
-    /* Menjadikan kartu katalog 1 kolom penuh ke bawah */
-    .card-grid {
-        grid-template-columns: 1fr;
-    }
-
-    /* Menyesuaikan kartu kontak agar memenuhi lebar layar HP */
-    .contact-card {
-        min-width: 100%;
-        padding: 20px;
-    }
-    
-    .contact-icon {
-        width: 35px;
-        height: 35px;
     }
 }

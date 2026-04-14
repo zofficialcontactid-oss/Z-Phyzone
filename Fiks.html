@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Gerak Jatuh Bebas</title>
+    <link rel="stylesheet" href="Fiks.css">
+</head>
+<body>
+    <div class="container">
+        <div class="panel scrollable">
+            <div class="panel-title">Variasi Objek</div>
+            
+            <div class="section">
+                <div class="section-header">Objek Kiri (Merah)</div>
+                <div class="input-group">
+                    <label>Massa <span class="unit-label">(kg)</span></label>
+                    <input type="number" id="mass-left" value="0.145" step="0.001" min="0.001" max="10">
+                </div>
+                <div class="input-group">
+                    <label>Diameter <span class="unit-label">(m)</span></label>
+                    <input type="number" id="diameter-left" value="0.074" step="0.001" min="0.01" max="0.5">
+                </div>
+                <div class="input-group">
+                    <label>Ketinggian <span class="unit-label">(m)</span></label>
+                    <input type="range" id="height-left" min="0" max="75" value="50" step="1">
+                    <span class="range-value" id="height-left-val">50</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Objek Kanan (Biru)</div>
+                <div class="input-group">
+                    <label>Massa <span class="unit-label">(kg)</span></label>
+                    <input type="number" id="mass-right" value="0.624" step="0.001" min="0.001" max="10">
+                </div>
+                <div class="input-group">
+                    <label>Diameter <span class="unit-label">(m)</span></label>
+                    <input type="number" id="diameter-right" value="0.24" step="0.001" min="0.01" max="0.5">
+                </div>
+                <div class="input-group">
+                    <label>Ketinggian <span class="unit-label">(m)</span></label>
+                    <input type="range" id="height-right" min="0" max="75" value="50" step="1">
+                    <span class="range-value" id="height-right-val">50</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Pilih Atmosfer</div>
+                
+                <div style="margin-bottom: 5px; font-weight: bold; color: #d6dde4; font-size: 11px;">Objek Kiri (Merah) :</div>
+                <div class="radio-group horizontal">
+                    <div class="radio-option">
+                        <input type="radio" name="atm-left" value="vacuum" id="atm-left-vacuum">
+                        <label for="atm-left-vacuum">Vacuum</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="atm-left" value="air" id="atm-left-air" checked>
+                        <label for="atm-left-air">Udara</label>
+                    </div>
+                </div>
+                <div style="margin: 10px 0 5px 0; font-weight: bold; color: #d6dde4; font-size: 11px;">Objek Kanan (Biru) :</div>
+                <div class="radio-group horizontal">
+                    <div class="radio-option">
+                        <input type="radio" name="atm-right" value="vacuum" id="atm-right-vacuum">
+                        <label for="atm-right-vacuum">Vacuum</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="atm-right" value="air" id="atm-right-air" checked>
+                        <label for="atm-right-air">Udara</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hint-box">
+                💡 Atur parameter lalu klik Play
+            </div>
+
+            <div class="section">
+                <div class="section-header">Data Kiri (Merah) :</div>
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">Ketinggian Saat Ini (m)</span>
+                        <span class="info-value" id="current-height-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Jarak Tempuh (m)</span>
+                        <span class="info-value" id="distance-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kecepatan (m/s)</span>
+                        <span class="info-value" id="speed-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">V Awal (m/s)</span>
+                        <span class="info-value" id="v-initial-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">V Akhir (m/s)</span>
+                        <span class="info-value" id="v-final-left">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">V Terminal (m/s)</span>
+                        <span class="info-value" id="v-terminal-left">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Waktu Jatuh (s)</span>
+                        <span class="info-value" id="time-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Percepatan (m/s²)</span>
+                        <span class="info-value" id="accel-left">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Data Kanan (Biru) :</div>
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">Ketinggian Saat Ini (m)</span>
+                        <span class="info-value" id="current-height-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Jarak Tempuh (m)</span>
+                        <span class="info-value" id="distance-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kecepatan (m/s)</span>
+                        <span class="info-value" id="speed-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">V Awal (m/s)</span>
+                        <span class="info-value" id="v-initial-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">V Akhir (m/s)</span>
+                        <span class="info-value" id="v-final-right">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">V Terminal (m/s)</span>
+                        <span class="info-value" id="v-terminal-right">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Waktu Jatuh (s)</span>
+                        <span class="info-value" id="time-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Percepatan (m/s²)</span>
+                        <span class="info-value" id="accel-right">0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="canvas-container">
+                <canvas id="simulationCanvas" width="800" height="1000"></canvas>
+            </div>
+            <div class="controls">
+                <button class="control-btn play-btn" id="play-btn" title="Mulai">▶</button>
+                <button class="control-btn pause-btn" id="pause-btn" title="Jeda">⏸</button>
+                <button class="control-btn reset-btn" id="reset-btn" title="Reset">↻</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel" style="display: flex; flex-direction: column; height: 100%; padding-bottom: 0.5vh; overflow: hidden;">
+    <div class="panel-title">Grafik Real-Time</div>
+    
+    <div class="graph-wrapper">
+        <div class="graph-header">
+            <span class="graph-label">📈 Grafik 1:</span>
+            <div class="graph-selector">
+                <button class="graph-btn active" data-graph="speed" data-chart="1">v-t</button>
+                <button class="graph-btn" data-graph="accel" data-chart="1">a-t</button>
+                <button class="graph-btn" data-graph="height" data-chart="1">h-t</button>
+                <button class="graph-btn" data-graph="heightspeed" data-chart="1">h-v</button>
+            </div>
+        </div>
+        <div class="graph-container">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomChart(1, 'in')">+</button>
+                <button class="zoom-btn" onclick="zoomChart(1, 'out')">−</button>
+                <button class="zoom-btn" onclick="zoomChart(1, 'reset')">⟲</button>
+            </div>
+            <canvas id="chart1"></canvas>
+        </div>
+    </div>
+
+    <div class="graph-wrapper">
+        <div class="graph-header">
+            <span class="graph-label">📈 Grafik 2:</span>
+            <div class="graph-selector">
+                <button class="graph-btn" data-graph="speed" data-chart="2">v-t</button>
+                <button class="graph-btn active" data-graph="accel" data-chart="2">a-t</button>
+                <button class="graph-btn" data-graph="height" data-chart="2">h-t</button>
+                <button class="graph-btn" data-graph="heightspeed" data-chart="2">h-t</button>
+            </div>
+        </div>
+        <div class="graph-container">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomChart(2, 'in')">+</button>
+                <button class="zoom-btn" onclick="zoomChart(2, 'out')">−</button>
+                <button class="zoom-btn" onclick="zoomChart(2, 'reset')">⟲</button>
+            </div>
+            <canvas id="chart2"></canvas>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+    
+    <script src="Fiks.js"></script>
+</body>
+</html>

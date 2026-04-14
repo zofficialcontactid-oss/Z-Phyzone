@@ -280,3 +280,63 @@ footer {
     color: var(--text-muted);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+/* =========================================
+   RESPONSIVE DESIGN (SUPPORT UNTUK HANDPHONE)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+    /* Menyesuaikan Navbar agar susunannya ke bawah di layar kecil */
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 0.95rem;
+    }
+
+    /* Menyesuaikan Hero Section (Teks Utama) */
+    .hero {
+        height: auto;
+        min-height: 70vh;
+        padding: 60px 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem; /* Mengecilkan ukuran judul di HP */
+    }
+
+    .hero p {
+        font-size: 1rem; /* Mengecilkan ukuran deskripsi */
+        margin-bottom: 20px;
+    }
+
+    /* Mengecilkan jarak padding antar section di HP */
+    .catalog-section, .contact-section {
+        padding: 3rem 5%;
+    }
+
+    .catalog-section h2, .contact-section h2 {
+        font-size: 2rem;
+    }
+
+    /* Menjadikan kartu katalog 1 kolom penuh ke bawah */
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Menyesuaikan kartu kontak agar memenuhi lebar layar HP */
+    .contact-card {
+        min-width: 100%;
+        padding: 20px;
+    }
+    
+    .contact-icon {
+        width: 35px;
+        height: 35px;
+    }
+}

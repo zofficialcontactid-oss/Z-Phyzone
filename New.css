@@ -1,10 +1,10 @@
 /* Variabel Warna Utama */
 :root {
-    --bg-dark: #121f33; /* Biru dongker gelap */
-    --bg-card: #1e2d4a; /* Biru dongker kartu */
+    --bg-dark: #121f33; 
+    --bg-card: #1e2d4a; 
     --text-main: #ffffff;
     --text-muted: #a0aec0;
-    --z-gradient: linear-gradient(135deg, #7dd3fc, #3b82f6); /* Gradien logo Z */
+    --z-gradient: linear-gradient(135deg, #7dd3fc, #3b82f6); 
     --z-blue: #3b82f6;
 }
 
@@ -20,7 +20,7 @@ body {
     color: var(--text-main);
     line-height: 1.6;
     scroll-behavior: smooth;
-    overflow-x: hidden; /* Mencegah layar geser ke kanan saat menu terbuka di HP */
+    overflow-x: hidden; 
 }
 
 /* Navbar Styling */
@@ -47,10 +47,16 @@ body {
     height: 40px; 
 }
 
+/* FONT LOGO DIUBAH DI SINI */
 .logo-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-family: 'Orbitron', sans-serif; /* Menggunakan font futuristik */
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: var(--z-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .nav-links {
@@ -68,6 +74,44 @@ body {
 
 .nav-links a:hover {
     color: #7dd3fc;
+}
+
+/* =========================================
+   ANIMASI: Saat Web Baru Dibuka (Hero)
+   ========================================= */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+
+
+/* =========================================
+   ANIMASI: Reveal On Scroll (Saat di-scroll bawah)
+   ========================================= */
+.hidden-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+
+.show-scroll {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Hero Section */
@@ -175,8 +219,8 @@ body {
 }
 
 .active-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
     border-color: var(--z-blue);
 }
 
@@ -247,8 +291,8 @@ body {
 }
 
 .contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
     border-color: var(--z-blue);
 }
 
@@ -285,8 +329,6 @@ footer {
 /* =========================================
    MOBILE RESPONSIVE & HAMBURGER MENU
    ========================================= */
-
-/* Gaya dasar tombol hamburger (disembunyikan di layar besar) */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -303,14 +345,11 @@ footer {
     transition: all 0.3s ease;
 }
 
-/* Pengaturan khusus untuk layar HP */
 @media (max-width: 768px) {
-    /* Tampilkan tombol hamburger */
     .hamburger {
         display: flex;
     }
 
-    /* Ubah susunan menu menjadi ke bawah dan sembunyikan di luar layar kanan */
     .nav-links {
         position: absolute;
         top: 100%;
@@ -326,12 +365,10 @@ footer {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Saat menu aktif (diklik), geser masuk ke layar */
     .nav-links.active {
         right: 0;
     }
 
-    /* Animasi tombol hamburger berubah menjadi tanda "X" saat aktif */
     .hamburger.active span:nth-child(1) {
         transform: translateY(9px) rotate(45deg);
     }
@@ -342,7 +379,6 @@ footer {
         transform: translateY(-9px) rotate(-45deg);
     }
 
-    /* Menyesuaikan ukuran teks agar tidak kebesaran di HP */
     .hero h1 {
         font-size: 2.2rem;
     }

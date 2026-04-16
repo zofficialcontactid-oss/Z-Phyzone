@@ -115,26 +115,26 @@ body {
     transform: translateY(0);
 }
 
-/* Hero Section - SUDAH DIPERBAIKI */
+/* Hero Section - KEMBALI CENTER UNTUK LAPTOP */
 .hero {
-    min-height: 100vh; /* Memastikan minimal memenuhi layar, namun bisa memanjang */
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Mencegah teks terpotong di atas saat layar pendek */
+    justify-content: center; /* Otomatis ke tengah untuk laptop */
     align-items: center;
     text-align: center;
-    padding: 120px 20px 50px;
+    padding: 80px 20px 50px;
 }
 
 .hero-content {
-    margin: auto; /* Otomatis ke tengah jika ada sisa ruang */
     max-width: 800px;
     width: 100%;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 5vw, 4rem); /* Teks membesar/mengecil otomatis ikuti layar */
     margin-bottom: 25px;
+    line-height: 1.2;
 }
 
 .highlight {
@@ -142,6 +142,7 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    white-space: nowrap; /* Mencegah kata Z-PhyZone terpotong jadi 2 baris */
 }
 
 .hero p {
@@ -376,12 +377,11 @@ footer {
     .hamburger.active span:nth-child(2) { opacity: 0; }
     .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-    .hero h1 { font-size: 2rem; margin-bottom: 15px; }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 15px; }
     .hero p { font-size: 0.95rem; }
     
     .catalog-section h2, .contact-section h2 { font-size: 1.8rem; }
     
-    /* Menyusun kartu menjadi 1 kolom penuh di HP */
     .card-grid { grid-template-columns: 1fr; }
     .contact-card { min-width: 100%; }
 }
@@ -389,24 +389,26 @@ footer {
 /* =========================================
    MOBILE RESPONSIVE KHUSUS (Landscape / Miring)
    ========================================= */
-@media (max-height: 500px) and (orientation: landscape) {
+/* Aktif hanya jika layar miring (tinggi layar kurang dari 600px) */
+@media (max-height: 600px) and (orientation: landscape) {
     .navbar {
-        padding: 0.5rem 5%; /* Mengecilkan ukuran navbar */
+        padding: 0.5rem 5%; 
     }
     .logo-img { height: 30px; }
     
     .hero {
-        padding: 90px 20px 40px; /* Ruang atas diperkecil agar tidak memakan tempat */
+        justify-content: flex-start; /* Mencegah teks terpotong ke atas */
+        padding: 100px 20px 40px; 
     }
     
     .hero h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
         margin-bottom: 10px;
     }
     
     .hero p {
         font-size: 0.9rem;
-        margin-bottom: 10px !important; /* Memaksa jarak paragraf lebih rapat */
+        margin-bottom: 10px !important; 
     }
 
     .catalog-section, .contact-section {

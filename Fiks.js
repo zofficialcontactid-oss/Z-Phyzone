@@ -401,7 +401,15 @@ function updateBallStats(ball, side) {
 
 function initCharts() {
     if (chart1) chart1.destroy(); if (chart2) chart2.destroy();
-    Chart.defaults.color = '#ccc'; Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'; 
+    
+    // Deteksi apakah layar kecil (HP)
+    const isMobile = window.innerWidth <= 768;
+    
+    Chart.defaults.color = '#ccc'; 
+    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'; 
+    // Set default font dasar lebih kecil untuk HP
+    Chart.defaults.font.size = isMobile ? 8 : 11; 
+    
     updateChartConfig(1); updateChartConfig(2);
 }
 
@@ -421,30 +429,57 @@ function getChartConfig(graphType) {
         case 'height': xLabel = 'Waktu (s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.time; yMax = chartBounds.height; break;
         case 'heightspeed': xLabel = 'Kecepatan (m/s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.speed; yMax = chartBounds.height; break;
     }
+
+    // Deteksi ukuran layar untuk kustomisasi elemen grafik
+    const isMobile = window.innerWidth <= 768;
+
     return {
         type: 'line',
         data: {
             datasets: [
                 { 
                     label: 'Kanan (Biru)', data: [], borderColor: '#00d2ff', backgroundColor: 'rgba(0, 210, 255, 0.1)', 
-                    borderWidth: 2, pointRadius: 0, 
+                    borderWidth: isMobile ? 1.5 : 2, pointRadius: 0, 
                     tension: 0 
                 },
                 { 
                     label: 'Kiri (Merah)', data: [], borderColor: '#ff4757', backgroundColor: 'rgba(255, 71, 87, 0.1)', 
-                    borderWidth: 2, pointRadius: 0, 
+                    borderWidth: isMobile ? 1.5 : 2, pointRadius: 0, 
                     tension: 0 
                 }
             ]
         },
         options: {
-            responsive: true, maintainAspectRatio: false, animation: false, 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            animation: false, 
             scales: {
-                x: { type: 'linear', title: { display: true, text: xLabel, color: '#aaa' }, min: 0, max: xMax, grid: { color: 'rgba(255,255,255,0.05)' } },
-                y: { title: { display: true, text: yLabel, color: '#aaa' }, min: 0, max: yMax, beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }
+                x: { 
+                    type: 'linear', 
+                    title: { display: true, text: xLabel, color: '#aaa', font: { size: isMobile ? 9 : 12 }, padding: {top: isMobile ? 2 : 4, bottom: 0} }, 
+                    min: 0, max: xMax, 
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { font: { size: isMobile ? 8 : 11 } }
+                },
+                y: { 
+                    title: { display: true, text: yLabel, color: '#aaa', font: { size: isMobile ? 9 : 12 }, padding: {bottom: isMobile ? 2 : 4} }, 
+                    min: 0, max: yMax, beginAtZero: true, 
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { font: { size: isMobile ? 8 : 11 } }
+                }
             },
             plugins: {
-                legend: { position: 'top', labels: { color: 'white' } },
+                legend: { 
+                    position: 'top', 
+                    labels: { 
+                        color: 'white',
+                        // Mengecilkan ukuran kotak warna dan teks khusus di HP
+                        boxWidth: isMobile ? 12 : 40,
+                        boxHeight: isMobile ? 6 : 12,
+                        padding: isMobile ? 5 : 10,
+                        font: { size: isMobile ? 9 : 12 }
+                    } 
+                },
                 zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }, pan: { enabled: true, mode: 'xy', modifierKey: null, threshold: 5 } }
             }
         }

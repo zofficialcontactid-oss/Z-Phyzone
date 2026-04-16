@@ -115,14 +115,21 @@ body {
     transform: translateY(0);
 }
 
-/* Hero Section */
+/* Hero Section - SUDAH DIPERBAIKI */
 .hero {
-    height: 90vh; /* Sedikit dipertinggi agar teks cukup ruang */
+    min-height: 100vh; /* Memastikan minimal memenuhi layar, namun bisa memanjang */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start; /* Mencegah teks terpotong di atas saat layar pendek */
     align-items: center;
     text-align: center;
     padding: 120px 20px 50px;
+}
+
+.hero-content {
+    margin: auto; /* Otomatis ke tengah jika ada sisa ruang */
+    max-width: 800px;
+    width: 100%;
 }
 
 .hero h1 {
@@ -140,7 +147,6 @@ body {
 .hero p {
     font-size: 1.1rem;
     color: var(--text-muted);
-    max-width: 800px; /* Diperlebar agar teks panjang tidak terlalu numpuk */
     margin: 0 auto;
 }
 
@@ -328,7 +334,7 @@ footer {
 }
 
 /* =========================================
-   MOBILE RESPONSIVE & HAMBURGER MENU
+   MOBILE RESPONSIVE (Potret / Berdiri)
    ========================================= */
 .hamburger {
     display: none;
@@ -347,9 +353,7 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
+    .hamburger { display: flex; }
 
     .nav-links {
         position: absolute;
@@ -366,30 +370,46 @@ footer {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .nav-links.active {
-        right: 0;
-    }
+    .nav-links.active { right: 0; }
 
-    .hamburger.active span:nth-child(1) {
-        transform: translateY(9px) rotate(45deg);
-    }
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-        transform: translateY(-9px) rotate(-45deg);
-    }
+    .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
+    .hero h1 { font-size: 2rem; margin-bottom: 15px; }
+    .hero p { font-size: 0.95rem; }
+    
+    .catalog-section h2, .contact-section h2 { font-size: 1.8rem; }
+    
+    /* Menyusun kartu menjadi 1 kolom penuh di HP */
+    .card-grid { grid-template-columns: 1fr; }
+    .contact-card { min-width: 100%; }
+}
+
+/* =========================================
+   MOBILE RESPONSIVE KHUSUS (Landscape / Miring)
+   ========================================= */
+@media (max-height: 500px) and (orientation: landscape) {
+    .navbar {
+        padding: 0.5rem 5%; /* Mengecilkan ukuran navbar */
+    }
+    .logo-img { height: 30px; }
+    
+    .hero {
+        padding: 90px 20px 40px; /* Ruang atas diperkecil agar tidak memakan tempat */
+    }
+    
     .hero h1 {
-        font-size: 2.2rem;
-        margin-bottom: 15px;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
     }
     
     .hero p {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        margin-bottom: 10px !important; /* Memaksa jarak paragraf lebih rapat */
     }
-    
-    .catalog-section h2, .contact-section h2 {
-        font-size: 2rem;
+
+    .catalog-section, .contact-section {
+        padding: 3rem 5%;
     }
 }

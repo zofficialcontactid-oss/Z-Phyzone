@@ -20,8 +20,8 @@
     --btn-pause: #f59e0b;
     --btn-reset: #ef4444;
 
-    /* Base Font Size (Responsive) */
-    --base-font: 1.5vh; 
+    /* Base Font Size (Responsive dengan batas minimal 11px agar aman di HP) */
+    --base-font: max(1.5vh, 11px); 
 }
 
 * {
@@ -166,12 +166,32 @@ body {
     accent-color: var(--accent-cyan);
 }
 
-.range-value {
-    min-width: 3.5vh;
+/* Style khusus untuk input angka ketinggian (sebelah slider) */
+.range-value-input {
+    width: 6vh;
+    min-width: 45px;
     text-align: right;
     font-weight: bold;
     color: var(--text-highlight);
     font-size: calc(var(--base-font) * 0.9);
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid #334155;
+    border-radius: 0.5vh;
+    padding: 0.2vh 0.5vh;
+    font-family: 'Consolas', monospace;
+}
+
+.range-value-input:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 5px rgba(6, 182, 212, 0.5);
+}
+
+/* Menghilangkan tombol panah (spinner) bawaan browser pada input number */
+.range-value-input::-webkit-outer-spin-button,
+.range-value-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .unit-label { font-size: calc(var(--base-font) * 0.8); color: #64748b; }
@@ -309,6 +329,7 @@ body {
 .play-btn:hover { background: var(--btn-play); color: white; box-shadow: 0 0 15px var(--btn-play); }
 .pause-btn:hover { background: var(--btn-pause); color: white; box-shadow: 0 0 15px var(--btn-pause); }
 .reset-btn:hover { background: var(--btn-reset); color: white; box-shadow: 0 0 15px var(--btn-reset); }
+.fullscreen-btn:hover { background: #8b5cf6; color: white; box-shadow: 0 0 15px #8b5cf6; }
 
 /* =========================================
    6. GRAPHICS & CHARTS

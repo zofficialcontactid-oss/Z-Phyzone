@@ -24,7 +24,7 @@
                 <div class="input-group">
                     <label>Ketinggian <span class="unit-label">(m)</span></label>
                     <input type="range" id="height-left" min="0" max="75" value="50" step="1">
-                    <span class="range-value" id="height-left-val">50</span>
+                    <input type="number" id="height-left-val" class="range-value-input" value="50" min="0" max="75">
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
                 <div class="input-group">
                     <label>Ketinggian <span class="unit-label">(m)</span></label>
                     <input type="range" id="height-right" min="0" max="75" value="50" step="1">
-                    <span class="range-value" id="height-right-val">50</span>
+                    <input type="number" id="height-right-val" class="range-value-input" value="50" min="0" max="75">
                 </div>
             </div>
 
@@ -161,53 +161,54 @@
                 <button class="control-btn play-btn" id="play-btn" title="Mulai">▶</button>
                 <button class="control-btn pause-btn" id="pause-btn" title="Jeda">⏸</button>
                 <button class="control-btn reset-btn" id="reset-btn" title="Reset">↻</button>
+                <button class="control-btn fullscreen-btn" id="fullscreen-btn" title="Layar Penuh">⛶</button>
             </div>
         </div>
 
         <div class="panel">
             <div class="panel" style="display: flex; flex-direction: column; height: 100%; padding-bottom: 0.5vh; overflow: hidden;">
-    <div class="panel-title">Grafik Real-Time</div>
-    
-    <div class="graph-wrapper">
-        <div class="graph-header">
-            <span class="graph-label">📈 Grafik 1:</span>
-            <div class="graph-selector">
-                <button class="graph-btn active" data-graph="speed" data-chart="1">v-t</button>
-                <button class="graph-btn" data-graph="accel" data-chart="1">a-t</button>
-                <button class="graph-btn" data-graph="height" data-chart="1">h-t</button>
-                <button class="graph-btn" data-graph="heightspeed" data-chart="1">h-v</button>
-            </div>
-        </div>
-        <div class="graph-container">
-            <div class="zoom-controls">
-                <button class="zoom-btn" onclick="zoomChart(1, 'in')">+</button>
-                <button class="zoom-btn" onclick="zoomChart(1, 'out')">−</button>
-                <button class="zoom-btn" onclick="zoomChart(1, 'reset')">⟲</button>
-            </div>
-            <canvas id="chart1"></canvas>
-        </div>
-    </div>
+                <div class="panel-title">Grafik Real-Time</div>
+                
+                <div class="graph-wrapper">
+                    <div class="graph-header">
+                        <span class="graph-label">📈 Grafik 1:</span>
+                        <div class="graph-selector">
+                            <button class="graph-btn active" data-graph="speed" data-chart="1">v-t</button>
+                            <button class="graph-btn" data-graph="accel" data-chart="1">a-t</button>
+                            <button class="graph-btn" data-graph="height" data-chart="1">h-t</button>
+                            <button class="graph-btn" data-graph="heightspeed" data-chart="1">h-v</button>
+                        </div>
+                    </div>
+                    <div class="graph-container">
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" onclick="zoomChart(1, 'in')">+</button>
+                            <button class="zoom-btn" onclick="zoomChart(1, 'out')">−</button>
+                            <button class="zoom-btn" onclick="zoomChart(1, 'reset')">⟲</button>
+                        </div>
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </div>
 
-    <div class="graph-wrapper">
-        <div class="graph-header">
-            <span class="graph-label">📈 Grafik 2:</span>
-            <div class="graph-selector">
-                <button class="graph-btn" data-graph="speed" data-chart="2">v-t</button>
-                <button class="graph-btn active" data-graph="accel" data-chart="2">a-t</button>
-                <button class="graph-btn" data-graph="height" data-chart="2">h-t</button>
-                <button class="graph-btn" data-graph="heightspeed" data-chart="2">h-t</button>
+                <div class="graph-wrapper">
+                    <div class="graph-header">
+                        <span class="graph-label">📈 Grafik 2:</span>
+                        <div class="graph-selector">
+                            <button class="graph-btn" data-graph="speed" data-chart="2">v-t</button>
+                            <button class="graph-btn active" data-graph="accel" data-chart="2">a-t</button>
+                            <button class="graph-btn" data-graph="height" data-chart="2">h-t</button>
+                            <button class="graph-btn" data-graph="heightspeed" data-chart="2">h-t</button>
+                        </div>
+                    </div>
+                    <div class="graph-container">
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" onclick="zoomChart(2, 'in')">+</button>
+                            <button class="zoom-btn" onclick="zoomChart(2, 'out')">−</button>
+                            <button class="zoom-btn" onclick="zoomChart(2, 'reset')">⟲</button>
+                        </div>
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="graph-container">
-            <div class="zoom-controls">
-                <button class="zoom-btn" onclick="zoomChart(2, 'in')">+</button>
-                <button class="zoom-btn" onclick="zoomChart(2, 'out')">−</button>
-                <button class="zoom-btn" onclick="zoomChart(2, 'reset')">⟲</button>
-            </div>
-            <canvas id="chart2"></canvas>
-        </div>
-    </div>
-</div>
         </div>
     </div>
 

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="Laboratorium virtual dan simulasi gerak jatuh bebas dengan hambatan udara. Media pembelajaran fisika interaktif untuk mengatasi miskonsepsi siswa.">
+    <meta name="keywords" content="simulasi fisika, gerak jatuh bebas, hambatan udara, virtual lab, miskonsepsi fisika">
+    
+    <title>Laboratorium Virtual - Gerak Jatuh</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. SETTING DASAR & TEMA LUAR ANGKASA --- */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Rajdhani', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            opacity: 1;
+            transition: opacity 0.8s ease-in-out;
+            /* Hapus overflow: hidden agar di HP kecil masih bisa di-scroll jika kontennya panjang */
+        }
+
+        body.fade-out { opacity: 0; }
+
+        /* --- 2. ANIMASI LATAR BELAKANG (BINTANG & KOMET) --- */
+        #stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            overflow: hidden; /* Pindahkan overflow ke sini agar animasi bintang tidak merusak scroll */
+        }
+        .stars-layer {
+            width: 1px; height: 1px; background: transparent;
+            box-shadow: 10vw 10vh #fff, 20vw 40vh #fff, 50vw 20vh #fff, 80vw 50vh #fff, 
+                        60vw 80vh #fff, 90vw 10vh #fff, 30vw 60vh #fff, 10vw 90vh #fff,
+                        45vw 45vh #fff, 75vw 25vh #fff, 25vw 75vh #fff, 85vw 85vh #fff;
+            animation: animStar 100s linear infinite;
+        }
+        .stars-layer.s2 {
+            width: 2px; height: 2px;
+            box-shadow: 15vw 15vh #ccc, 25vw 55vh #ccc, 55vw 35vh #ccc, 85vw 65vh #ccc,
+                        65vw 95vh #ccc, 95vw 15vh #ccc;
+            animation-duration: 150s;
+        }
+
+        @keyframes animStar { from { transform: translateY(0px); } to { transform: translateY(-200px); } }
+
+        .shooting-star {
+            position: absolute; top: 50%; left: 50%;
+            width: 4px; height: 4px;
+            background: linear-gradient(-45deg, #5f91ff, rgba(0, 0, 255, 0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px #699bff);
+            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
+        }
+        .shooting-star::before {
+            content: ''; position: absolute; top: calc(50% - 1px); right: 0;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(0, 0, 255, 0), #5f91ff, rgba(0, 0, 255, 0));
+            transform: translateX(50%) rotateZ(45deg);
+            border-radius: 100%; animation: shining 3s ease-in-out infinite;
+        }
+        .shooting-star:nth-child(1) { top: 0; left: 70%; animation-delay: 2s; }
+        .shooting-star:nth-child(2) { top: 20%; left: 100%; animation-delay: 5s; }
+        .shooting-star:nth-child(3) { top: 60%; left: 100%; animation-delay: 8s; }
+
+        @keyframes tail { 0% { width: 0; } 30% { width: 100px; } 100% { width: 0; } }
+        @keyframes shining { 0% { width: 0; } 50% { width: 30px; } 100% { width: 0; } }
+        @keyframes shooting { 0% { transform: translateX(0); } 100% { transform: translateX(-320px) translateY(320px); } }
+
+        /* --- 3. KARTU UTAMA --- */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%; max-width: 550px; 
+            padding: 50px 40px;
+            border-radius: 20px; 
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+            z-index: 10;
+            margin: 20px 0; /* Memberi ruang atas bawah jika layar terlalu pendek */
+        }
+
+        /* --- 4. TYPOGRAPHY --- */
+        .top-label {
+            font-size: 0.9rem; font-weight: 600; color: #4fc3f7;
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px;
+        }
+        h1 {
+            font-size: 2.8rem; margin: 10px 0; line-height: 1.1;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
+        }
+        .subtitle { color: #b0bec5; font-size: 1.2rem; margin-bottom: 30px; font-weight: 300; }
+
+        /* --- 5. TOMBOL MULAI & SEKUNDER --- */
+        .btn-start {
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(90deg, #03a9f4, #f441a5);
+            color: white; text-decoration: none;
+            font-size: 1.3rem; font-weight: 700; letter-spacing: 1px;
+            padding: 15px 50px; border-radius: 50px;
+            box-shadow: 0 5px 25px rgba(244, 65, 165, 0.4);
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(3, 169, 244, 0.6);
+        }
+
+        .action-group {
+            display: flex; flex-direction: column; gap: 15px; margin-top: 10px;
+        }
+        .secondary-actions {
+            display: flex; gap: 15px; justify-content: center;
+        }
+        .btn-secondary {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #b0bec5; text-decoration: none;
+            font-size: 1rem; font-weight: 600;
+            padding: 12px 20px; border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease; cursor: pointer; flex: 1;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff; border-color: #03a9f4;
+            box-shadow: 0 0 15px rgba(3, 169, 244, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* --- 6. DEVELOPER SECTION --- */
+        .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 40px 0 30px 0; }
+        .dev-title { font-size: 0.9rem; color: #aaa; letter-spacing: 1px; margin-bottom: 20px; }
+
+        .social-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .social-btn {
+            text-decoration: none; color: #ddd;
+            font-size: 0.85rem; padding: 8px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px; background: rgba(0,0,0,0.2);
+            transition: all 0.3s; display: flex; align-items: center; gap: 5px;
+        }
+        .social-btn:hover {
+            border-color: #03a9f4; color: #fff; background: #03a9f4;
+            box-shadow: 0 0 15px #03a9f4;
+        }
+        .copyright { margin-top: 30px; font-size: 0.8rem; color: #888; }
+
+        /* --- 7. MEDIA QUERIES (RESPONSIVENESS UNTUK HP/TABLET) --- */
+        @media (max-width: 600px) {
+            .card {
+                padding: 30px 20px; /* Kurangi padding agar tidak terlalu sesak di HP */
+                width: 95%;
+            }
+            h1 {
+                font-size: 2.2rem; /* Kecilkan ukuran judul */
+            }
+            .subtitle {
+                font-size: 1rem; /* Kecilkan subjudul */
+                margin-bottom: 25px;
+            }
+            .btn-start {
+                padding: 12px 30px;
+                font-size: 1.1rem;
+            }
+            .secondary-actions {
+                flex-direction: column; /* Tombol Panduan & Tes ditumpuk ke bawah */
+                gap: 10px;
+            }
+            .social-container {
+                gap: 10px;
+            }
+            .social-btn {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+            .divider {
+                margin: 30px 0 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="stars-container">
+        <div class="stars-layer"></div>
+        <div class="stars-layer s2"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+    </div>
+
+    <div class="card">
+        <div class="top-label">PHYSICS VIRTUAL LAB</div>
+        <h1>GERAK JATUH BENDA</h1>
+        <p class="subtitle">
+            Eksplorasi pengaruh hambatan udara di ruang hampa dan atmosfer
+        </p>
+
+        <div class="action-group">
+            <a href="Fiks.html" class="btn-start" id="startBtn">
+                MULAI MISI 🚀
+            </a>
+            
+            <div class="secondary-actions">
+                <a href="https://drive.google.com/drive/folders/1EC4a-pBNdR6ZC78wF3a1h9vQtJ9ItJI2?usp=sharing" target="_blank" class="btn-secondary">
+                    📖 Panduan
+                </a>
+                
+                <a href="https://forms.gle/mGYEiT1XLhx7viJz5" target="_blank" class="btn-secondary">
+                    📝 Tes Pemahaman
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div>
+            <div class="dev-title">DEVELOPER PROFILE</div>
+            <div class="social-container">
+                <a href="mailto:zofficialcontact.id@gmail.com" class="social-btn"> Email</a>
+                <a href="https://www.linkedin.com/in/zulfi-arif-fadhli-198a80280/" target="_blank" class="social-btn"> LinkedIn</a>
+                <a href="https://www.instagram.com/zulfi_arif_fadhli/" target="_blank" class="social-btn"> Instagram</a>
+            </div>
+            <div class="copyright">
+                Disusun oleh <strong>Zulfi Arif Fadhli</strong><br>
+                Pendidikan Fisika - UIN Sunan Kalijaga ©2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('startBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.add('fade-out');
+            setTimeout(function() {
+                window.location.href = e.target.closest('a').href;
+            }, 800); 
+        });
+    </script>
+
+</body>
+</html>

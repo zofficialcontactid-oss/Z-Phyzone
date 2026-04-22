@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi — Gerak Jatuh Benda | Z-PHYZONE</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060b17;
+  --bg2: #0a1020;
+  --blue: #2563eb;
+  --blue-b: #3b82f6;
+  --blue-l: #60a5fa;
+  --blue-g: #93c5fd;
+  --cyan: #22d3ee;
+  --white: #eef2ff;
+  --muted: #7c92b8;
+  --border: rgba(59,130,246,0.2);
+  --glass: rgba(10,16,32,0.75);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.4);border-radius:3px}
+
+/* GRID BG */
+.grid-bg{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,0.035) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;z-index:0;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;height:66px;
+  background:rgba(6,11,23,0.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo img{width:36px;height:36px;border-radius:5px;object-fit:contain}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:var(--white)}
+.logo-text span{color:var(--blue-b)}
+.nav-back{
+  font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  text-decoration:none;display:flex;align-items:center;gap:7px;
+  transition:color .2s;
+}
+.nav-back:hover{color:var(--blue-l)}
+.nav-back svg{transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-3px)}
+
+/* HERO */
+.hero{
+  position:relative;z-index:1;
+  padding:7rem 3rem 4rem;
+  max-width:900px;margin:0 auto;
+  text-align:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Space Mono',monospace;font-size:.7rem;
+  color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(34,211,238,.3);padding:6px 16px;
+  border-radius:2px;margin-bottom:1.8rem;
+}
+.hero-tag::before{
+  content:'';width:6px;height:6px;
+  background:var(--cyan);border-radius:50%;
+  animation:blink 1.4s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;
+  line-height:1.15;margin-bottom:1rem;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--blue-b),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:600px;margin:0 auto}
+
+/* PROGRESS NAV */
+.progress-nav{
+  position:sticky;top:66px;z-index:50;
+  background:rgba(6,11,23,0.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:.7rem 3rem;
+  display:flex;gap:.5rem;overflow-x:auto;
+  scrollbar-width:none;
+}
+.progress-nav::-webkit-scrollbar{display:none}
+.pnav-item{
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  padding:5px 14px;border-radius:2px;border:1px solid transparent;
+  text-decoration:none;white-space:nowrap;
+  transition:all .2s;flex-shrink:0;
+}
+.pnav-item:hover,.pnav-item.active{
+  color:var(--cyan);border-color:rgba(34,211,238,.3);
+  background:rgba(34,211,238,.06);
+}
+
+/* MAIN CONTENT */
+.content{
+  position:relative;z-index:1;
+  max-width:860px;margin:0 auto;
+  padding:2rem 3rem 4rem;
+}
+
+/* SECTION */
+.mat-section{
+  margin-bottom:4rem;
+  scroll-margin-top:130px;
+}
+
+.section-num{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  letter-spacing:.2em;color:var(--blue-b);
+  text-transform:uppercase;margin-bottom:.6rem;
+  display:flex;align-items:center;gap:12px;
+}
+.section-num::before{content:'';width:28px;height:1px;background:var(--blue-b)}
+.section-num::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+.mat-section h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:700;
+  margin-bottom:1.2rem;line-height:1.25;
+}
+
+.mat-section p{
+  font-size:1rem;color:#c8d5ec;
+  line-height:1.8;margin-bottom:1rem;
+}
+
+.mat-section strong{color:var(--blue-g);font-weight:600}
+.mat-section em{color:var(--cyan);font-style:normal;font-weight:500}
+
+/* MISKONSEPSI CARD */
+.miskonsepsi-card{
+  background:rgba(239,68,68,.08);
+  border:1px solid rgba(239,68,68,.25);
+  border-radius:10px;padding:1.4rem 1.6rem;
+  margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
+}
+.misk-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+.misk-text{font-size:.95rem;color:#fca5a5;line-height:1.7;font-style:italic}
+.misk-text strong{color:#f87171}
+
+/* CORRECTION CARD */
+.correction-card{
+  background:rgba(34,197,94,.07);
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:10px;padding:1.4rem 1.6rem;
+  margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
+}
+.corr-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+.corr-text{font-size:.95rem;color:#86efac;line-height:1.7}
+.corr-text strong{color:#4ade80}
+
+/* FORMULA BOX */
+.formula-box{
+  background:rgba(10,16,32,.9);
+  border:1px solid rgba(59,130,246,.3);
+  border-radius:10px;
+  padding:1.6rem 2rem;margin:1.8rem 0;
+  position:relative;overflow:hidden;
+}
+.formula-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue-b),transparent);
+}
+.formula-label{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  letter-spacing:.15em;color:var(--blue-l);text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.formula-main{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.1rem,2vw,1.5rem);
+  color:var(--white);text-align:center;
+  margin:1rem 0;letter-spacing:.05em;
+}
+.formula-main em{color:var(--cyan);font-style:normal}
+
+.formula-vars{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:.5rem;margin-top:1.2rem;
+}
+.var-row{
+  display:flex;gap:.6rem;align-items:flex-start;
+  padding:.5rem .8rem;
+  background:rgba(255,255,255,.03);border-radius:6px;
+  border:1px solid rgba(255,255,255,.05);
+  font-size:.88rem;
+}
+.var-sym{
+  font-family:'Space Mono',monospace;color:var(--cyan);
+  font-weight:700;min-width:28px;
+}
+.var-desc{color:var(--muted);line-height:1.5}
+
+/* PHASE DIAGRAM */
+.phase-flow{
+  display:flex;flex-direction:column;gap:.8rem;
+  margin:1.8rem 0;
+}
+.phase-step{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1rem 1.2rem;
+  background:var(--glass);
+  border:1px solid var(--border);border-radius:8px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,background .2s;
+}
+.phase-step:hover{
+  border-color:rgba(59,130,246,.45);
+  background:rgba(26,42,108,.2);
+}
+.phase-step::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+}
+.phase-step.p1::before{background:var(--blue-b)}
+.phase-step.p2::before{background:var(--cyan)}
+.phase-step.p3::before{background:#a78bfa}
+
+.phase-badge{
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 10px;border-radius:2px;
+  flex-shrink:0;margin-top:2px;
+}
+.p1 .phase-badge{color:var(--blue-b);background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25)}
+.p2 .phase-badge{color:var(--cyan);background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2)}
+.p3 .phase-badge{color:#a78bfa;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2)}
+
+.phase-content h4{
+  font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;
+  color:var(--white);margin-bottom:.3rem;
+}
+.phase-content p{font-size:.9rem;color:var(--muted);line-height:1.6;margin:0}
+
+/* INFO CALLOUT */
+.callout{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:1.2rem 1.4rem;border-radius:8px;
+  margin:1.5rem 0;
+}
+.callout.info{
+  background:rgba(59,130,246,.07);
+  border:1px solid rgba(59,130,246,.22);
+}
+.callout.warn{
+  background:rgba(245,158,11,.07);
+  border:1px solid rgba(245,158,11,.22);
+}
+.callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+.callout-text{font-size:.92rem;color:#c8d5ec;line-height:1.7}
+.callout.info .callout-text strong{color:var(--blue-g)}
+.callout.warn .callout-text strong{color:#fbbf24}
+
+/* TABLE PERBANDINGAN */
+.compare-table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  margin:1.8rem 0;border-radius:10px;overflow:hidden;
+  border:1px solid var(--border);
+  font-size:.92rem;
+}
+.compare-table thead tr{
+  background:rgba(26,42,108,.5);
+}
+.compare-table th{
+  font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--blue-l);
+  padding:.9rem 1.2rem;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.compare-table td{
+  padding:.8rem 1.2rem;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  color:#c8d5ec;vertical-align:top;
+}
+.compare-table tbody tr:last-child td{border-bottom:none}
+.compare-table tbody tr:hover td{background:rgba(59,130,246,.05)}
+.tag-vakum{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  color:var(--cyan);background:rgba(34,211,238,.08);
+  border:1px solid rgba(34,211,238,.2);padding:2px 8px;border-radius:2px;
+}
+.tag-udara{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  color:#fbbf24;background:rgba(251,191,36,.08);
+  border:1px solid rgba(251,191,36,.2);padding:2px 8px;border-radius:2px;
+}
+
+/* DIVIDER */
+.mat-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin:3rem 0;
+}
+
+/* CTA FINAL */
+.cta-final{
+  background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(34,211,238,.06));
+  border:1px solid rgba(59,130,246,.3);
+  border-radius:14px;padding:3rem 2.5rem;
+  text-align:center;margin-top:3rem;position:relative;overflow:hidden;
+}
+.cta-final::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue-b),var(--cyan),var(--blue-b),transparent);
+}
+.cta-final h3{
+  font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;
+  margin-bottom:.8rem;
+}
+.cta-final p{color:var(--muted);font-size:.97rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#060b17;background:linear-gradient(135deg,var(--blue-b),var(--cyan));
+  padding:14px 38px;border-radius:4px;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 0 28px rgba(34,211,238,.2);
+}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 4px 38px rgba(34,211,238,.35)}
+.btn-cta2{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--blue-l);background:transparent;
+  padding:12px 28px;border-radius:4px;text-decoration:none;
+  border:1px solid var(--border);margin-left:1rem;
+  transition:border-color .2s,background .2s;
+}
+.btn-cta2:hover{border-color:var(--blue-b);background:rgba(59,130,246,.08)}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  nav{padding:0 1.2rem}
+  .progress-nav{padding:.7rem 1.2rem}
+  .hero{padding:5.5rem 1.2rem 2rem}
+  .content{padding:1.5rem 1.2rem 3rem}
+  .formula-vars{grid-template-columns:1fr}
+  .btn-cta2{margin-left:0;margin-top:.8rem}
+  .cta-final{padding:2rem 1.4rem}
+  .cta-final>div{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="A.png" alt="Logo Z-PHYZONE">
+    <span class="logo-text">Z-<span>PHY</span>ZONE</span>
+  </a>
+  <a href="javascript:history.back()" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Kembali
+  </a>
+</nav>
+
+<!-- PROGRESS NAV -->
+<nav class="progress-nav" id="pnav">
+  <a href="#s1" class="pnav-item">01 · Miskonsepsi</a>
+  <a href="#s2" class="pnav-item">02 · Kondisi Vakum</a>
+  <a href="#s3" class="pnav-item">03 · Hambatan Udara</a>
+  <a href="#s4" class="pnav-item">04 · Kec. Terminal</a>
+  <a href="#s5" class="pnav-item">05 · Ringkasan</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">Dasar Teori · Gerak Jatuh Benda</div>
+  <h1>Mengapa Benda Berat<br><em>Tidak Selalu</em> Jatuh Lebih Cepat?</h1>
+  <p class="hero-sub">Dari miskonsepsi Aristoteles hingga pembuktian Galileo — pahami fisika gerak jatuh secara mendalam sebelum bereksperimen.</p>
+</header>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <!-- SECTION 1: MISKONSEPSI -->
+  <section class="mat-section reveal" id="s1">
+    <div class="section-num">01 &nbsp; Miskonsepsi</div>
+    <h2>Pandangan Salah yang Bertahan Ribuan Tahun</h2>
+
+    <p>Secara historis, banyak orang terjebak pada <strong>pandangan Aristoteles</strong> yang meyakini bahwa kecepatan jatuh suatu benda berbanding lurus dengan beratnya. Pandangan intuitif ini membuat kita sering kali berpikir:</p>
+
+    <div class="miskonsepsi-card">
+      <div class="misk-icon">❌</div>
+      <div class="misk-text"><strong>Miskonsepsi:</strong> "Benda yang masif (berat) pasti akan menyentuh tanah lebih cepat daripada benda ringan — karena gaya gravitasinya lebih besar."</div>
+    </div>
+
+    <p>Selama hampir 2000 tahun, pandangan ini diterima sebagai kebenaran. Baru pada abad ke-17, <strong>Galileo Galilei</strong> menggugat pemikiran ini melalui eksperimen legendaris dari Menara Pisa — dan hasilnya mengejutkan dunia.</p>
+
+    <div class="correction-card">
+      <div class="corr-icon">✅</div>
+      <div class="corr-text"><strong>Kenyataan di Vakum:</strong> Semua benda jatuh dengan percepatan yang identik, tidak peduli seberapa berat atau ringannya — selama tidak ada hambatan udara yang bekerja.</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <div class="callout-text"><strong>Eksperimen Bulan (1971):</strong> Astronot Apollo 15, David Scott, menjatuhkan palu dan bulu angsa di permukaan Bulan — yang tidak memiliki atmosfer. Keduanya menyentuh tanah di waktu yang persis bersamaan, membuktikan teori Galileo secara dramatis di hadapan jutaan penonton televisi.</div>
+    </div>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <!-- SECTION 2: VAKUM -->
+  <section class="mat-section reveal" id="s2">
+    <div class="section-num">02 &nbsp; Kondisi Vakum</div>
+    <h2>Pembuktian Matematis Melalui Hukum Newton</h2>
+
+    <p>Kekeliruan Aristoteles dibantah secara matematis melalui <strong>Hukum II Newton</strong>. Dalam kondisi ideal di <em>Ruang Hampa (Vakum)</em> — di mana hambatan gesekan medium dihilangkan — satu-satunya gaya yang bekerja adalah gaya berat.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Derivasi Percepatan di Vakum</div>
+      <div class="formula-main">ΣF<sub style="font-size:.65em">y</sub> = <em>m</em>·a<sub style="font-size:.65em">y</sub></div>
+      <div class="formula-main" style="font-size:1rem;color:var(--muted);margin:.2rem 0">↓ satu-satunya gaya adalah gaya berat</div>
+      <div class="formula-main"><em>m</em>·g = <em>m</em>·a<sub style="font-size:.65em">y</sub></div>
+      <div class="formula-main" style="font-size:1rem;color:var(--muted);margin:.2rem 0">↓ massa m saling meniadakan</div>
+      <div class="formula-main" style="color:var(--cyan);font-size:1.6rem">a<sub style="font-size:.65em">y</sub> = <em>g</em></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-text"><strong>Kesimpulan kunci:</strong> Variabel massa (m) di ruas kiri dan kanan saling meniadakan. Percepatan jatuh benda <strong>ay = g ≈ 9,81 m/s²</strong> — murni hanya bergantung pada gravitasi bumi, sama sekali tidak dipengaruhi massa benda.</div>
+    </div>
+
+    <p>Inilah mengapa di ruang hampa, sebuah bola baja dan sehelai bulu akan jatuh beriringan — karena percepatan gravitasi yang sama diberikan kepada semua benda, berapapun massanya.</p>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <!-- SECTION 3: HAMBATAN UDARA -->
+  <section class="mat-section reveal" id="s3">
+    <div class="section-num">03 &nbsp; Kondisi Riil</div>
+    <h2>Gaya Hambat Udara <em>(Air Drag)</em></h2>
+
+    <p>Jika di ruang hampa benda berat dan ringan jatuh bersamaan, mengapa di kehidupan nyata kelereng besi jatuh lebih cepat daripada selembar kertas? Jawabannya ada pada <strong>interaksi aerodinamis</strong> yang disebut Gaya Hambat Udara (F<sub>d</sub>).</p>
+
+    <p>Untuk benda berukuran makroskopis yang bergerak dengan kecepatan sedang hingga tinggi, aliran fluida di sekitarnya bersifat <em>turbulen</em>. Pada kondisi ini, gaya hambat bertambah secara <strong>kuadratik</strong> (eksponensial) seiring bertambahnya kecepatan:</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Persamaan Gaya Hambat Udara</div>
+      <div class="formula-main">F<sub style="font-size:.65em">d</sub> = ½ · <em>ρ</em> · <em>v</em>² · <em>C<sub style="font-size:.65em">d</sub></em> · <em>A</em></div>
+      <div class="formula-vars">
+        <div class="var-row"><span class="var-sym">ρ</span><span class="var-desc">Massa jenis fluida (udara) ≈ 1,225 kg/m³</span></div>
+        <div class="var-row"><span class="var-sym">v</span><span class="var-desc">Kecepatan jatuh benda saat itu (m/s)</span></div>
+        <div class="var-row"><span class="var-sym">C<sub style="font-size:.7em">d</sub></span><span class="var-desc">Koefisien hambatan bentuk benda</span></div>
+        <div class="var-row"><span class="var-sym">A</span><span class="var-desc">Luas penampang lintang benda (m²)</span></div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">🔍</div>
+      <div class="callout-text">Perhatikan <strong>v²</strong> — artinya jika kecepatan benda berlipat ganda, gaya hambat udara bertambah empat kali lipat. Ini mengapa hambatan udara terasa jauh lebih kuat saat bergerak cepat dibandingkan lambat.</div>
+    </div>
+
+    <h3 style="font-family:'Orbitron',sans-serif;font-size:1rem;margin:1.8rem 0 1rem;color:var(--white)">Perbandingan: Vakum vs Udara</h3>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Aspek</th>
+          <th><span class="tag-vakum">Vakum</span></th>
+          <th><span class="tag-udara">Udara</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gaya yang bekerja</td>
+          <td>Hanya gaya berat (W)</td>
+          <td>Berat (W) + Hambatan (F<sub>d</sub>)</td>
+        </tr>
+        <tr>
+          <td>Percepatan</td>
+          <td>Konstan = g ≈ 9,81 m/s²</td>
+          <td>Berkurang seiring bertambahnya v</td>
+        </tr>
+        <tr>
+          <td>Pengaruh massa</td>
+          <td>Tidak ada</td>
+          <td>Ada — benda berat punya v<sub>t</sub> lebih tinggi</td>
+        </tr>
+        <tr>
+          <td>Pengaruh diameter</td>
+          <td>Tidak ada</td>
+          <td>Besar — diameter lebih lebar → hambatan lebih besar</td>
+        </tr>
+        <tr>
+          <td>Kecepatan maksimum</td>
+          <td>Terus bertambah</td>
+          <td>Terbatas pada kecepatan terminal</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <!-- SECTION 4: KECEPATAN TERMINAL -->
+  <section class="mat-section reveal" id="s4">
+    <div class="section-num">04 &nbsp; Kesetimbangan Dinamis</div>
+    <h2>Kecepatan Terminal</h2>
+
+    <p>Dinamika gerak benda jatuh di udara mengalami <strong>transisi fase</strong> yang sangat menarik. Perhatikan bagaimana percepatan benda berubah dari waktu ke waktu:</p>
+
+    <div class="phase-flow">
+      <div class="phase-step p1">
+        <span class="phase-badge">Fase 1</span>
+        <div class="phase-content">
+          <h4>Awal Jatuh — Percepatan Maksimum</h4>
+          <p>Kecepatan masih sangat rendah → Fd ≈ 0. Benda melaju dengan percepatan mendekati g = 9,81 m/s². Gaya berat jauh mendominasi hambatan udara.</p>
+        </div>
+      </div>
+      <div class="phase-step p2">
+        <span class="phase-badge">Fase 2</span>
+        <div class="phase-content">
+          <h4>Percepatan Berkurang</h4>
+          <p>Kecepatan bertambah → Fd membesar secara kuadratik. Resultan gaya (W − Fd) menyusut, sehingga percepatan terus menurun mendekati nol.</p>
+        </div>
+      </div>
+      <div class="phase-step p3">
+        <span class="phase-badge">Fase 3</span>
+        <div class="phase-content">
+          <h4>Kecepatan Terminal — Kesetimbangan</h4>
+          <p>Fd = W → ΣF = 0 → a = 0. Benda meluncur stabil dengan kecepatan konstan maksimum: kecepatan terminal (v<sub>t</sub>).</p>
+        </div>
+      </div>
+    </div>
+
+    <p>Melalui kondisi kesetimbangan <strong>ΣF = 0</strong> (Fd = W), kita dapat merumuskan kecepatan terminal:</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Persamaan Kecepatan Terminal</div>
+      <div class="formula-main">v<sub style="font-size:.65em">t</sub> = √( 2·<em>m</em>·g / ρ·C<sub style="font-size:.65em">d</sub>·<em>A</em> )</div>
+      <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="var-row"><span class="var-sym">m</span><span class="var-desc">Massa benda (kg)</span></div>
+        <div class="var-row"><span class="var-sym">g</span><span class="var-desc">Gravitasi 9,81 m/s²</span></div>
+        <div class="var-row"><span class="var-sym">ρ</span><span class="var-desc">Massa jenis udara</span></div>
+        <div class="var-row"><span class="var-sym">A</span><span class="var-desc">Luas penampang (m²)</span></div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-text"><strong>Inilah jawabannya!</strong> Benda masif (massa m besar) punya v<sub>t</sub> yang jauh lebih tinggi — artinya udara butuh waktu lebih lama untuk "menghentikan" lajunya. Sebaliknya, benda ringan dengan penampang lebar (A besar) memiliki v<sub>t</sub> rendah, sehingga cepat tertahan udara dan jatuh lebih lambat.</div>
+    </div>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <!-- SECTION 5: RINGKASAN -->
+  <section class="mat-section reveal" id="s5">
+    <div class="section-num">05 &nbsp; Ringkasan</div>
+    <h2>Poin Kunci yang Perlu Diingat</h2>
+
+    <div class="phase-flow">
+      <div class="phase-step p1">
+        <span style="font-size:1.3rem;flex-shrink:0">🌑</span>
+        <div class="phase-content">
+          <h4>Di Vakum: Massa Tidak Berpengaruh</h4>
+          <p>Semua benda jatuh dengan a = g. Benda berat dan ringan tiba bersamaan. Ini membuktikan miskonsepsi Aristoteles salah.</p>
+        </div>
+      </div>
+      <div class="phase-step p2">
+        <span style="font-size:1.3rem;flex-shrink:0">💨</span>
+        <div class="phase-content">
+          <h4>Di Udara: Massa dan Luas Penampang Berpengaruh</h4>
+          <p>Benda dengan massa besar dan luas penampang kecil → v<sub>t</sub> tinggi → jatuh lebih cepat. Benda ringan dengan penampang lebar → v<sub>t</sub> rendah → jatuh lebih lambat.</p>
+        </div>
+      </div>
+      <div class="phase-step p3">
+        <span style="font-size:1.3rem;flex-shrink:0">📐</span>
+        <div class="phase-content">
+          <h4>F<sub>d</sub> ∝ v² — Hambatan Kuadratik</h4>
+          <p>Gaya hambat bertumbuh eksponensial seiring kecepatan. Kecepatan berlipat dua → hambatan berlipat empat. Inilah yang menciptakan batas kecepatan terminal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <div class="cta-final reveal">
+    <div style="font-size:2rem;margin-bottom:1rem">🚀</div>
+    <h3>Siap Membuktikannya Sendiri?</h3>
+    <p>Teori sudah dikuasai — sekarang waktunya bereksperimen! Manipulasi massa, diameter, dan kondisi atmosfer secara langsung di simulasi interaktif.</p>
+    <div>
+      <a href="index1.html" class="btn-cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Buka Simulasi
+      </a>
+      <a href="index.html" class="btn-cta2">
+        ← Halaman Utama
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// SCROLL REVEAL
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*60);
+  });
+},{threshold:0.07});
+reveals.forEach(r=>obs.observe(r));
+
+// PROGRESS NAV ACTIVE
+const sections=[...document.querySelectorAll('.mat-section')];
+const navItems=[...document.querySelectorAll('.pnav-item')];
+window.addEventListener('scroll',()=>{
+  const scroll=window.scrollY+160;
+  let active=0;
+  sections.forEach((s,i)=>{if(s.offsetTop<=scroll)active=i;});
+  navItems.forEach((n,i)=>n.classList.toggle('active',i===active));
+},{ passive:true });
+</script>
+</body>
+</html>

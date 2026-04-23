@@ -438,12 +438,12 @@ function getChartConfig(graphType) {
         data: {
             datasets: [
                 { 
-                    label: 'Kanan (Biru)', data: [], borderColor: '#00d2ff', backgroundColor: 'rgba(0, 210, 255, 0.1)', 
+                    label: isMobile ? 'Kanan' : 'Kanan (Biru)', data: [], borderColor: '#00d2ff', backgroundColor: 'rgba(0, 210, 255, 0.1)', 
                     borderWidth: isMobile ? 1.5 : 2, pointRadius: 0, 
                     tension: 0 
                 },
                 { 
-                    label: 'Kiri (Merah)', data: [], borderColor: '#ff4757', backgroundColor: 'rgba(255, 71, 87, 0.1)', 
+                    label: isMobile ? 'Kiri' : 'Kiri (Merah)', data: [], borderColor: '#ff4757', backgroundColor: 'rgba(255, 71, 87, 0.1)', 
                     borderWidth: isMobile ? 1.5 : 2, pointRadius: 0, 
                     tension: 0 
                 }
@@ -470,14 +470,15 @@ function getChartConfig(graphType) {
             },
             plugins: {
                 legend: { 
-                    position: 'top', 
+                    position: isMobile ? 'right' : 'top', 
+                    align: 'center',
                     labels: { 
                         color: 'white',
                         // Mengecilkan ukuran kotak warna dan teks khusus di HP
-                        boxWidth: isMobile ? 12 : 40,
-                        boxHeight: isMobile ? 6 : 12,
-                        padding: isMobile ? 5 : 10,
-                        font: { size: isMobile ? 9 : 12 }
+                        boxWidth: isMobile ? 10 : 40,
+                        boxHeight: isMobile ? 5 : 12,
+                        padding: isMobile ? 6 : 10,
+                        font: { size: isMobile ? 8 : 12 }
                     } 
                 },
                 zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }, pan: { enabled: true, mode: 'xy', modifierKey: null, threshold: 5 } }

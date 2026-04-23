@@ -1,540 +1,689 @@
-/* =========================================
-   1. KONSTANTA & VARIABEL GLOBAL
-   ========================================= */
-const canvas = document.getElementById('simulationCanvas');
-const ctx = canvas.getContext('2d');
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Gerak Jatuh Bebas</title>
+    <link rel="stylesheet" href="Fiks.css">
 
-// Parameter Fisika Alam
-const g = 9.81;
-const airDensity = 1.225;
-const dragCoeffAir = 0.47;
+    <style>
+    /* =============================================
+       DEMO / TUTORIAL OVERLAY SYSTEM
+       ============================================= */
 
-// Parameter Visual
-const maxHeight = 75;
-const groundY = canvas.height - 50; 
-const pixelsPerMeter = (groundY - 50) / maxHeight; 
-
-// State Simulasi
-let leftBall = null;
-let rightBall = null;
-let isRunning = false;
-let animationId = null;
-let chart1 = null;
-let chart2 = null;
-
-let stars = [];
-let currentGraph1 = 'speed';
-let currentGraph2 = 'accel';
-
-let chartBounds = { time: 10, speed: 40, height: 75, accel: 12 };
-
-/* =========================================
-   2. INITIALIZATION & EVENT LISTENERS
-   ========================================= */
-
-function initStars() {
-    stars = [];
-    for(let i=0; i<150; i++) {
-        stars.push({ x: Math.random() * canvas.width, y: Math.random() * groundY, r: Math.random() * 1.5, opacity: Math.random() });
+    /* --- BACKDROP --- */
+    #demo-overlay {
+        position: fixed; inset: 0;
+        z-index: 9000;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
     }
-}
+    #demo-overlay.hidden { opacity: 0; pointer-events: none; }
 
-function updatePageTheme() {
-    const leftAtm = document.querySelector('input[name="atm-left"]:checked').value;
-    const rightAtm = document.querySelector('input[name="atm-right"]:checked').value;
-    const body = document.body;
-
-    if (leftAtm === 'vacuum' && rightAtm === 'vacuum') body.style.background = "radial-gradient(circle at center, #1b2735 0%, #090a0f 100%)";
-    else if (leftAtm === 'air' && rightAtm === 'air') body.style.background = "linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%)";
-    else if (leftAtm === 'vacuum' && rightAtm === 'air') body.style.background = "linear-gradient(to right, #090a0f 40%, #87CEEB 60%)";
-    else body.style.background = "linear-gradient(to right, #87CEEB 40%, #090a0f 60%)";
-    
-    draw();
-}
-
-document.querySelectorAll('input[name="atm-left"], input[name="atm-right"]').forEach(radio => {
-    radio.addEventListener('change', function(e) {
-        if (leftBall && !isRunning) leftBall.atmosphere = document.querySelector('input[name="atm-left"]:checked').value;
-        if (rightBall && !isRunning) rightBall.atmosphere = document.querySelector('input[name="atm-right"]:checked').value;
-        updatePageTheme();
-    });
-});
-
-document.getElementById('mass-left').addEventListener('input', e => { if (leftBall && !isRunning) leftBall.mass = parseFloat(e.target.value); });
-document.getElementById('diameter-left').addEventListener('input', e => { if (leftBall && !isRunning) { leftBall.diameter = parseFloat(e.target.value); draw(); } });
-document.getElementById('mass-right').addEventListener('input', e => { if (rightBall && !isRunning) rightBall.mass = parseFloat(e.target.value); });
-document.getElementById('diameter-right').addEventListener('input', e => { if (rightBall && !isRunning) { rightBall.diameter = parseFloat(e.target.value); draw(); } });
-
-// --- SINKRONISASI KETINGGIAN KIRI ---
-const heightLeftRange = document.getElementById('height-left');
-const heightLeftInput = document.getElementById('height-left-val');
-
-heightLeftRange.addEventListener('input', function(e) {
-    heightLeftInput.value = e.target.value; 
-    if (leftBall && !isRunning) updateBallPosition('left');
-});
-
-heightLeftInput.addEventListener('input', function(e) {
-    let val = parseFloat(e.target.value);
-    if (isNaN(val)) val = 0;
-    if (val > 75) val = 75; 
-    heightLeftRange.value = val; 
-    if (leftBall && !isRunning) updateBallPosition('left');
-});
-
-// --- SINKRONISASI KETINGGIAN KANAN ---
-const heightRightRange = document.getElementById('height-right');
-const heightRightInput = document.getElementById('height-right-val');
-
-heightRightRange.addEventListener('input', function(e) {
-    heightRightInput.value = e.target.value; 
-    if (rightBall && !isRunning) updateBallPosition('right');
-});
-
-heightRightInput.addEventListener('input', function(e) {
-    let val = parseFloat(e.target.value);
-    if (isNaN(val)) val = 0;
-    if (val > 75) val = 75;
-    heightRightRange.value = val; 
-    if (rightBall && !isRunning) updateBallPosition('right');
-});
-
-document.getElementById('play-btn').addEventListener('click', startSimulation);
-document.getElementById('pause-btn').addEventListener('click', pauseSimulation);
-document.getElementById('reset-btn').addEventListener('click', resetSimulation);
-
-document.querySelectorAll('.graph-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const chartNum = this.dataset.chart;
-        const graphType = this.dataset.graph;
-        document.querySelectorAll(`.graph-btn[data-chart="${chartNum}"]`).forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        if (chartNum === '1') { currentGraph1 = graphType; updateChartConfig(1); } 
-        else { currentGraph2 = graphType; updateChartConfig(2); }
-        updateCharts(); 
-    });
-});
-
-/* =========================================
-   3. LOGIKA FISIKA & OBJEK
-   ========================================= */
-
-function initializeBalls() {
-    const heightLeft = parseFloat(document.getElementById('height-left').value);
-    const heightRight = parseFloat(document.getElementById('height-right').value);
-
-    leftBall = createBallObject({ massId: 'mass-left', diamId: 'diameter-left', height: heightLeft, atmName: 'atm-left', xPos: canvas.width * 0.25 }); 
-    rightBall = createBallObject({ massId: 'mass-right', diamId: 'diameter-right', height: heightRight, atmName: 'atm-right', xPos: canvas.width * 0.75 }); 
-
-    updatePageTheme(); 
-    draw(); 
-}
-
-function createBallObject(params) {
-    const massEl = document.getElementById(params.massId);
-    const diamEl = document.getElementById(params.diamId);
-    const atmEl = document.querySelector(`input[name="${params.atmName}"]:checked`);
-
-    return {
-        mass: massEl ? parseFloat(massEl.value) : 1,
-        diameter: diamEl ? parseFloat(diamEl.value) : 0.1,
-        initialHeight: params.height,
-        x: params.xPos,
-        y: getYFromHeight(params.height),
-        initialY: getYFromHeight(params.height),
-        velocity: 0,
-        acceleration: 0,
-        time: 0,
-        height: params.height,
-        distance: 0,
-        vInitial: 0,
-        vFinal: 0,
-        vTerminal: 0,
-        isActive: false,
-        hasHitGround: false, // Flag baru pendeteksi benturan
-        atmosphere: atmEl ? atmEl.value : 'air',
-        lastLogTime: -1, 
-        historySpeed: [], historyAccel: [], historyHeight: [], historyHeightSpeed: []
-    };
-}
-
-function getYFromHeight(height) { return groundY - (height * pixelsPerMeter); }
-
-function updateBallPosition(side) {
-    if (side === 'left' && leftBall) {
-        const height = parseFloat(document.getElementById('height-left').value);
-        leftBall.initialHeight = height; leftBall.y = getYFromHeight(height); leftBall.initialY = leftBall.y;
-    } else if (side === 'right' && rightBall) {
-        const height = parseFloat(document.getElementById('height-right').value);
-        rightBall.initialHeight = height; rightBall.y = getYFromHeight(height); rightBall.initialY = rightBall.y;
-    }
-    draw();
-}
-
-function calculateTerminalVelocity(ball) {
-    if (ball.atmosphere === 'vacuum') return Infinity;
-    const radius = ball.diameter / 2;
-    const A = Math.PI * radius * radius;
-    const k = 0.5 * dragCoeffAir * airDensity * A;
-    const effectiveWeight = ball.mass * g; 
-    if (effectiveWeight <= 0) return 0;
-    return Math.sqrt(effectiveWeight / k);
-}
-
-/* =========================================
-   4. CORE SIMULATION LOOP
-   ========================================= */
-
-function calculateChartBounds() {
-    let maxTime = 0; let maxSpeed = 0; let maxHeight = Math.max(leftBall.initialHeight, rightBall.initialHeight);
-
-    [leftBall, rightBall].forEach(ball => {
-        const radius = ball.diameter / 2; const A = Math.PI * radius * radius;
-        const k = 0.5 * dragCoeffAir * airDensity * A; const effectiveWeight = ball.mass * g;
-        const terminalVel = ball.atmosphere === 'vacuum' ? Infinity : Math.sqrt(effectiveWeight / k);
-        const tau = ball.atmosphere === 'vacuum' ? Infinity : ball.mass / Math.sqrt(effectiveWeight * k);
-        let t = 0; let h = ball.initialHeight; let v = 0;
-
-        while (h > 0 && t < 150) { 
-            t += 0.1;
-            if (ball.atmosphere === 'vacuum') { v = g * t; h = ball.initialHeight - 0.5 * g * t * t; } 
-            else { v = terminalVel * Math.tanh(t / tau); h = ball.initialHeight - terminalVel * tau * Math.log(Math.cosh(t / tau)); }
-        }
-        if (t > maxTime) maxTime = t; if (v > maxSpeed) maxSpeed = v;
-    });
-
-    chartBounds.time = Math.max(2, Math.ceil(maxTime * 1.1)); 
-    chartBounds.speed = Math.max(5, Math.ceil(maxSpeed * 1.1));
-    chartBounds.height = Math.max(10, Math.ceil(maxHeight * 1.1));
-    chartBounds.accel = 12; 
-}
-
-function startSimulation() {
-    if (!leftBall || !rightBall) initializeBalls();
-    [leftBall, rightBall].forEach(ball => {
-        ball.historySpeed = []; ball.historyAccel = []; ball.historyHeight = []; ball.historyHeightSpeed = []; ball.lastLogTime = -1; 
-    });
-    
-    refreshBallParams(leftBall, 'left'); refreshBallParams(rightBall, 'right');
-    updatePageTheme(); calculateChartBounds(); initCharts();           
-
-    isRunning = true; const now = Date.now();
-    leftBall.isActive = true; leftBall.startTime = now;
-    rightBall.isActive = true; rightBall.startTime = now;
-    animate();    
-}
-
-function refreshBallParams(ball, side) {
-    ball.mass = parseFloat(document.getElementById(`mass-${side}`).value);
-    ball.diameter = parseFloat(document.getElementById(`diameter-${side}`).value);
-    ball.atmosphere = document.querySelector(`input[name="atm-${side}"]:checked`).value;
-    ball.velocity = 0; ball.time = 0; ball.distance = 0; ball.hasHitGround = false;
-    ball.vTerminal = calculateTerminalVelocity(ball);
-}
-
-function pauseSimulation() { isRunning = false; if (animationId) cancelAnimationFrame(animationId); }
-
-function resetSimulation() {
-    pauseSimulation(); initializeBalls();
-    if (chart1) { chart1.data.datasets[0].data = []; chart1.data.datasets[1].data = []; chart1.update(); }
-    if (chart2) { chart2.data.datasets[0].data = []; chart2.data.datasets[1].data = []; chart2.update(); }
-    ['left', 'right'].forEach(side => {
-        ['current-height', 'distance', 'speed', 'time', 'accel'].forEach(id => document.getElementById(`${id}-${side}`).textContent = '0.00');
-        ['v-final', 'v-terminal'].forEach(id => document.getElementById(`${id}-${side}`).textContent = '-');
-    });
-    draw();
-}
-
-function animate() {
-    if (!isRunning) return;
-    const now = Date.now();
-    let allFinished = true;
-
-    if (leftBall.isActive) {
-        const timeElapsed = (now - leftBall.startTime) / 1000;
-        updateBallPhysics(leftBall, timeElapsed);
-        if (!leftBall.hasHitGround) allFinished = false;
-        else if (leftBall.isActive) { leftBall.isActive = false; leftBall.vFinal = Math.max(...leftBall.historySpeed.map(p => p.y)); }
+    /* Dark mask using 4 rects around a spotlight (clip-path trick) */
+    .demo-mask {
+        position: fixed; inset: 0;
+        background: rgba(4, 8, 20, 0.82);
+        pointer-events: all;
+        transition: opacity 0.4s;
+        backdrop-filter: blur(1px);
     }
 
-    if (rightBall.isActive) {
-        const timeElapsed = (now - rightBall.startTime) / 1000;
-        updateBallPhysics(rightBall, timeElapsed);
-        if (!rightBall.hasHitGround) allFinished = false;
-        else if (rightBall.isActive) { rightBall.isActive = false; rightBall.vFinal = Math.max(...rightBall.historySpeed.map(p => p.y)); }
+    /* Highlight cutout — absolutely positioned box matching target */
+    #demo-spotlight {
+        position: fixed;
+        border-radius: 10px;
+        box-shadow:
+            0 0 0 4000px rgba(4, 8, 20, 0.82),
+            0 0 0 2px rgba(34, 211, 238, 0.8),
+            0 0 20px rgba(34, 211, 238, 0.4);
+        pointer-events: none;
+        transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 9001;
     }
 
-    draw(); updateDisplays(); updateCharts();
-    if (!allFinished) animationId = requestAnimationFrame(animate); else { isRunning = false; draw(); }
-}
-
-function updateBallPhysics(ball, currentTime) {
-    if (ball.hasHitGround) return; // Hentikan perhitungan jika sudah menabrak
-
-    ball.time = currentTime;
-    const radius = ball.diameter / 2; const A = Math.PI * radius * radius;
-    let velocity, height, acceleration;
-
-    if (ball.atmosphere === 'vacuum') {
-        velocity = g * ball.time; height = ball.initialHeight - 0.5 * g * ball.time * ball.time; acceleration = g;
-    } else {
-        const k = 0.5 * dragCoeffAir * airDensity * A; const effectiveWeight = ball.mass * g;
-        const terminalVel = Math.sqrt(effectiveWeight / k); const tau = ball.mass / Math.sqrt(effectiveWeight * k);
-        velocity = terminalVel * Math.tanh(ball.time / tau); height = ball.initialHeight - terminalVel * tau * Math.log(Math.cosh(ball.time / tau));
-        const dragForce = k * velocity * velocity; acceleration = (effectiveWeight - dragForce) / ball.mass;
+    /* --- TOOLTIP CARD --- */
+    #demo-card {
+        position: fixed;
+        z-index: 9002;
+        background: rgba(8, 15, 35, 0.97);
+        border: 1px solid rgba(34, 211, 238, 0.4);
+        border-radius: 12px;
+        padding: 1.4rem 1.6rem;
+        max-width: 340px;
+        min-width: 260px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 30px rgba(34,211,238,0.08);
+        pointer-events: all;
+        transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    }
+    #demo-card::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        background: linear-gradient(90deg, transparent, #22d3ee, #3b82f6, transparent);
+        border-radius: 12px 12px 0 0;
     }
 
-    if (height <= 0) {
-        // --- LOGIKA GARIS LURUS MENUJU 0 ---
-        ball.historySpeed.push({x: ball.time, y: velocity});
-        ball.historyAccel.push({x: ball.time, y: acceleration});
-        ball.historyHeight.push({x: ball.time, y: 0});
-        ball.historyHeightSpeed.push({x: velocity, y: 0});
-        
-        ball.historySpeed.push({x: ball.time, y: 0});
-        ball.historyAccel.push({x: ball.time, y: 0});
-        ball.historyHeightSpeed.push({x: 0, y: 0});
-
-        ball.height = 0; ball.velocity = 0; ball.acceleration = 0;
-        ball.distance = ball.initialHeight; ball.y = groundY; ball.hasHitGround = true;
-        ball.lastLogTime = ball.time;
-    } else {
-        ball.height = height; ball.velocity = velocity; ball.acceleration = acceleration;
-        ball.distance = ball.initialHeight - height; ball.y = getYFromHeight(height);
-
-        if ((ball.time - ball.lastLogTime >= 0.05) || ball.lastLogTime < 0) {
-            ball.historySpeed.push({x: ball.time, y: ball.velocity});
-            ball.historyAccel.push({x: ball.time, y: ball.acceleration});
-            ball.historyHeight.push({x: ball.time, y: ball.height});
-            ball.historyHeightSpeed.push({x: ball.velocity, y: ball.height});
-            ball.lastLogTime = ball.time;
-        }
-    }
-}
-
-/* =========================================
-   5. VISUALIZATION (THEME SWITCHING LOGIC)
-   ========================================= */
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const leftAtm = document.querySelector('input[name="atm-left"]:checked').value;
-    const rightAtm = document.querySelector('input[name="atm-right"]:checked').value;
-
-    drawEnvironmentSection(0, 0, canvas.width/2, canvas.height, leftAtm, 'left');
-    drawEnvironmentSection(canvas.width/2, 0, canvas.width/2, canvas.height, rightAtm, 'right');
-
-    if (leftAtm !== rightAtm) {
-        ctx.beginPath(); ctx.moveTo(canvas.width/2, 0); ctx.lineTo(canvas.width/2, canvas.height);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; ctx.lineWidth = 2; ctx.setLineDash([10, 10]); ctx.stroke(); ctx.setLineDash([]); 
+    .demo-step-badge {
+        font-family: 'Consolas', monospace;
+        font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+        color: #22d3ee;
+        background: rgba(34, 211, 238, 0.1);
+        border: 1px solid rgba(34, 211, 238, 0.25);
+        padding: 3px 10px; border-radius: 2px;
+        display: inline-block; margin-bottom: 0.8rem;
     }
 
-    drawGrid();
-    if (leftBall) drawBall(leftBall, '#ff4757'); 
-    if (rightBall) drawBall(rightBall, '#00d2ff'); 
-}
-
-function drawEnvironmentSection(x, y, w, h, type, side) {
-    ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
-
-    if (type === 'vacuum') {
-        const spaceGrad = ctx.createLinearGradient(0, 0, 0, groundY); spaceGrad.addColorStop(0, '#090a0f'); spaceGrad.addColorStop(1, '#1b2735');
-        ctx.fillStyle = spaceGrad; ctx.fillRect(x, 0, w, groundY);
-        ctx.fillStyle = '#ffffff';
-        stars.forEach(star => { if (star.x >= x && star.x <= x + w) { ctx.globalAlpha = star.opacity; ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2); ctx.fill(); }});
-        ctx.globalAlpha = 1.0;
-        const groundGrad = ctx.createLinearGradient(0, groundY, 0, canvas.height); groundGrad.addColorStop(0, '#555'); groundGrad.addColorStop(1, '#222'); 
-        ctx.fillStyle = groundGrad; ctx.fillRect(x, groundY, w, h - groundY);
-        ctx.strokeStyle = '#00d2ff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, groundY); ctx.lineTo(x + w, groundY); ctx.stroke();
-    } else {
-        const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY); skyGrad.addColorStop(0, '#3ac1f7'); skyGrad.addColorStop(1, '#87ceeb');
-        ctx.fillStyle = skyGrad; ctx.fillRect(x, 0, w, groundY);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; ctx.beginPath(); ctx.arc(x + w*0.3, 100, 30, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(x + w*0.7, 150, 40, 0, Math.PI*2); ctx.fill();
-        const earthGrad = ctx.createLinearGradient(0, groundY, 0, canvas.height); earthGrad.addColorStop(0, '#8b7355'); earthGrad.addColorStop(1, '#5d4037');
-        ctx.fillStyle = earthGrad; ctx.fillRect(x, groundY, w, h - groundY);
-        ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x, groundY); ctx.lineTo(x + w, groundY); ctx.stroke();
-    }
-    ctx.restore();
-}
-
-function drawGrid() {
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'; ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'; ctx.font = 'bold 12px Arial'; ctx.textAlign = 'right';
-    for (let h = 5; h <= maxHeight; h += 5) {
-        const y = getYFromHeight(h);
-        ctx.beginPath(); ctx.moveTo(10, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-        ctx.shadowColor = "black"; ctx.shadowBlur = 4; ctx.fillText(h + 'm', 50, y + 4); ctx.shadowBlur = 0;
-    }
-}
-
-function drawBall(ball, color) {
-    const displayRadius = Math.max(12, Math.min(35, ball.diameter * 60));
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; ctx.beginPath(); ctx.ellipse(ball.x, groundY + 5, displayRadius * 0.8, displayRadius * 0.3, 0, 0, Math.PI * 2); ctx.fill();
-    const ballGradient = ctx.createRadialGradient(ball.x - displayRadius * 0.3, ball.y - displayRadius * 0.3, 0, ball.x, ball.y, displayRadius);
-    ballGradient.addColorStop(0, color); ballGradient.addColorStop(1, '#000'); 
-    ctx.fillStyle = ballGradient; ctx.beginPath(); ctx.arc(ball.x, ball.y, displayRadius, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; ctx.beginPath(); ctx.arc(ball.x - displayRadius * 0.3, ball.y - displayRadius * 0.3, displayRadius * 0.25, 0, Math.PI * 2); ctx.fill();
-    if (ball.velocity > 5 && ball.isActive) {
-        ctx.globalAlpha = 0.3; ctx.fillStyle = color;
-        for (let i = 1; i <= 3; i++) { ctx.beginPath(); ctx.arc(ball.x, ball.y - i * (ball.velocity * 0.2), displayRadius, 0, Math.PI * 2); ctx.fill(); }
-        ctx.globalAlpha = 1;
-    }
-}
-
-function updateDisplays() { updateBallStats(leftBall, 'left'); updateBallStats(rightBall, 'right'); }
-
-function updateBallStats(ball, side) {
-    if (ball && (ball.isActive || ball.time > 0)) {
-        document.getElementById(`current-height-${side}`).textContent = ball.height.toFixed(2);
-        document.getElementById(`distance-${side}`).textContent = ball.distance.toFixed(2);
-        document.getElementById(`speed-${side}`).textContent = ball.velocity.toFixed(2);
-        document.getElementById(`time-${side}`).textContent = ball.time.toFixed(2);
-        document.getElementById(`accel-${side}`).textContent = ball.acceleration.toFixed(2);
-        const vTerm = ball.vTerminal === Infinity ? '∞' : ball.vTerminal.toFixed(2);
-        document.getElementById(`v-terminal-${side}`).textContent = vTerm;
-        if (!ball.isActive && ball.vFinal > 0) document.getElementById(`v-final-${side}`).textContent = ball.vFinal.toFixed(2);
-    }
-}
-
-/* =========================================
-   6. CHART.JS CONFIGURATION
-   ========================================= */
-
-function initCharts() {
-    if (chart1) chart1.destroy(); if (chart2) chart2.destroy();
-    
-    // Deteksi apakah layar kecil (HP)
-    const isMobile = window.innerWidth <= 768;
-    
-    Chart.defaults.color = '#ccc'; 
-    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'; 
-    // Set default font dasar lebih kecil untuk HP
-    Chart.defaults.font.size = isMobile ? 8 : 11; 
-    
-    updateChartConfig(1); updateChartConfig(2);
-}
-
-function updateChartConfig(chartNum) {
-    const graphType = chartNum === 1 ? currentGraph1 : currentGraph2;
-    let config = getChartConfig(graphType);
-    const chartCanvas = document.getElementById(`chart${chartNum}`);
-    if (chartNum === 1) { if (chart1) chart1.destroy(); chart1 = new Chart(chartCanvas, config); } 
-    else { if (chart2) chart2.destroy(); chart2 = new Chart(chartCanvas, config); }
-}
-
-function getChartConfig(graphType) {
-    let xLabel, yLabel, xMax, yMax;
-    switch(graphType) {
-        case 'speed': xLabel = 'Waktu (s)'; yLabel = 'Kecepatan (m/s)'; xMax = chartBounds.time; yMax = chartBounds.speed; break;
-        case 'accel': xLabel = 'Waktu (s)'; yLabel = 'Percepatan (m/s²)'; xMax = chartBounds.time; yMax = chartBounds.accel; break;
-        case 'height': xLabel = 'Waktu (s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.time; yMax = chartBounds.height; break;
-        case 'heightspeed': xLabel = 'Kecepatan (m/s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.speed; yMax = chartBounds.height; break;
+    #demo-card h3 {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 0.95rem; font-weight: 700;
+        color: #f0f4ff; margin-bottom: 0.5rem;
+        line-height: 1.3;
     }
 
-    // Deteksi ukuran layar untuk kustomisasi elemen grafik
-    const isMobile = window.innerWidth <= 768;
+    #demo-card p {
+        font-size: 0.85rem; color: #8899bb;
+        line-height: 1.65; margin: 0;
+    }
+    #demo-card p strong { color: #93c5fd; }
+    #demo-card p em { color: #22d3ee; font-style: normal; }
 
-    return {
-        type: 'line',
-        data: {
-            datasets: [
-                { 
-                    label: isMobile ? 'Kanan' : 'Kanan (Biru)', data: [], borderColor: '#00d2ff', backgroundColor: 'rgba(0, 210, 255, 0.1)', 
-                    borderWidth: isMobile ? 1.5 : 2, pointRadius: 0, 
-                    tension: 0 
-                },
-                { 
-                    label: isMobile ? 'Kiri' : 'Kiri (Merah)', data: [], borderColor: '#ff4757', backgroundColor: 'rgba(255, 71, 87, 0.1)', 
-                    borderWidth: isMobile ? 1.5 : 2, pointRadius: 0, 
-                    tension: 0 
-                }
-            ]
+    /* ACTION BUTTONS */
+    .demo-actions {
+        display: flex; align-items: center;
+        justify-content: space-between;
+        margin-top: 1.2rem;
+        gap: 0.6rem;
+    }
+
+    .demo-progress {
+        display: flex; gap: 4px; align-items: center;
+    }
+    .demo-dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        transition: background 0.2s;
+    }
+    .demo-dot.active { background: #22d3ee; }
+    .demo-dot.done { background: rgba(34,211,238,0.4); }
+
+    .demo-btn-group { display: flex; gap: 0.5rem; }
+
+    .demo-btn {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 0.78rem; font-weight: 600;
+        letter-spacing: 0.06em; cursor: pointer;
+        border-radius: 5px; border: none;
+        padding: 7px 18px;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .demo-btn:hover { transform: translateY(-1px); }
+    .demo-btn:active { transform: scale(0.97); }
+
+    .demo-btn-next {
+        background: linear-gradient(135deg, #2563eb, #22d3ee);
+        color: #060b17;
+        box-shadow: 0 2px 12px rgba(34,211,238,0.25);
+    }
+    .demo-btn-next:hover { box-shadow: 0 4px 20px rgba(34,211,238,0.4); }
+
+    .demo-btn-skip {
+        background: rgba(255,255,255,0.07);
+        color: #64748b;
+        border: 1px solid rgba(255,255,255,0.12);
+    }
+    .demo-btn-skip:hover { color: #94a3b8; background: rgba(255,255,255,0.12); }
+
+    /* --- WELCOME SCREEN --- */
+    #demo-welcome {
+        position: fixed; inset: 0; z-index: 9100;
+        background: rgba(4, 8, 20, 0.97);
+        display: flex; align-items: center; justify-content: center;
+        backdrop-filter: blur(8px);
+        transition: opacity 0.5s ease;
+    }
+    #demo-welcome.hidden { opacity: 0; pointer-events: none; }
+
+    .welcome-card {
+        background: linear-gradient(135deg, rgba(13,21,48,0.98), rgba(8,15,35,0.98));
+        border: 1px solid rgba(59,130,246,0.3);
+        border-radius: 16px;
+        padding: 3rem 3.5rem;
+        max-width: 520px; width: 90%;
+        text-align: center;
+        position: relative; overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 60px rgba(34,211,238,0.05);
+    }
+    .welcome-card::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        background: linear-gradient(90deg, transparent, #3b82f6, #22d3ee, #3b82f6, transparent);
+    }
+
+    .welcome-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+
+    .welcome-card h2 {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 1.4rem; font-weight: 700;
+        color: #f0f4ff; margin-bottom: 0.6rem;
+    }
+    .welcome-card h2 span {
+        background: linear-gradient(135deg, #3b82f6, #22d3ee);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .welcome-card p {
+        font-size: 0.9rem; color: #7c92b8;
+        line-height: 1.7; margin-bottom: 2rem;
+    }
+
+    .welcome-feature-list {
+        display: flex; flex-direction: column; gap: 0.6rem;
+        text-align: left; margin-bottom: 2rem;
+    }
+    .welcome-feature {
+        display: flex; align-items: center; gap: 10px;
+        padding: 0.6rem 1rem;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 6px;
+        font-size: 0.84rem; color: #94a3b8;
+    }
+    .welcome-feature .wf-icon { font-size: 1rem; }
+    .welcome-feature strong { color: #60a5fa; }
+
+    .welcome-btn-group {
+        display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
+    }
+    .welcome-btn-start {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 0.92rem; font-weight: 700; letter-spacing: 0.08em;
+        color: #060b17;
+        background: linear-gradient(135deg, #2563eb, #22d3ee);
+        padding: 12px 32px; border-radius: 6px; border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(34,211,238,0.25);
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .welcome-btn-start:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 30px rgba(34,211,238,0.4);
+    }
+    .welcome-btn-skip-all {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 0.85rem; font-weight: 500;
+        color: #4b5880; background: transparent;
+        padding: 12px 24px; border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.1);
+        cursor: pointer; transition: all 0.2s;
+    }
+    .welcome-btn-skip-all:hover { color: #7c8fb3; border-color: rgba(255,255,255,0.2); }
+
+    /* Animated border pulse on spotlight */
+    @keyframes spotPulse {
+        0%,100% { box-shadow: 0 0 0 4000px rgba(4,8,20,0.82), 0 0 0 2px rgba(34,211,238,0.8), 0 0 20px rgba(34,211,238,0.4); }
+        50%      { box-shadow: 0 0 0 4000px rgba(4,8,20,0.82), 0 0 0 2px rgba(34,211,238,1.0), 0 0 35px rgba(34,211,238,0.6); }
+    }
+    #demo-spotlight.pulse { animation: spotPulse 1.8s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+
+    <!-- ===================================================
+         DEMO WELCOME SCREEN
+    =================================================== -->
+    <div id="demo-welcome">
+        <div class="welcome-card">
+            <span class="welcome-icon">🔬</span>
+            <h2>Selamat Datang di<br><span>Lab Gerak Jatuh Benda</span></h2>
+            <p>Sebelum memulai eksperimen, ikuti tur singkat untuk mengenal semua kontrol simulasi ini. Hanya butuh ~1 menit!</p>
+            <div class="welcome-feature-list">
+                <div class="welcome-feature"><span class="wf-icon">🎛️</span><span>Kenali <strong>panel parameter</strong> — massa, diameter & ketinggian</span></div>
+                <div class="welcome-feature"><span class="wf-icon">🌐</span><span>Pilih kondisi <strong>vakum atau udara</strong> untuk tiap benda</span></div>
+                <div class="welcome-feature"><span class="wf-icon">▶️</span><span>Pahami fungsi <strong>tombol kontrol</strong> simulasi</span></div>
+                <div class="welcome-feature"><span class="wf-icon">📊</span><span>Cara membaca <strong>grafik real-time</strong> interaktif</span></div>
+            </div>
+            <div class="welcome-btn-group">
+                <button class="welcome-btn-start" id="btn-start-demo">
+                    <span>▶</span> Mulai Tur
+                </button>
+                <button class="welcome-btn-skip-all" id="btn-skip-all">
+                    Lewati — Langsung Simulasi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================
+         TUTORIAL OVERLAY (spotlight + tooltip card)
+    =================================================== -->
+    <div id="demo-overlay" class="hidden">
+        <div id="demo-spotlight" class="pulse"></div>
+        <div id="demo-card">
+            <div class="demo-step-badge" id="demo-badge">Langkah 1 / 9</div>
+            <h3 id="demo-title">–</h3>
+            <p id="demo-desc">–</p>
+            <div class="demo-actions">
+                <div class="demo-progress" id="demo-progress"></div>
+                <div class="demo-btn-group">
+                    <button class="demo-btn demo-btn-skip" id="demo-skip">Skip Demo</button>
+                    <button class="demo-btn demo-btn-next" id="demo-next">Lanjut →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================
+         MAIN SIMULATION UI
+    =================================================== -->
+    <div class="container">
+        <div class="panel scrollable" id="panel-left">
+            <div class="panel-title">Variasi Objek</div>
+            
+            <div class="section" id="sec-obj-left">
+                <div class="section-header">Objek Kiri (Merah)</div>
+                <div class="input-group" id="input-mass-left">
+                    <label>Massa <span class="unit-label">(kg)</span></label>
+                    <input type="number" id="mass-left" value="0.145" step="0.001" min="0.001" max="10">
+                </div>
+                <div class="input-group" id="input-diam-left">
+                    <label>Diameter <span class="unit-label">(m)</span></label>
+                    <input type="number" id="diameter-left" value="0.074" step="0.001" min="0.01" max="0.5">
+                </div>
+                <div class="input-group height-group" id="input-h-left">
+                    <div class="height-top-row">
+                        <label>Ketinggian <span class="unit-label">(m)</span></label>
+                        <input type="number" id="height-left-val" class="range-value-input" value="50" min="0" max="75">
+                    </div>
+                    <input type="range" id="height-left" min="0" max="75" value="50" step="1">
+                </div>
+            </div>
+
+            <div class="section" id="sec-obj-right">
+                <div class="section-header">Objek Kanan (Biru)</div>
+                <div class="input-group">
+                    <label>Massa <span class="unit-label">(kg)</span></label>
+                    <input type="number" id="mass-right" value="0.624" step="0.001" min="0.001" max="10">
+                </div>
+                <div class="input-group">
+                    <label>Diameter <span class="unit-label">(m)</span></label>
+                    <input type="number" id="diameter-right" value="0.24" step="0.001" min="0.01" max="0.5">
+                </div>
+                <div class="input-group height-group">
+                    <div class="height-top-row">
+                        <label>Ketinggian <span class="unit-label">(m)</span></label>
+                        <input type="number" id="height-right-val" class="range-value-input" value="50" min="0" max="75">
+                    </div>
+                    <input type="range" id="height-right" min="0" max="75" value="50" step="1">
+                </div>
+            </div>
+
+            <div class="section" id="sec-atm">
+                <div class="section-header">Pilih Atmosfer</div>
+                <div style="margin-bottom: 5px; font-weight: bold; color: #d6dde4; font-size: 11px;">Objek Kiri (Merah) :</div>
+                <div class="radio-group horizontal">
+                    <div class="radio-option">
+                        <input type="radio" name="atm-left" value="vacuum" id="atm-left-vacuum">
+                        <label for="atm-left-vacuum">Vacuum</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="atm-left" value="air" id="atm-left-air" checked>
+                        <label for="atm-left-air">Udara</label>
+                    </div>
+                </div>
+                <div style="margin: 10px 0 5px 0; font-weight: bold; color: #d6dde4; font-size: 11px;">Objek Kanan (Biru) :</div>
+                <div class="radio-group horizontal">
+                    <div class="radio-option">
+                        <input type="radio" name="atm-right" value="vacuum" id="atm-right-vacuum">
+                        <label for="atm-right-vacuum">Vacuum</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="atm-right" value="air" id="atm-right-air" checked>
+                        <label for="atm-right-air">Udara</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hint-box" id="hint-box">
+                💡 Atur parameter lalu klik Play
+            </div>
+
+            <div class="section">
+                <div class="section-header">Data Kiri (Merah) :</div>
+                <div class="info-box">
+                    <div class="info-row"><span class="info-label">Ketinggian Saat Ini (m)</span><span class="info-value" id="current-height-left">0.00</span></div>
+                    <div class="info-row"><span class="info-label">Jarak Tempuh (m)</span><span class="info-value" id="distance-left">0.00</span></div>
+                    <div class="info-row"><span class="info-label">Kecepatan (m/s)</span><span class="info-value" id="speed-left">0.00</span></div>
+                    <div class="info-row"><span class="info-label">V Awal (m/s)</span><span class="info-value" id="v-initial-left">0.00</span></div>
+                    <div class="info-row"><span class="info-label">V Akhir (m/s)</span><span class="info-value" id="v-final-left">-</span></div>
+                    <div class="info-row"><span class="info-label">V Terminal (m/s)</span><span class="info-value" id="v-terminal-left">-</span></div>
+                    <div class="info-row"><span class="info-label">Waktu Jatuh (s)</span><span class="info-value" id="time-left">0.00</span></div>
+                    <div class="info-row"><span class="info-label">Percepatan (m/s²)</span><span class="info-value" id="accel-left">0.00</span></div>
+                </div>
+            </div>
+
+            <div class="section" id="sec-data-right">
+                <div class="section-header">Data Kanan (Biru) :</div>
+                <div class="info-box">
+                    <div class="info-row"><span class="info-label">Ketinggian Saat Ini (m)</span><span class="info-value" id="current-height-right">0.00</span></div>
+                    <div class="info-row"><span class="info-label">Jarak Tempuh (m)</span><span class="info-value" id="distance-right">0.00</span></div>
+                    <div class="info-row"><span class="info-label">Kecepatan (m/s)</span><span class="info-value" id="speed-right">0.00</span></div>
+                    <div class="info-row"><span class="info-label">V Awal (m/s)</span><span class="info-value" id="v-initial-right">0.00</span></div>
+                    <div class="info-row"><span class="info-label">V Akhir (m/s)</span><span class="info-value" id="v-final-right">-</span></div>
+                    <div class="info-row"><span class="info-label">V Terminal (m/s)</span><span class="info-value" id="v-terminal-right">-</span></div>
+                    <div class="info-row"><span class="info-label">Waktu Jatuh (s)</span><span class="info-value" id="time-right">0.00</span></div>
+                    <div class="info-row"><span class="info-label">Percepatan (m/s²)</span><span class="info-value" id="accel-right">0.00</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-canvas">
+            <div class="canvas-container">
+                <canvas id="simulationCanvas" width="800" height="1000"></canvas>
+            </div>
+            <div class="controls" id="controls-bar">
+                <button class="control-btn play-btn" id="play-btn" title="Mulai">▶</button>
+                <button class="control-btn pause-btn" id="pause-btn" title="Jeda">⏸</button>
+                <button class="control-btn reset-btn" id="reset-btn" title="Reset">↻</button>
+                <button class="control-btn fullscreen-btn" id="fullscreen-btn" title="Layar Penuh">⛶</button>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-graphs">
+            <div class="panel" style="display: flex; flex-direction: column; height: 100%; padding-bottom: 0.5vh; overflow: hidden;">
+                <div class="panel-title">Grafik Real-Time</div>
+                
+                <div class="graph-wrapper" id="graph1-wrapper">
+                    <div class="graph-header">
+                        <span class="graph-label">📈 Grafik 1:</span>
+                        <div class="graph-selector">
+                            <button class="graph-btn active" data-graph="speed" data-chart="1">v-t</button>
+                            <button class="graph-btn" data-graph="accel" data-chart="1">a-t</button>
+                            <button class="graph-btn" data-graph="height" data-chart="1">h-t</button>
+                            <button class="graph-btn" data-graph="heightspeed" data-chart="1">h-v</button>
+                        </div>
+                    </div>
+                    <div class="graph-container">
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" onclick="zoomChart(1, 'in')">+</button>
+                            <button class="zoom-btn" onclick="zoomChart(1, 'out')">−</button>
+                            <button class="zoom-btn" onclick="zoomChart(1, 'reset')">⟲</button>
+                        </div>
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </div>
+
+                <div class="graph-wrapper" id="graph2-wrapper">
+                    <div class="graph-header">
+                        <span class="graph-label">📈 Grafik 2:</span>
+                        <div class="graph-selector">
+                            <button class="graph-btn" data-graph="speed" data-chart="2">v-t</button>
+                            <button class="graph-btn active" data-graph="accel" data-chart="2">a-t</button>
+                            <button class="graph-btn" data-graph="height" data-chart="2">h-t</button>
+                            <button class="graph-btn" data-graph="heightspeed" data-chart="2">h-t</button>
+                        </div>
+                    </div>
+                    <div class="graph-container">
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" onclick="zoomChart(2, 'in')">+</button>
+                            <button class="zoom-btn" onclick="zoomChart(2, 'out')">−</button>
+                            <button class="zoom-btn" onclick="zoomChart(2, 'reset')">⟲</button>
+                        </div>
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+    <script src="Fiks.js"></script>
+
+    <!-- ===================================================
+         DEMO / TUTORIAL JAVASCRIPT
+    =================================================== -->
+    <script>
+    (function() {
+
+    /* ---- STEP DEFINITIONS ---- */
+    const STEPS = [
+        {
+            target: 'sec-obj-left',
+            title: 'Panel Objek Kiri (Merah)',
+            desc: 'Ini adalah pengaturan untuk <strong>Objek Pertama</strong> yang ditampilkan berwarna merah di simulasi. Kamu bisa mengubah tiga propertinya secara bebas.',
+            pos: 'right'
         },
-        options: {
-            responsive: true, 
-            maintainAspectRatio: false, 
-            animation: false, 
-            scales: {
-                x: { 
-                    type: 'linear', 
-                    title: { display: true, text: xLabel, color: '#aaa', font: { size: isMobile ? 9 : 12 }, padding: {top: isMobile ? 2 : 4, bottom: 0} }, 
-                    min: 0, max: xMax, 
-                    grid: { color: 'rgba(255,255,255,0.05)' },
-                    ticks: { font: { size: isMobile ? 8 : 11 } }
-                },
-                y: { 
-                    title: { display: true, text: yLabel, color: '#aaa', font: { size: isMobile ? 9 : 12 }, padding: {bottom: isMobile ? 2 : 4} }, 
-                    min: 0, max: yMax, beginAtZero: true, 
-                    grid: { color: 'rgba(255,255,255,0.05)' },
-                    ticks: { font: { size: isMobile ? 8 : 11 } }
-                }
-            },
-            plugins: {
-                legend: { 
-                    position: isMobile ? 'right' : 'top', 
-                    align: 'center',
-                    labels: { 
-                        color: 'white',
-                        // Mengecilkan ukuran kotak warna dan teks khusus di HP
-                        boxWidth: isMobile ? 10 : 40,
-                        boxHeight: isMobile ? 5 : 12,
-                        padding: isMobile ? 6 : 10,
-                        font: { size: isMobile ? 8 : 12 }
-                    } 
-                },
-                zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }, pan: { enabled: true, mode: 'xy', modifierKey: null, threshold: 5 } }
-            }
+        {
+            target: 'input-mass-left',
+            title: '⚖️ Parameter Massa',
+            desc: '<em>Massa</em> menentukan seberapa besar gaya berat benda. <strong>Di vakum</strong>, massa tidak mempengaruhi kecepatan jatuh. <strong>Di udara</strong>, benda bermassa besar punya kecepatan terminal lebih tinggi — jatuh lebih cepat.',
+            pos: 'right'
+        },
+        {
+            target: 'input-diam-left',
+            title: '📏 Parameter Diameter',
+            desc: 'Diameter menentukan <em>luas penampang (A)</em> yang berhadapan dengan udara. Semakin besar diameter → hambatan udara F<sub>d</sub> makin besar → kecepatan terminal lebih rendah. <strong>Coba bandingkan bola kecil vs bola besar!</strong>',
+            pos: 'right'
+        },
+        {
+            target: 'input-h-left',
+            title: '📐 Ketinggian Awal',
+            desc: 'Geser <em>slider</em> atau ketik angka langsung untuk mengatur ketinggian awal jatuh (0–75 m). Ketinggian lebih tinggi memberi waktu lebih lama untuk mengamati perubahan kecepatan dan percepatan.',
+            pos: 'right'
+        },
+        {
+            target: 'sec-obj-right',
+            title: 'Panel Objek Kanan (Biru)',
+            desc: 'Pengaturan serupa untuk <strong>Objek Kedua</strong> berwarna biru. Cobalah buat perbedaan signifikan antara dua objek — misalnya massa berbeda jauh, atau diameter yang kontras — lalu lihat siapa yang lebih dulu menyentuh tanah!',
+            pos: 'right'
+        },
+        {
+            target: 'sec-atm',
+            title: '🌐 Pilih Kondisi Atmosfer',
+            desc: '<strong>Vacuum</strong> = tidak ada hambatan udara, murni pengaruh gravitasi. Kedua benda akan jatuh bersamaan. <strong>Udara</strong> = ada hambatan F<sub>d</sub>, massa dan diameter berpengaruh. Kamu bisa mengatur kondisi berbeda untuk tiap objek!',
+            pos: 'right'
+        },
+        {
+            target: 'controls-bar',
+            title: '🎮 Tombol Kontrol Simulasi',
+            desc: '<strong>▶ Play</strong> — mulai simulasi. <strong>⏸ Pause</strong> — jeda sementara (bisa dilanjut). <strong>↻ Reset</strong> — kembalikan ke posisi awal. <strong>⛶ Fullscreen</strong> — tampilan layar penuh. <em>Tip: ubah parameter saat simulasi berjalan untuk efek instan!</em>',
+            pos: 'top'
+        },
+        {
+            target: 'sec-data-right',
+            title: '📋 Panel Data Real-Time',
+            desc: 'Panel ini menampilkan <em>data fisika langsung</em> saat simulasi berjalan: ketinggian, jarak tempuh, kecepatan sesaat, <strong>kecepatan terminal</strong>, waktu jatuh, dan percepatan. Data diperbarui setiap frame!',
+            pos: 'left'
+        },
+        {
+            target: 'panel-graphs',
+            title: '📈 Grafik Interaktif',
+            desc: 'Tersedia <strong>4 mode grafik</strong>: <em>v-t</em> (kecepatan vs waktu), <em>a-t</em> (percepatan vs waktu), <em>h-t</em> (ketinggian vs waktu), dan <em>h-v</em> (ketinggian vs kecepatan). Gunakan tombol <strong>+ / −</strong> untuk zoom, dan <strong>⟲</strong> untuk reset tampilan.',
+            pos: 'left'
         }
-    };
-}
+    ];
 
-function zoomChart(chartNum, action) {
-    const chart = chartNum === 1 ? chart1 : chart2; if (!chart) return;
-    if (action === 'in') chart.zoom(1.1); else if (action === 'out') chart.zoom(0.9); else if (action === 'reset') chart.resetZoom();
-}
+    let currentStep = 0;
+    let demoActive = false;
 
-function updateCharts() {
-    if (!chart1 || !chart2) return;
-    const getData = (ball, type) => {
-        if (!ball) return [];
-        switch(type) {
-            case 'speed': return ball.historySpeed;
-            case 'accel': return ball.historyAccel;
-            case 'height': return ball.historyHeight;
-            case 'heightspeed': return ball.historyHeightSpeed;
-            default: return [];
-        }
-    };
-    if (chart1) { chart1.data.datasets[1].data = getData(leftBall, currentGraph1); chart1.data.datasets[0].data = getData(rightBall, currentGraph1); chart1.update('none'); }
-    if (chart2) { chart2.data.datasets[1].data = getData(leftBall, currentGraph2); chart2.data.datasets[0].data = getData(rightBall, currentGraph2); chart2.update('none'); }
-}
+    /* ---- DOM REFS ---- */
+    const overlay    = document.getElementById('demo-overlay');
+    const spotlight  = document.getElementById('demo-spotlight');
+    const card       = document.getElementById('demo-card');
+    const badge      = document.getElementById('demo-badge');
+    const titleEl    = document.getElementById('demo-title');
+    const descEl     = document.getElementById('demo-desc');
+    const nextBtn    = document.getElementById('demo-next');
+    const skipBtn    = document.getElementById('demo-skip');
+    const progressEl = document.getElementById('demo-progress');
 
-/* =========================================
-   7. FULLSCREEN LOGIC
-   ========================================= */
-const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const welcome     = document.getElementById('demo-welcome');
+    const btnStart    = document.getElementById('btn-start-demo');
+    const btnSkipAll  = document.getElementById('btn-skip-all');
 
-fullscreenBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            alert(`Gagal memasuki mode layar penuh: ${err.message}`);
+    /* ---- BUILD PROGRESS DOTS ---- */
+    function buildDots() {
+        progressEl.innerHTML = '';
+        STEPS.forEach((_, i) => {
+            const d = document.createElement('div');
+            d.className = 'demo-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+            progressEl.appendChild(d);
         });
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
+    }
+
+    /* ---- SPOTLIGHT POSITION ---- */
+    function spotlightTo(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const pad = 8;
+        const vW = window.innerWidth;
+        const vH = window.innerHeight;
+        // Clamp: pastikan spotlight tidak keluar layar
+        const left   = Math.max(0, r.left   - pad);
+        const top    = Math.max(0, Math.min(r.top  - pad, vH - 40));
+        const width  = Math.min(r.width  + pad * 2, vW);
+        const height = Math.min(r.height + pad * 2, vH);
+        spotlight.style.left   = left   + 'px';
+        spotlight.style.top    = top    + 'px';
+        spotlight.style.width  = width  + 'px';
+        spotlight.style.height = height + 'px';
+    }
+
+    /* ---- CARD POSITION ---- */
+    function positionCard(targetId, pos) {
+        const el = document.getElementById(targetId);
+        if (!el) return;
+        const r    = el.getBoundingClientRect();
+        const cW   = card.offsetWidth  || 300;
+        const cH   = card.offsetHeight || 200;
+        const pad  = 18;
+        const vW   = window.innerWidth;
+        const vH   = window.innerHeight;
+
+        let left, top;
+
+        // Paksa ke center-bottom jika elemen terlalu jauh di luar viewport
+        const elVisible = r.top >= 0 && r.top < vH && r.left >= 0 && r.left < vW;
+
+        if (!elVisible) {
+            left = Math.max(10, (vW - cW) / 2);
+            top  = Math.max(10, (vH - cH) / 2);
+        } else if (pos === 'right') {
+            left = Math.min(r.right + pad, vW - cW - 10);
+            top  = Math.max(10, Math.min(r.top + r.height / 2 - cH / 2, vH - cH - 10));
+        } else if (pos === 'left') {
+            left = Math.max(10, r.left - cW - pad);
+            top  = Math.max(10, Math.min(r.top + r.height / 2 - cH / 2, vH - cH - 10));
+        } else if (pos === 'top') {
+            left = Math.max(10, Math.min(r.left + r.width / 2 - cW / 2, vW - cW - 10));
+            top  = Math.max(10, r.top - cH - pad);
+        } else {
+            left = Math.max(10, Math.min(r.left + r.width / 2 - cW / 2, vW - cW - 10));
+            top  = Math.min(vH - cH - 10, r.bottom + pad);
+        }
+
+        // Fallback: kalau card mau keluar layar, pindah ke tengah
+        if (left + cW > vW) left = Math.max(10, vW - cW - 10);
+        if (top + cH > vH) top  = Math.max(10, vH - cH - 10);
+
+        card.style.left = left + 'px';
+        card.style.top  = top  + 'px';
+    }
+
+    /* ---- SHOW STEP ---- */
+    function showStep(index) {
+        if (index >= STEPS.length) { endDemo(); return; }
+        currentStep = index;
+        const step = STEPS[index];
+
+        badge.textContent = `Langkah ${index + 1} / ${STEPS.length}`;
+        titleEl.textContent = step.title;
+        descEl.innerHTML    = step.desc;
+        nextBtn.textContent = index === STEPS.length - 1 ? 'Selesai ✓' : 'Lanjut →';
+
+        buildDots();
+
+        const el = document.getElementById(step.target);
+        if (el) {
+            // 1. Scroll INSTANTLY (bukan smooth) agar posisi settle sebelum kalkulasi
+            el.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
+            // 2. Tunggu 2 frame agar layout & scroll benar-benar selesai
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    spotlightTo(step.target);
+                    positionCard(step.target, step.pos);
+                });
+            });
+        } else {
+            requestAnimationFrame(() => {
+                spotlightTo(step.target);
+                positionCard(step.target, step.pos);
+            });
         }
     }
-});
 
-document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-        fullscreenBtn.textContent = '✖'; 
-        fullscreenBtn.title = 'Keluar Layar Penuh';
-    } else {
-        fullscreenBtn.textContent = '⛶'; 
-        fullscreenBtn.title = 'Layar Penuh';
+    /* ---- START / END ---- */
+    function startDemo() {
+        welcome.classList.add('hidden');
+        setTimeout(() => { welcome.style.display = 'none'; }, 500);
+        demoActive = true;
+        overlay.classList.remove('hidden');
+        showStep(0);
     }
-});
 
-// Start
-initStars();
-initializeBalls();
+    function endDemo() {
+        demoActive = false;
+        overlay.classList.add('hidden');
+        // Quick "Ready!" flash on hint box
+        const hint = document.getElementById('hint-box');
+        if (hint) {
+            hint.textContent = '🚀 Siap! Atur parameter & klik ▶ Play untuk mulai!';
+            hint.style.borderColor = '#22d3ee';
+            hint.style.color = '#22d3ee';
+            hint.style.background = 'rgba(34,211,238,0.08)';
+            setTimeout(() => {
+                hint.textContent = '💡 Atur parameter lalu klik Play';
+                hint.style.borderColor = '';
+                hint.style.color = '';
+                hint.style.background = '';
+            }, 3000);
+        }
+    }
+
+    function skipAll() {
+        welcome.classList.add('hidden');
+        setTimeout(() => { welcome.style.display = 'none'; }, 500);
+        overlay.classList.add('hidden');
+    }
+
+    /* ---- EVENTS ---- */
+    btnStart.addEventListener('click',   startDemo);
+    btnSkipAll.addEventListener('click', skipAll);
+    nextBtn.addEventListener('click',    () => showStep(currentStep + 1));
+    skipBtn.addEventListener('click',    endDemo);
+
+    // Reposition on resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        if (!demoActive) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            const step = STEPS[currentStep];
+            spotlightTo(step.target);
+            positionCard(step.target, step.pos);
+        }, 100);
+    });
+
+    // Keyboard: Esc = skip, Enter/→ = next
+    document.addEventListener('keydown', (e) => {
+        if (!demoActive) return;
+        if (e.key === 'Escape')       endDemo();
+        if (e.key === 'Enter' || e.key === 'ArrowRight') showStep(currentStep + 1);
+    });
+
+    })();
+    </script>
+</body>
+</html>

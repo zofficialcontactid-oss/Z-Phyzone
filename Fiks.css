@@ -196,6 +196,36 @@ body {
 
 .unit-label { font-size: calc(var(--base-font) * 0.8); color: #64748b; }
 
+/* ---- KETINGGIAN: COMPACT 2-ROW LAYOUT ---- */
+/* Baris 1: label + angka (sama persis seperti massa/diameter) */
+/* Baris 2: slider full-width */
+.height-group {
+    flex-direction: column;
+    gap: 0.4vh;
+    align-items: stretch;
+}
+
+.height-group .height-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.height-group .height-top-row label {
+    color: var(--text-muted);
+    font-size: calc(var(--base-font) * 0.9);
+}
+
+.height-group input[type="range"] {
+    width: 100%;
+    margin: 0;
+    flex: unset;
+    height: 0.7vh;
+    min-height: 6px;
+    accent-color: var(--accent-cyan);
+    cursor: pointer;
+}
+
 /* Radio Buttons */
 .radio-group.horizontal {
     display: flex;

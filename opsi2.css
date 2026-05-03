@@ -1,3 +1,6 @@
+/* Import Font Montserrat dari Google Fonts untuk Deskripsi */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 :root {
   --blue-deep: #0a0e1a;
   --blue-dark: #0d1530;
@@ -127,12 +130,12 @@ nav {
 }
 .nav-cta:hover { opacity:0.9; transform: translateY(-1px); }
 
-/* HERO (Sudah Direvisi) */
+/* HERO */
 .hero {
   position: relative; z-index:1;
   min-height: 100vh;
   display: flex; align-items: center;
-  padding: 100px clamp(2rem, 5vw, 4rem) 40px; /* Padding responsif */
+  padding: 100px clamp(2rem, 5vw, 4rem) 40px; 
   overflow: hidden;
 }
 
@@ -182,8 +185,10 @@ nav {
   background-clip: text;
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .hero-sub {
-  font-size: 1.15rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
   font-weight: 400;
   color: var(--gray);
   line-height: 1.7;
@@ -231,12 +236,12 @@ nav {
   background: rgba(59,130,246,0.1);
 }
 
-/* HERO VISUAL (Sudah Direvisi) */
+/* HERO VISUAL */
 .hero-visual {
   position: absolute;
   right: -100px; top: 50%;
   transform: translateY(-50%);
-  width: clamp(400px, 45vw, 680px); /* Ukuran cincin responsif */
+  width: clamp(400px, 45vw, 680px); 
   height: clamp(400px, 45vw, 680px);
   opacity: 0.12;
   pointer-events: none;
@@ -266,13 +271,13 @@ nav {
   text-transform: uppercase;
 }
 
-/* SECTION COMMON (Sudah Direvisi) */
+/* SECTION COMMON */
 section { position: relative; z-index:1; }
 
 .section-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(4rem, 10vh, 7rem) clamp(2rem, 5vw, 4rem); /* Padding responsif */
+  padding: clamp(4rem, 10vh, 7rem) clamp(2rem, 5vw, 4rem); 
 }
 
 .section-label {
@@ -297,8 +302,10 @@ section { position: relative; z-index:1; }
   line-height: 1.2;
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .section-desc {
-  font-size: 1.05rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
   color: var(--gray);
   line-height: 1.7;
   max-width: 560px;
@@ -354,8 +361,10 @@ section { position: relative; z-index:1; }
   color: var(--white);
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .feature-desc {
-  font-size: 0.93rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
   color: var(--gray);
   line-height: 1.65;
 }
@@ -435,9 +444,13 @@ section { position: relative; z-index:1; }
   margin-bottom: 0.5rem;
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .sim-desc {
-  font-size: 0.9rem; color: var(--gray);
-  line-height: 1.6; margin-bottom: 1.2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.6; 
+  margin-bottom: 1.2rem;
 }
 
 .sim-link {
@@ -495,8 +508,11 @@ section { position: relative; z-index:1; }
   margin-bottom: 0.6rem; color: var(--white);
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .step-desc {
-  font-size: 0.88rem; color: var(--gray);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem; 
+  color: var(--gray);
   line-height: 1.6;
 }
 
@@ -530,9 +546,13 @@ section { position: relative; z-index:1; }
   background-clip: text;
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 #cta p {
-  color: var(--gray); font-size: 1.05rem;
-  max-width: 480px; margin: 0 auto 2.5rem;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--gray); 
+  font-size: 1rem;
+  max-width: 480px; 
+  margin: 0 auto 2.5rem;
   line-height: 1.7;
 }
 
@@ -604,8 +624,8 @@ footer {
 /* OPTIMASI TAMBAHAN UNTUK LAYAR LAPTOP (LAYAR PENDEK) */
 @media (max-height: 750px) {
   .hero {
-    min-height: auto; /* Lepas paksaan 100% layar agar tidak memotong konten */
-    padding-top: 120px; /* Jarak aman ekstra dari navbar */
+    min-height: auto; 
+    padding-top: 120px; 
     padding-bottom: 60px;
   }
   
@@ -625,6 +645,6 @@ footer {
   }
 
   .hero-visual {
-    opacity: 0.06; /* Dibuat lebih transparan agar teks tetap jelas jika bersinggungan */
+    opacity: 0.06; 
   }
 }

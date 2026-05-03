@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Materi — Gerak Jatuh Benda | Z-PHYZONE</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- IMPORT FONT: Orbitron, Rajdhani, Space Mono, dan Montserrat -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --bg: #060b17;
@@ -97,7 +100,16 @@ nav{
   background:linear-gradient(135deg,var(--blue-b),var(--cyan));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.hero-sub{color:var(--muted);font-size:1rem;max-width:600px;margin:0 auto}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.hero-sub{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.95rem;
+  color:var(--muted);
+  line-height:1.7;
+  max-width:600px;
+  margin:0 auto;
+}
 
 /* PROGRESS NAV */
 .progress-nav{
@@ -149,9 +161,13 @@ nav{
   margin-bottom:1.2rem;line-height:1.25;
 }
 
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .mat-section p{
-  font-size:1rem;color:#c8d5ec;
-  line-height:1.8;margin-bottom:1rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:0.95rem;
+  color:#c8d5ec;
+  line-height:1.8;
+  margin-bottom:1rem;
 }
 
 .mat-section strong{color:var(--blue-g);font-weight:600}
@@ -165,7 +181,15 @@ nav{
   margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
 }
 .misk-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
-.misk-text{font-size:.95rem;color:#fca5a5;line-height:1.7;font-style:italic}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.misk-text{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.9rem;
+  color:#fca5a5;
+  line-height:1.7;
+  font-style:italic;
+}
 .misk-text strong{color:#f87171}
 
 /* CORRECTION CARD */
@@ -176,7 +200,14 @@ nav{
   margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
 }
 .corr-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
-.corr-text{font-size:.95rem;color:#86efac;line-height:1.7}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.corr-text{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.9rem;
+  color:#86efac;
+  line-height:1.7;
+}
 .corr-text strong{color:#4ade80}
 
 /* FORMULA BOX */
@@ -213,13 +244,20 @@ nav{
   padding:.5rem .8rem;
   background:rgba(255,255,255,.03);border-radius:6px;
   border:1px solid rgba(255,255,255,.05);
-  font-size:.88rem;
 }
 .var-sym{
   font-family:'Space Mono',monospace;color:var(--cyan);
   font-weight:700;min-width:28px;
+  font-size:.88rem;
 }
-.var-desc{color:var(--muted);line-height:1.5}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.var-desc{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.85rem;
+  color:var(--muted);
+  line-height:1.5;
+}
 
 /* PHASE DIAGRAM */
 .phase-flow{
@@ -258,7 +296,15 @@ nav{
   font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;
   color:var(--white);margin-bottom:.3rem;
 }
-.phase-content p{font-size:.9rem;color:var(--muted);line-height:1.6;margin:0}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.phase-content p{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.85rem;
+  color:var(--muted);
+  line-height:1.6;
+  margin:0;
+}
 
 /* INFO CALLOUT */
 .callout{
@@ -275,7 +321,14 @@ nav{
   border:1px solid rgba(245,158,11,.22);
 }
 .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
-.callout-text{font-size:.92rem;color:#c8d5ec;line-height:1.7}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.callout-text{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.9rem;
+  color:#c8d5ec;
+  line-height:1.7;
+}
 .callout.info .callout-text strong{color:var(--blue-g)}
 .callout.warn .callout-text strong{color:#fbbf24}
 
@@ -284,7 +337,6 @@ nav{
   width:100%;border-collapse:separate;border-spacing:0;
   margin:1.8rem 0;border-radius:10px;overflow:hidden;
   border:1px solid var(--border);
-  font-size:.92rem;
 }
 .compare-table thead tr{
   background:rgba(26,42,108,.5);
@@ -295,13 +347,19 @@ nav{
   padding:.9rem 1.2rem;text-align:left;
   border-bottom:1px solid var(--border);
 }
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .compare-table td{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.88rem;
   padding:.8rem 1.2rem;
   border-bottom:1px solid rgba(255,255,255,.04);
-  color:#c8d5ec;vertical-align:top;
+  color:#c8d5ec;
+  vertical-align:top;
 }
 .compare-table tbody tr:last-child td{border-bottom:none}
 .compare-table tbody tr:hover td{background:rgba(59,130,246,.05)}
+
 .tag-vakum{
   font-family:'Space Mono',monospace;font-size:.65rem;
   color:var(--cyan);background:rgba(34,211,238,.08);
@@ -335,7 +393,19 @@ nav{
   font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;
   margin-bottom:.8rem;
 }
-.cta-final p{color:var(--muted);font-size:.97rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* FONT MONTSERRAT DITERAPKAN DI SINI */
+.cta-final p{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.92rem;
+  color:var(--muted);
+  margin-bottom:2rem;
+  max-width:480px;
+  margin-left:auto;
+  margin-right:auto;
+  line-height:1.7;
+}
+
 .btn-cta{
   display:inline-flex;align-items:center;gap:10px;
   font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;
@@ -382,7 +452,7 @@ nav{
 <nav>
   <a href="index.html" class="nav-logo">
     <img src="A.png" alt="Logo Z-PHYZONE">
-    <span class="logo-text">Z-<span>PHY</span>ZONE</span>
+    <span class="logo-text"><span>PHY</span>ZONE</span>
   </a>
   <a href="javascript:history.back()" class="nav-back">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -446,9 +516,9 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Derivasi Percepatan di Vakum</div>
       <div class="formula-main">ΣF<sub style="font-size:.65em">y</sub> = <em>m</em>·a<sub style="font-size:.65em">y</sub></div>
-      <div class="formula-main" style="font-size:1rem;color:var(--muted);margin:.2rem 0">↓ satu-satunya gaya adalah gaya berat</div>
+      <div class="formula-main" style="font-family:'Space Mono',monospace;font-size:1rem;color:var(--muted);margin:.2rem 0">↓ satu-satunya gaya adalah gaya berat</div>
       <div class="formula-main"><em>m</em>·g = <em>m</em>·a<sub style="font-size:.65em">y</sub></div>
-      <div class="formula-main" style="font-size:1rem;color:var(--muted);margin:.2rem 0">↓ massa m saling meniadakan</div>
+      <div class="formula-main" style="font-family:'Space Mono',monospace;font-size:1rem;color:var(--muted);margin:.2rem 0">↓ massa m saling meniadakan</div>
       <div class="formula-main" style="color:var(--cyan);font-size:1.6rem">a<sub style="font-size:.65em">y</sub> = <em>g</em></div>
     </div>
 

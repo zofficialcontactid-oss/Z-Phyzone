@@ -452,7 +452,7 @@ nav{
 <nav>
   <a href="index.html" class="nav-logo">
     <img src="A.png" alt="Logo Z-PHYZONE">
-    <span class="logo-text"><span>PHY</span>ZONE</span>
+    <span class="logo-text">Z-<span>PHY</span>ZONE</span>
   </a>
   <a href="javascript:history.back()" class="nav-back">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -552,6 +552,11 @@ nav{
       </div>
     </div>
 
+    <!-- TAMBAHAN PENJELASAN Cd -->
+    <p style="margin-top:1.5rem">
+      Selain luas penampang (<em>A</em>), bentuk benda juga sangat menentukan besarnya hambatan melalui <strong>Koefisien Hambatan (<em>C<sub>d</sub></em>)</strong>. Benda yang aerodinamis (seperti peluru atau tetesan air) memiliki <em>C<sub>d</sub></em> yang kecil sehingga mudah membelah udara. Sebaliknya, bentuk yang datar atau cekung (seperti parasut) memiliki <em>C<sub>d</sub></em> besar untuk sengaja menangkap lebih banyak udara.
+    </p>
+
     <div class="callout info">
       <div class="callout-icon">🔍</div>
       <div class="callout-text">Perhatikan <strong>v²</strong> — artinya jika kecepatan benda berlipat ganda, gaya hambat udara bertambah empat kali lipat. Ini mengapa hambatan udara terasa jauh lebih kuat saat bergerak cepat dibandingkan lambat.</div>
@@ -604,7 +609,8 @@ nav{
     <div class="section-num">04 &nbsp; Kesetimbangan Dinamis</div>
     <h2>Kecepatan Terminal</h2>
 
-    <p>Dinamika gerak benda jatuh di udara mengalami <strong>transisi fase</strong> yang sangat menarik. Perhatikan bagaimana percepatan benda berubah dari waktu ke waktu:</p>
+    <!-- TAMBAHAN PENJELASAN ARAH VEKTOR -->
+    <p>Dinamika gerak benda jatuh di udara mengalami <strong>transisi fase</strong> yang sangat menarik. Ingatlah bahwa saat benda jatuh, Gaya Berat (<em>W</em>) selalu menarik benda ke bawah, sementara Gaya Hambat Udara (<em>F<sub>d</sub></em>) <strong>selalu melawan arah gerak</strong> (mendorong ke atas). Perhatikan bagaimana percepatan benda berubah dari waktu ke waktu:</p>
 
     <div class="phase-flow">
       <div class="phase-step p1">
@@ -646,6 +652,12 @@ nav{
     <div class="callout info">
       <div class="callout-icon">🎯</div>
       <div class="callout-text"><strong>Inilah jawabannya!</strong> Benda masif (massa m besar) punya v<sub>t</sub> yang jauh lebih tinggi — artinya udara butuh waktu lebih lama untuk "menghentikan" lajunya. Sebaliknya, benda ringan dengan penampang lebar (A besar) memiliki v<sub>t</sub> rendah, sehingga cepat tertahan udara dan jatuh lebih lambat.</div>
+    </div>
+
+    <!-- TAMBAHAN ALASAN PENGATURAN KETINGGIAN -->
+    <div class="callout warn" style="margin-top: 1rem;">
+      <div class="callout-icon">📏</div>
+      <div class="callout-text"><strong>Mengapa butuh dijatuhkan dari tempat tinggi?</strong> Benda tidak langsung mencapai kecepatan terminal seketika. Jika benda dijatuhkan dari tempat rendah (misal 1 meter), kecepatan belum sempat membesar, sehingga <em>F<sub>d</sub></em> masih sangat kecil dan efek hambatan udara hampir tidak terlihat. Itulah sebabnya di simulasi nanti, cobalah atur <strong>Ketinggian</strong> hingga 50 atau 75 meter untuk melihat proses tercapainya <em>v<sub>t</sub></em>!</div>
     </div>
   </section>
 

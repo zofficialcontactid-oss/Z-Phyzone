@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Materi — Gerak Jatuh Benda | Z-PHYZONE</title>
 
-<!-- IMPORT FONT: Orbitron, Rajdhani, Space Mono, dan Montserrat -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -101,7 +100,6 @@ nav{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .hero-sub{
   font-family:'Montserrat',sans-serif;
   font-size:0.95rem;
@@ -161,7 +159,6 @@ nav{
   margin-bottom:1.2rem;line-height:1.25;
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .mat-section p{
   font-family:'Montserrat',sans-serif;
   font-size:0.95rem;
@@ -182,7 +179,6 @@ nav{
 }
 .misk-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .misk-text{
   font-family:'Montserrat',sans-serif;
   font-size:0.9rem;
@@ -201,7 +197,6 @@ nav{
 }
 .corr-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .corr-text{
   font-family:'Montserrat',sans-serif;
   font-size:0.9rem;
@@ -251,7 +246,6 @@ nav{
   font-size:.88rem;
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .var-desc{
   font-family:'Montserrat',sans-serif;
   font-size:0.85rem;
@@ -282,6 +276,7 @@ nav{
 .phase-step.p1::before{background:var(--blue-b)}
 .phase-step.p2::before{background:var(--cyan)}
 .phase-step.p3::before{background:#a78bfa}
+.phase-step.p4::before{background:#fbbf24}
 
 .phase-badge{
   font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;
@@ -297,7 +292,6 @@ nav{
   color:var(--white);margin-bottom:.3rem;
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .phase-content p{
   font-family:'Montserrat',sans-serif;
   font-size:0.85rem;
@@ -322,7 +316,6 @@ nav{
 }
 .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .callout-text{
   font-family:'Montserrat',sans-serif;
   font-size:0.9rem;
@@ -348,7 +341,6 @@ nav{
   border-bottom:1px solid var(--border);
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .compare-table td{
   font-family:'Montserrat',sans-serif;
   font-size:0.88rem;
@@ -378,12 +370,36 @@ nav{
   margin:3rem 0;
 }
 
+/* DAFTAR PUSTAKA / REFERENSI */
+.reference-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1.5rem;
+}
+.reference-item {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  color: #8899bb;
+  line-height: 1.6;
+}
+.reference-item .ref-num {
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--cyan);
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
 /* CTA FINAL */
 .cta-final{
   background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(34,211,238,.06));
   border:1px solid rgba(59,130,246,.3);
   border-radius:14px;padding:3rem 2.5rem;
-  text-align:center;margin-top:3rem;position:relative;overflow:hidden;
+  text-align:center;margin-top:4rem;position:relative;overflow:hidden;
 }
 .cta-final::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -394,7 +410,6 @@ nav{
   margin-bottom:.8rem;
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .cta-final p{
   font-family:'Montserrat',sans-serif;
   font-size:0.92rem;
@@ -448,7 +463,6 @@ nav{
 
 <div class="grid-bg"></div>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
     <img src="A.png" alt="Logo Z-PHYZONE">
@@ -460,26 +474,24 @@ nav{
   </a>
 </nav>
 
-<!-- PROGRESS NAV -->
 <nav class="progress-nav" id="pnav">
   <a href="#s1" class="pnav-item">01 · Miskonsepsi</a>
   <a href="#s2" class="pnav-item">02 · Kondisi Vakum</a>
   <a href="#s3" class="pnav-item">03 · Hambatan Udara</a>
   <a href="#s4" class="pnav-item">04 · Kec. Terminal</a>
   <a href="#s5" class="pnav-item">05 · Ringkasan</a>
+  <a href="#s6" class="pnav-item">06 · Analisis Grafik</a>
+  <a href="#s7" class="pnav-item">07 · Referensi</a>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
   <div class="hero-tag">Dasar Teori · Gerak Jatuh Benda</div>
   <h1>Mengapa Benda Berat<br><em>Tidak Selalu</em> Jatuh Lebih Cepat?</h1>
   <p class="hero-sub">Dari miskonsepsi Aristoteles hingga pembuktian Galileo — pahami fisika gerak jatuh secara mendalam sebelum bereksperimen.</p>
 </header>
 
-<!-- CONTENT -->
 <main class="content">
 
-  <!-- SECTION 1: MISKONSEPSI -->
   <section class="mat-section reveal" id="s1">
     <div class="section-num">01 &nbsp; Miskonsepsi</div>
     <h2>Pandangan Salah yang Bertahan Ribuan Tahun</h2>
@@ -506,7 +518,6 @@ nav{
 
   <div class="mat-divider"></div>
 
-  <!-- SECTION 2: VAKUM -->
   <section class="mat-section reveal" id="s2">
     <div class="section-num">02 &nbsp; Kondisi Vakum</div>
     <h2>Pembuktian Matematis Melalui Hukum Newton</h2>
@@ -532,7 +543,6 @@ nav{
 
   <div class="mat-divider"></div>
 
-  <!-- SECTION 3: HAMBATAN UDARA -->
   <section class="mat-section reveal" id="s3">
     <div class="section-num">03 &nbsp; Kondisi Riil</div>
     <h2>Gaya Hambat Udara <em>(Air Drag)</em></h2>
@@ -552,7 +562,6 @@ nav{
       </div>
     </div>
 
-    <!-- TAMBAHAN PENJELASAN Cd -->
     <p style="margin-top:1.5rem">
       Selain luas penampang (<em>A</em>), bentuk benda juga sangat menentukan besarnya hambatan melalui <strong>Koefisien Hambatan (<em>C<sub>d</sub></em>)</strong>. Benda yang aerodinamis (seperti peluru atau tetesan air) memiliki <em>C<sub>d</sub></em> yang kecil sehingga mudah membelah udara. Sebaliknya, bentuk yang datar atau cekung (seperti parasut) memiliki <em>C<sub>d</sub></em> besar untuk sengaja menangkap lebih banyak udara.
     </p>
@@ -604,12 +613,10 @@ nav{
 
   <div class="mat-divider"></div>
 
-  <!-- SECTION 4: KECEPATAN TERMINAL -->
   <section class="mat-section reveal" id="s4">
     <div class="section-num">04 &nbsp; Kesetimbangan Dinamis</div>
     <h2>Kecepatan Terminal</h2>
 
-    <!-- TAMBAHAN PENJELASAN ARAH VEKTOR -->
     <p>Dinamika gerak benda jatuh di udara mengalami <strong>transisi fase</strong> yang sangat menarik. Ingatlah bahwa saat benda jatuh, Gaya Berat (<em>W</em>) selalu menarik benda ke bawah, sementara Gaya Hambat Udara (<em>F<sub>d</sub></em>) <strong>selalu melawan arah gerak</strong> (mendorong ke atas). Perhatikan bagaimana percepatan benda berubah dari waktu ke waktu:</p>
 
     <div class="phase-flow">
@@ -654,16 +661,34 @@ nav{
       <div class="callout-text"><strong>Inilah jawabannya!</strong> Benda masif (massa m besar) punya v<sub>t</sub> yang jauh lebih tinggi — artinya udara butuh waktu lebih lama untuk "menghentikan" lajunya. Sebaliknya, benda ringan dengan penampang lebar (A besar) memiliki v<sub>t</sub> rendah, sehingga cepat tertahan udara dan jatuh lebih lambat.</div>
     </div>
 
-    <!-- TAMBAHAN ALASAN PENGATURAN KETINGGIAN -->
     <div class="callout warn" style="margin-top: 1rem;">
       <div class="callout-icon">📏</div>
       <div class="callout-text"><strong>Mengapa butuh dijatuhkan dari tempat tinggi?</strong> Benda tidak langsung mencapai kecepatan terminal seketika. Jika benda dijatuhkan dari tempat rendah (misal 1 meter), kecepatan belum sempat membesar, sehingga <em>F<sub>d</sub></em> masih sangat kecil dan efek hambatan udara hampir tidak terlihat. Itulah sebabnya di simulasi nanti, cobalah atur <strong>Ketinggian</strong> hingga 50 atau 75 meter untuk melihat proses tercapainya <em>v<sub>t</sub></em>!</div>
+    </div>
+
+    <h3 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;margin:2.5rem 0 1rem;color:var(--cyan)">🌎 Fenomena di Dunia Nyata</h3>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;margin-bottom:1rem;">
+      <div style="background:rgba(10,16,32,0.75);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:1.5rem;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:2.2rem;margin-bottom:0.8rem">🪂</div>
+        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Terjun Payung (Skydiving)</h4>
+        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
+          Saat penerjun melayang tengkurap, ia mencapai kecepatan terminal sekitar <strong>200 km/jam</strong>. Namun, ketika parasut dikembangkan, luas penampang (<em>A</em>) membesar drastis. Kecepatan terminalnya pun seketika turun menjadi hanya <strong>20 km/jam</strong>, memungkinkan pendaratan yang aman.
+        </p>
+      </div>
+      
+      <div style="background:rgba(10,16,32,0.75);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:1.5rem;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:2.2rem;margin-bottom:0.8rem">☄️</div>
+        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Jatuhnya Meteor</h4>
+        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
+          Meteor menembus atmosfer dengan kecepatan sangat ekstrem (puluhan ribu km/jam). Gaya hambat udara yang luar biasa besar menghasilkan panas yang membakarnya. Jika ada sisa batu yang selamat (meteorit), lajunya akan direm oleh atmosfer hingga stabil di <strong>kecepatan terminal</strong> sebelum membentur bumi.
+        </p>
+      </div>
     </div>
   </section>
 
   <div class="mat-divider"></div>
 
-  <!-- SECTION 5: RINGKASAN -->
   <section class="mat-section reveal" id="s5">
     <div class="section-num">05 &nbsp; Ringkasan</div>
     <h2>Poin Kunci yang Perlu Diingat</h2>
@@ -693,11 +718,70 @@ nav{
     </div>
   </section>
 
-  <!-- CTA FINAL -->
+  <div class="mat-divider"></div>
+
+  <section class="mat-section reveal" id="s6">
+    <div class="section-num">06 &nbsp; Analisis Grafik</div>
+    <h2>Cara Membaca Grafik Simulasi</h2>
+    
+    <p>Dalam laboratorium virtual, kamu akan dihadapkan dengan fitur analisis grafik interaktif. Memahami bentuk kurva ini adalah kunci untuk menganalisis gerak jatuh benda secara mendalam:</p>
+
+    <div class="phase-flow">
+      <div class="phase-step p1">
+        <span style="font-size:1.3rem;flex-shrink:0">📈</span>
+        <div class="phase-content">
+          <h4>Grafik Kecepatan thd Waktu (v-t)</h4>
+          <p>Pada awalnya, kurva akan naik linier (benda dipercepat). Namun, saat hambatan udara membesar, kurva perlahan melengkung dan akhirnya <strong>mendatar (horizontal)</strong>. Garis mendatar ini membuktikan benda telah mencapai <em>Kecepatan Terminal</em>.</p>
+        </div>
+      </div>
+      <div class="phase-step p2">
+        <span style="font-size:1.3rem;flex-shrink:0">📉</span>
+        <div class="phase-content">
+          <h4>Grafik Percepatan thd Waktu (a-t)</h4>
+          <p>Kurva dimulai di angka 9,81 m/s² (percepatan gravitasi maksimum). Seiring benda membelah udara, nilai percepatan akan terus turun melengkung ke bawah hingga <strong>menyentuh angka nol</strong>, yaitu saat gaya telah seimbang (ΣF = 0).</p>
+        </div>
+      </div>
+      <div class="phase-step p3">
+        <span style="font-size:1.3rem;flex-shrink:0">📊</span>
+        <div class="phase-content">
+          <h4>Grafik Ketinggian thd Waktu (h-t)</h4>
+          <p>Mulanya grafik membentuk kurva parabola seiring bertambahnya kecepatan. Namun, begitu benda mencapai kecepatan terminal (konstan), kurvanya akan berubah wujud menjadi <strong>garis lurus yang miring ke bawah</strong>.</p>
+        </div>
+      </div>
+      <div class="phase-step p4">
+        <span style="font-size:1.3rem;flex-shrink:0">🔄</span>
+        <div class="phase-content">
+          <h4>Grafik Ketinggian thd Kecepatan (h-v)</h4>
+          <p>Sumbu-X adalah Kecepatan dan Sumbu-Y adalah Ketinggian. Kurva bermula dari atas (ketinggian awal, kecepatan nol) lalu turun melengkung ke kanan. Jika benda mencapai kecepatan terminal, kurva akan berubah wujud menjadi <strong>garis lurus vertikal ke bawah</strong> — artinya ketinggian terus berkurang menuju tanah, namun kecepatan benda sudah stabil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <section class="mat-section reveal" id="s7">
+    <div class="section-num">07 &nbsp; Referensi</div>
+    <h2>Daftar Pustaka</h2>
+    <p>Konsep dan persamaan pada media simulasi ini dirujuk dari buku literatur fisika tingkat universitas yang diakui secara global:</p>
+    
+    <ul class="reference-list">
+      <li class="reference-item">
+        <span class="ref-num">[1]</span> Halliday, D., Resnick, R., & Walker, J. (2014). <em>Fundamentals of Physics</em> (10th ed.). John Wiley & Sons.
+      </li>
+      <li class="reference-item">
+        <span class="ref-num">[2]</span> Tipler, P. A., & Mosca, G. (2007). <em>Physics for Scientists and Engineers</em> (6th ed.). W. H. Freeman and Company.
+      </li>
+      <li class="reference-item">
+        <span class="ref-num">[3]</span> Serway, R. A., & Jewett, J. W. (2018). <em>Physics for Scientists and Engineers with Modern Physics</em> (10th ed.). Cengage Learning.
+      </li>
+    </ul>
+  </section>
+
   <div class="cta-final reveal">
     <div style="font-size:2rem;margin-bottom:1rem">🚀</div>
     <h3>Siap Membuktikannya Sendiri?</h3>
-    <p>Teori sudah dikuasai — sekarang waktunya bereksperimen! Manipulasi massa, diameter, dan kondisi atmosfer secara langsung di simulasi interaktif.</p>
+    <p>Teori dan landasan matematis sudah kamu kuasai — sekarang saatnya eksperimen! Manipulasi massa, diameter, dan atmosfer secara real-time di ruang simulasi.</p>
     <div>
       <a href="index1.html" class="btn-cta">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>

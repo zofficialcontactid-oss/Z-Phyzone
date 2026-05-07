@@ -63,7 +63,29 @@ document.querySelectorAll('input[name="atm-left"], input[name="atm-right"]').for
     });
 });
 
-/* --- LOGIKA PERHITUNGAN MASSA JENIS --- */
+/* --- LOGIKA PERHITUNGAN MASSA JENIS & UPDATE UI --- */
+
+// Fungsi baru untuk menghitung dan menampilkan massa jenis ke layar
+function updateDensityDisplay(side) {
+    const massVal = parseFloat(document.getElementById(`mass-${side}`).value);
+    const diamVal = parseFloat(document.getElementById(`diameter-${side}`).value);
+    const displayEl = document.getElementById(`density-display-${side}`);
+    
+    // Cegah error jika input kosong/nol
+    if (isNaN(massVal) || isNaN(diamVal) || diamVal <= 0) {
+        displayEl.textContent = 'ρ = - kg/m³';
+        return;
+    }
+    
+    // Rumus: Volume Bola = 4/3 * pi * r^3, lalu Rho = m / V
+    const radius = diamVal / 2;
+    const volume = (4 / 3) * Math.PI * Math.pow(radius, 3);
+    const density = massVal / volume;
+    
+    // Tampilkan format angka yang cantik tanpa desimal berlebih
+    displayEl.textContent = `ρ = ${density.toLocaleString('id-ID', {maximumFractionDigits: 0})} kg/m³`;
+}
+
 function hitungMassaOtomatis(side) {
     const matSelect = document.getElementById(`material-${side}`);
     if (matSelect.value === 'custom') return;
@@ -88,24 +110,34 @@ function hitungMassaOtomatis(side) {
     if (ball && !isRunning) ball.mass = hitungMassa;
 }
 
+// Pasang pendeteksi perubahan (Event Listeners)
 ['left', 'right'].forEach(side => {
+    // Jalankan sekali saat halaman pertama dimuat agar angka rho muncul
+    setTimeout(() => updateDensityDisplay(side), 100);
+
+    // Jika dropdown material diubah
     document.getElementById(`material-${side}`).addEventListener('change', () => {
         hitungMassaOtomatis(side);
+        updateDensityDisplay(side); // Panggil fungsi update rho
     });
 
+    // Jika input diameter diketik manual
     document.getElementById(`diameter-${side}`).addEventListener('input', e => {
         let ball = side === 'left' ? leftBall : rightBall;
         if (ball && !isRunning) {
             ball.diameter = parseFloat(e.target.value);
             hitungMassaOtomatis(side); 
+            updateDensityDisplay(side); // Panggil fungsi update rho
             draw();
         }
     });
 
+    // Jika input massa diketik manual
     document.getElementById(`mass-${side}`).addEventListener('input', e => {
         document.getElementById(`material-${side}`).value = 'custom'; 
         let ball = side === 'left' ? leftBall : rightBall;
         if (ball && !isRunning) ball.mass = parseFloat(e.target.value);
+        updateDensityDisplay(side); // Panggil fungsi update rho
     });
 });
 

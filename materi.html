@@ -648,14 +648,20 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Persamaan Kecepatan Terminal</div>
       
-      <div class="formula-main" style="display: flex; align-items: center; justify-content: center; gap: 0;">
-        <span style="margin-right: 8px;">v<sub style="font-size:.65em">t</sub> =</span>
-        <span style="font-size: 3.2rem; font-weight: 300; line-height: 0.7; margin-top: 4px;">&radic;</span>
-        <div style="border-top: 2px solid var(--white); padding: 4px 10px 0; margin-left: -2px; display: flex; flex-direction: column; align-items: center;">
-          <span style="border-bottom: 2px solid var(--white); padding-bottom: 5px; margin-bottom: 5px; width: 100%; text-align: center;">2 · <em>m</em> · g</span>
-          <span>ρ · C<sub style="font-size:.65em">d</sub> · <em>A</em></span>
-        </div>
-      </div>
+      <table style="margin: 0.5rem auto 1.5rem; text-align: center; font-family: 'Space Mono', monospace; font-size: 1.3rem; color: var(--white); border-collapse: collapse;">
+        <tr>
+          <td rowspan="2" style="padding-right: 10px;">v<sub style="font-size: 0.65em;">t</sub> =</td>
+          <td rowspan="2" style="font-size: 3.2rem; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 300; vertical-align: middle; padding-right: 2px; transform: translateY(4px); line-height: 0.8;">&radic;</td>
+          <td style="border-top: 2px solid var(--white); border-bottom: 2px solid var(--white); padding: 10px 18px 6px;">
+            2 &middot; <em style="color: var(--cyan); font-style: normal;">m</em> &middot; g
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 18px 0;">
+            &rho; &middot; C<sub style="font-size: 0.65em;">d</sub> &middot; <em style="color: var(--cyan); font-style: normal;">A</em>
+          </td>
+        </tr>
+      </table>
 
       <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr 1fr">
         <div class="var-row"><span class="var-sym">m</span><span class="var-desc">Massa benda (kg)</span></div>

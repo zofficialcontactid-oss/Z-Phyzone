@@ -648,20 +648,22 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Persamaan Kecepatan Terminal</div>
       
-      <table style="margin: 0.5rem auto 1.5rem; text-align: center; font-family: 'Space Mono', monospace; font-size: 1.3rem; color: var(--white); border-collapse: collapse;">
-        <tr>
-          <td rowspan="2" style="padding-right: 10px;">v<sub style="font-size: 0.65em;">t</sub> =</td>
-          <td rowspan="2" style="font-size: 3.2rem; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 300; vertical-align: middle; padding-right: 2px; transform: translateY(4px); line-height: 0.8;">&radic;</td>
-          <td style="border-top: 2px solid var(--white); border-bottom: 2px solid var(--white); padding: 10px 18px 6px;">
-            2 &middot; <em style="color: var(--cyan); font-style: normal;">m</em> &middot; g
-          </td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 18px 0;">
-            &rho; &middot; C<sub style="font-size: 0.65em;">d</sub> &middot; <em style="color: var(--cyan); font-style: normal;">A</em>
-          </td>
-        </tr>
-      </table>
+      <div style="display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 1.4rem; color: var(--white); margin: 1.5rem 0 2.5rem;">
+          <span style="margin-right: 12px;">v<sub style="font-size: 0.6em;">t</sub> =</span>
+          <div style="position: relative; padding: 12px 15px 5px 38px;">
+              <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" preserveAspectRatio="none" viewBox="0 0 100 100">
+                  <path d="M 2,55 L 10,55 L 18,90 L 32,5 L 100,5" fill="none" stroke="#eef2ff" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>
+              </svg>
+              <div style="text-align: center; position: relative; z-index: 1;">
+                  <div style="border-bottom: 2px solid #eef2ff; padding-bottom: 6px; margin-bottom: 6px;">
+                      2 &middot; <em style="color: var(--cyan); font-style: normal;">m</em> &middot; g
+                  </div>
+                  <div>
+                      &rho; &middot; C<sub style="font-size: 0.65em;">d</sub> &middot; <em style="color: var(--cyan); font-style: normal;">A</em>
+                  </div>
+              </div>
+          </div>
+      </div>
 
       <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr 1fr">
         <div class="var-row"><span class="var-sym">m</span><span class="var-desc">Massa benda (kg)</span></div>

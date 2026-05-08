@@ -647,7 +647,16 @@ nav{
 
     <div class="formula-box">
       <div class="formula-label">Persamaan Kecepatan Terminal</div>
-      <div class="formula-main">v<sub style="font-size:.65em">t</sub> = √( 2·<em>m</em>·g / ρ·C<sub style="font-size:.65em">d</sub>·<em>A</em> )</div>
+      
+      <div class="formula-main" style="display: flex; align-items: center; justify-content: center; gap: 0;">
+        <span style="margin-right: 8px;">v<sub style="font-size:.65em">t</sub> =</span>
+        <span style="font-size: 3.2rem; font-weight: 300; line-height: 0.7; margin-top: 4px;">&radic;</span>
+        <div style="border-top: 2px solid var(--white); padding: 4px 10px 0; margin-left: -2px; display: flex; flex-direction: column; align-items: center;">
+          <span style="border-bottom: 2px solid var(--white); padding-bottom: 5px; margin-bottom: 5px; width: 100%; text-align: center;">2 · <em>m</em> · g</span>
+          <span>ρ · C<sub style="font-size:.65em">d</sub> · <em>A</em></span>
+        </div>
+      </div>
+
       <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr 1fr">
         <div class="var-row"><span class="var-sym">m</span><span class="var-desc">Massa benda (kg)</span></div>
         <div class="var-row"><span class="var-sym">g</span><span class="var-desc">Gravitasi 9,81 m/s²</span></div>

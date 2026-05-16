@@ -7,6 +7,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <style>
 :root {
   --bg: #060b17;
@@ -100,7 +103,6 @@ nav{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 
-/* FONT MONTSERRAT DITERAPKAN DI SINI */
 .hero-sub{
   font-family:'Montserrat',sans-serif;
   font-size:0.95rem;
@@ -224,13 +226,10 @@ nav{
   margin-bottom:1rem;
 }
 .formula-main{
-  font-family:'Space Mono',monospace;
-  font-size:clamp(1.1rem,2vw,1.5rem);
+  font-size:clamp(1.2rem,2vw,1.6rem);
   color:var(--white);text-align:center;
-  margin:1rem 0;letter-spacing:.05em;
+  margin:1.5rem 0;
 }
-.formula-main em{color:var(--cyan);font-style:normal}
-
 .formula-vars{
   display:grid;grid-template-columns:1fr 1fr;
   gap:.5rem;margin-top:1.2rem;
@@ -246,7 +245,6 @@ nav{
   font-weight:700;min-width:28px;
   font-size:.88rem;
 }
-
 .var-desc{
   font-family:'Montserrat',sans-serif;
   font-size:0.85rem;
@@ -292,7 +290,6 @@ nav{
   font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;
   color:var(--white);margin-bottom:.3rem;
 }
-
 .phase-content p{
   font-family:'Montserrat',sans-serif;
   font-size:0.85rem;
@@ -341,7 +338,6 @@ nav{
   padding:.9rem 1.2rem;text-align:left;
   border-bottom:1px solid var(--border);
 }
-
 .compare-table td{
   font-family:'Montserrat',sans-serif;
   font-size:0.88rem;
@@ -410,7 +406,6 @@ nav{
   font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;
   margin-bottom:.8rem;
 }
-
 .cta-final p{
   font-family:'Montserrat',sans-serif;
   font-size:0.92rem;
@@ -466,7 +461,7 @@ nav{
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <img src="A.png" alt="Logo Z-PHYZONE">
+    <img src="A.jpg" alt="Logo Z-PHYZONE">
     <span class="logo-text">Z-<span>PHY</span>ZONE</span>
   </a>
   <a href="javascript:history.back()" class="nav-back">
@@ -478,11 +473,12 @@ nav{
 <nav class="progress-nav" id="pnav">
   <a href="#s1" class="pnav-item">01 · Miskonsepsi</a>
   <a href="#s2" class="pnav-item">02 · Kondisi Vakum</a>
-  <a href="#s3" class="pnav-item">03 · Hambatan Udara</a>
-  <a href="#s4" class="pnav-item">04 · Kec. Terminal</a>
-  <a href="#s5" class="pnav-item">05 · Ringkasan</a>
-  <a href="#s6" class="pnav-item">06 · Analisis Grafik</a>
-  <a href="#s7" class="pnav-item">07 · Referensi</a>
+  <a href="#s3" class="pnav-item">03 · Massa Jenis</a>
+  <a href="#s4" class="pnav-item">04 · Hambatan Udara</a>
+  <a href="#s5" class="pnav-item">05 · Kec. Terminal</a>
+  <a href="#s6" class="pnav-item">06 · Ringkasan</a>
+  <a href="#s7" class="pnav-item">07 · Analisis Grafik</a>
+  <a href="#s8" class="pnav-item">08 · Referensi</a>
 </nav>
 
 <header class="hero">
@@ -527,16 +523,16 @@ nav{
 
     <div class="formula-box">
       <div class="formula-label">Derivasi Percepatan di Vakum</div>
-      <div class="formula-main">ΣF<sub style="font-size:.65em">y</sub> = <em>m</em>·a<sub style="font-size:.65em">y</sub></div>
-      <div class="formula-main" style="font-family:'Space Mono',monospace;font-size:1rem;color:var(--muted);margin:.2rem 0">↓ satu-satunya gaya adalah gaya berat</div>
-      <div class="formula-main"><em>m</em>·g = <em>m</em>·a<sub style="font-size:.65em">y</sub></div>
-      <div class="formula-main" style="font-family:'Space Mono',monospace;font-size:1rem;color:var(--muted);margin:.2rem 0">↓ massa m saling meniadakan</div>
-      <div class="formula-main" style="color:var(--cyan);font-size:1.6rem">a<sub style="font-size:.65em">y</sub> = <em>g</em></div>
+      <div class="formula-main">$$ \Sigma F_y = m \cdot a_y $$</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted);margin:0.5rem 0;text-align:center;">↓ satu-satunya gaya adalah gaya berat</div>
+      <div class="formula-main">$$ m \cdot g = m \cdot a_y $$</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted);margin:0.5rem 0;text-align:center;">↓ massa \(m\) saling meniadakan</div>
+      <div class="formula-main">$$ \color{#22d3ee}{a_y = g} $$</div>
     </div>
 
     <div class="callout warn">
       <div class="callout-icon">⚡</div>
-      <div class="callout-text"><strong>Kesimpulan kunci:</strong> Variabel massa (m) di ruas kiri dan kanan saling meniadakan. Percepatan jatuh benda <strong>ay = g ≈ 9,81 m/s²</strong> — murni hanya bergantung pada gravitasi bumi, sama sekali tidak dipengaruhi massa benda.</div>
+      <div class="callout-text"><strong>Kesimpulan kunci:</strong> Variabel massa (\(m\)) di ruas kiri dan kanan saling meniadakan. Percepatan jatuh benda \(\mathbf{a_y = g \approx 9.81 \text{ m/s}^2}\) — murni hanya bergantung pada gravitasi bumi, sama sekali tidak dipengaruhi massa benda.</div>
     </div>
 
     <p>Inilah mengapa di ruang hampa, sebuah bola baja dan sehelai bulu akan jatuh beriringan — karena percepatan gravitasi yang sama diberikan kepada semua benda, berapapun massanya.</p>
@@ -545,31 +541,65 @@ nav{
   <div class="mat-divider"></div>
 
   <section class="mat-section reveal" id="s3">
-    <div class="section-num">03 &nbsp; Kondisi Riil</div>
+    <div class="section-num">03 &nbsp; Kerapatan Materi</div>
+    <h2>Peran Kritis Massa Jenis Benda</h2>
+
+    <p>Pada lingkungan nyata di atmosfer bumi, gerak jatuh sangat dipengaruhi oleh bagaimana massa terdistribusi dalam suatu ruang atau volume tertentu. Konsep ini didefinisikan sebagai <strong>Massa Jenis Benda (\(\rho\))</strong>.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Persamaan Massa Jenis</div>
+      <div class="formula-main">$$ \rho = \frac{m}{V} $$</div>
+      <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr; margin-top: 1.5rem;">
+        <div class="var-row"><span class="var-sym">\(\rho\)</span><span class="var-desc">Massa jenis (\(\text{kg/m}^3\))</span></div>
+        <div class="var-row"><span class="var-sym">\(m\)</span><span class="var-desc">Massa benda (\(\text{kg}\))</span></div>
+        <div class="var-row"><span class="var-sym">\(V\)</span><span class="var-desc">Volume benda (\(\text{m}^3\))</span></div>
+      </div>
+    </div>
+
+    <p>Di dalam laboratorium virtual Z-PHYZONE, ketika kamu memilih material seperti <strong>Besi</strong> atau <strong>Styrofoam</strong> dengan ukuran (diameter) yang sama, kamu sedang mengunci variabel Volume (\(V\)). Karena partikel besi memiliki tingkat kerapatan yang jauh lebih tinggi, maka massa besi otomatis menjadi jauh lebih besar dibandingkan styrofoam meskipun ukurannya persis sama.</p>
+
+    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin:2rem 0;">
+      <h4 style="font-family:'Orbitron',sans-serif; font-size:1rem; color:var(--cyan); margin-bottom:0.8rem;">🧪 Studi Kasus: "Berat Sama, Massa Jenis Beda"</h4>
+      <p style="font-family:'Montserrat',sans-serif; font-size:0.9rem; color:var(--muted); line-height:1.7; margin-bottom:0;">
+        Mari kita patahkan miskonsepsi klasik! Bayangkan ada <strong>\(1 \text{ kg}\) Besi</strong> dan <strong>\(1 \text{ kg}\) Busa/Kapas</strong>. Keduanya memiliki massa dan gaya berat (\(W = m \cdot g\)) yang <strong>persis sama</strong>. Namun, karena massa jenis busa sangat kecil, \(1 \text{ kg}\) busa akan memiliki ukuran (volume dan luas penampang) yang <em>sangat raksasa</em> dibandingkan \(1 \text{ kg}\) besi yang hanya sebesar kepalan tangan.<br><br>
+        Saat dijatuhkan di udara, busa raksasa tersebut akan menabrak jutaan partikel udara, menghasilkan gaya hambat (\(F_d\)) yang masif. Sementara itu, besi membelah udara dengan mudah. Hasilnya? Besi jatuh jauh lebih cepat, <strong>bukan karena ia lebih berat, melainkan karena ia lebih padat (massa jenisnya lebih besar).</strong>
+      </p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">🔑</div>
+      <div class="callout-text"><strong>Rasio Massa terhadap Luas Penampang (\(m/A\)):</strong> Ingatlah bahwa hambatan udara bekerja menahan permukaan luar benda (Luas Penampang, \(A\)), sedangkan gravitasi menarik total isi benda (Massa, \(m\)). Benda dengan massa jenis besar (padat) memiliki gaya berat yang sangat kuat, sehingga benda tersebut jauh lebih tangguh dalam membelah dan melawan hambatan udara.</div>
+    </div>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <section class="mat-section reveal" id="s4">
+    <div class="section-num">04 &nbsp; Kondisi Riil</div>
     <h2>Gaya Hambat Udara <em>(Air Drag)</em></h2>
 
-    <p>Jika di ruang hampa benda berat dan ringan jatuh bersamaan, mengapa di kehidupan nyata kelereng besi jatuh lebih cepat daripada selembar kertas? Jawabannya ada pada <strong>interaksi aerodinamis</strong> yang disebut Gaya Hambat Udara (F<sub>d</sub>).</p>
+    <p>Jika di ruang hampa benda berat dan ringan jatuh bersamaan, mengapa di kehidupan nyata kelereng besi jatuh lebih cepat daripada selembar kertas? Jawabannya ada pada <strong>interaksi aerodinamis</strong> yang disebut Gaya Hambat Udara (\(F_d\)).</p>
 
     <p>Untuk benda berukuran makroskopis yang bergerak dengan kecepatan sedang hingga tinggi, aliran fluida di sekitarnya bersifat <em>turbulen</em>. Pada kondisi ini, gaya hambat bertambah secara <strong>kuadratik</strong> (eksponensial) seiring bertambahnya kecepatan:</p>
 
     <div class="formula-box">
       <div class="formula-label">Persamaan Gaya Hambat Udara</div>
-      <div class="formula-main">F<sub style="font-size:.65em">d</sub> = ½ · <em>ρ</em> · <em>v</em>² · <em>C<sub style="font-size:.65em">d</sub></em> · <em>A</em></div>
+      <div class="formula-main">$$ F_d = \frac{1}{2} \rho_{udara} v^2 C_d A $$</div>
       <div class="formula-vars">
-        <div class="var-row"><span class="var-sym">ρ</span><span class="var-desc">Massa jenis fluida (udara) ≈ 1,225 kg/m³</span></div>
-        <div class="var-row"><span class="var-sym">v</span><span class="var-desc">Kecepatan jatuh benda saat itu (m/s)</span></div>
-        <div class="var-row"><span class="var-sym">C<sub style="font-size:.7em">d</sub></span><span class="var-desc">Koefisien hambatan bentuk benda</span></div>
-        <div class="var-row"><span class="var-sym">A</span><span class="var-desc">Luas penampang lintang benda (m²)</span></div>
+        <div class="var-row"><span class="var-sym">\(\rho_{udara}\)</span><span class="var-desc">Massa jenis udara \(\approx 1.225 \text{ kg/m}^3\)</span></div>
+        <div class="var-row"><span class="var-sym">\(v\)</span><span class="var-desc">Kecepatan jatuh benda saat itu (\(\text{m/s}\))</span></div>
+        <div class="var-row"><span class="var-sym">\(C_d\)</span><span class="var-desc">Koefisien hambatan bentuk benda</span></div>
+        <div class="var-row"><span class="var-sym">\(A\)</span><span class="var-desc">Luas penampang lintang benda (\(\text{m}^2\))</span></div>
       </div>
     </div>
 
     <p style="margin-top:1.5rem">
-      Selain luas penampang (<em>A</em>), bentuk benda juga sangat menentukan besarnya hambatan melalui <strong>Koefisien Hambatan (<em>C<sub>d</sub></em>)</strong>. Benda yang aerodinamis (seperti peluru atau tetesan air) memiliki <em>C<sub>d</sub></em> yang kecil sehingga mudah membelah udara. Sebaliknya, bentuk yang datar atau cekung (seperti parasut) memiliki <em>C<sub>d</sub></em> besar untuk sengaja menangkap lebih banyak udara.
+      Selain luas penampang (\(A\)), bentuk benda juga sangat menentukan besarnya hambatan melalui <strong>Koefisien Hambatan (\(C_d\))</strong>. Benda yang aerodinamis (seperti peluru atau tetesan air) memiliki \(C_d\) yang kecil sehingga mudah membelah udara. Sebaliknya, bentuk yang datar atau cekung (seperti parasut) memiliki \(C_d\) besar untuk sengaja menangkap lebih banyak udara.
     </p>
 
     <div class="callout info">
       <div class="callout-icon">🔍</div>
-      <div class="callout-text">Perhatikan <strong>v²</strong> — artinya jika kecepatan benda berlipat ganda, gaya hambat udara bertambah empat kali lipat. Ini mengapa hambatan udara terasa jauh lebih kuat saat bergerak cepat dibandingkan lambat.</div>
+      <div class="callout-text">Perhatikan variabel <strong>\(v^2\)</strong> — artinya jika kecepatan benda berlipat ganda, gaya hambat udara bertambah empat kali lipat. Ini mengapa hambatan udara terasa jauh lebih kuat saat benda mulai meluncur cepat dibandingkan saat baru dijatuhkan.</div>
     </div>
 
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1rem;margin:1.8rem 0 1rem;color:var(--white)">Perbandingan: Vakum vs Udara</h3>
@@ -585,28 +615,28 @@ nav{
       <tbody>
         <tr>
           <td>Gaya yang bekerja</td>
-          <td>Hanya gaya berat (W)</td>
-          <td>Berat (W) + Hambatan (F<sub>d</sub>)</td>
+          <td>Hanya gaya berat (\(W\))</td>
+          <td>Berat (\(W\)) + Hambatan (\(F_d\))</td>
         </tr>
         <tr>
           <td>Percepatan</td>
-          <td>Konstan = g ≈ 9,81 m/s²</td>
-          <td>Berkurang seiring bertambahnya v</td>
+          <td>Konstan (\(a = g\))</td>
+          <td>Berkurang seiring bertambahnya \(v\)</td>
         </tr>
         <tr>
           <td>Pengaruh massa</td>
           <td>Tidak ada</td>
-          <td>Ada — benda berat punya v<sub>t</sub> lebih tinggi</td>
+          <td>Ada — benda padat punya \(v_t\) lebih tinggi</td>
         </tr>
         <tr>
           <td>Pengaruh diameter</td>
           <td>Tidak ada</td>
-          <td>Besar — diameter lebih lebar → hambatan lebih besar</td>
+          <td>Besar — penampang lebar → hambatan besar</td>
         </tr>
         <tr>
           <td>Kecepatan maksimum</td>
-          <td>Terus bertambah</td>
-          <td>Terbatas pada kecepatan terminal</td>
+          <td>Terus bertambah tiada henti</td>
+          <td>Terbatas pada nilai kecepatan terminal</td>
         </tr>
       </tbody>
     </table>
@@ -614,76 +644,59 @@ nav{
 
   <div class="mat-divider"></div>
 
-  <section class="mat-section reveal" id="s4">
-    <div class="section-num">04 &nbsp; Kesetimbangan Dinamis</div>
+  <section class="mat-section reveal" id="s5">
+    <div class="section-num">05 &nbsp; Kesetimbangan Dinamis</div>
     <h2>Kecepatan Terminal</h2>
 
-    <p>Dinamika gerak benda jatuh di udara mengalami <strong>transisi fase</strong> yang sangat menarik. Ingatlah bahwa saat benda jatuh, Gaya Berat (<em>W</em>) selalu menarik benda ke bawah, sementara Gaya Hambat Udara (<em>F<sub>d</sub></em>) <strong>selalu melawan arah gerak</strong> (mendorong ke atas). Perhatikan bagaimana percepatan benda berubah dari waktu ke waktu:</p>
+    <p>Dinamika gerak benda jatuh di udara mengalami <strong>transisi fase</strong> yang sangat menarik. Ingatlah bahwa saat benda jatuh, Gaya Berat (\(W\)) selalu menarik benda ke bawah, sementara Gaya Hambat Udara (\(F_d\)) <strong>selalu melawan arah gerak</strong> (mendorong ke atas). Perhatikan bagaimana percepatan benda berubah dari waktu ke waktu:</p>
 
     <div class="phase-flow">
       <div class="phase-step p1">
         <span class="phase-badge">Fase 1</span>
         <div class="phase-content">
           <h4>Awal Jatuh — Percepatan Maksimum</h4>
-          <p>Kecepatan masih sangat rendah → Fd ≈ 0. Benda melaju dengan percepatan mendekati g = 9,81 m/s². Gaya berat jauh mendominasi hambatan udara.</p>
+          <p>Kecepatan masih sangat rendah → \(F_d \approx 0\). Benda melaju dengan percepatan mendekati \(g\). Gaya berat jauh mendominasi hambatan udara.</p>
         </div>
       </div>
       <div class="phase-step p2">
         <span class="phase-badge">Fase 2</span>
         <div class="phase-content">
           <h4>Percepatan Berkurang</h4>
-          <p>Kecepatan bertambah → Fd membesar secara kuadratik. Resultan gaya (W − Fd) menyusut, sehingga percepatan terus menurun mendekati nol.</p>
+          <p>Kecepatan bertambah → \(F_d\) membesar secara kuadratik. Resultan gaya (\(W - F_d\)) menyusut, sehingga percepatan terus menurun mendekati nol.</p>
         </div>
       </div>
       <div class="phase-step p3">
         <span class="phase-badge">Fase 3</span>
         <div class="phase-content">
           <h4>Kecepatan Terminal — Kesetimbangan</h4>
-          <p>Fd = W → ΣF = 0 → a = 0. Benda meluncur stabil dengan kecepatan konstan maksimum: kecepatan terminal (v<sub>t</sub>).</p>
+          <p>\(F_d = W \rightarrow \Sigma F = 0 \rightarrow a = 0\). Benda meluncur stabil dengan kecepatan konstan maksimum: kecepatan terminal (\(v_t\)).</p>
         </div>
       </div>
     </div>
 
-    <p>Melalui kondisi kesetimbangan <strong>ΣF = 0</strong> (Fd = W), kita dapat merumuskan kecepatan terminal:</p>
+    <p>Melalui kondisi kesetimbangan <strong>\(\Sigma F = 0\)</strong> (\(F_d = W\)), kita dapat merumuskan kecepatan terminal secara sistematis:</p>
 
     <div class="formula-box">
       <div class="formula-label">Persamaan Kecepatan Terminal</div>
-      
-      <div style="display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 1.4rem; color: var(--white); margin: 1.5rem 0 2.5rem;">
-        <span style="margin-right: 8px;">v<sub style="font-size: 0.6em;">t</sub> =</span>
-        
-        <div style="display: flex; align-items: stretch;">
-          <svg width="34" preserveAspectRatio="none" viewBox="0 0 34 100" style="margin-right: -1px;">
-            <path d="M 2,55 L 12,55 L 20,95 L 34,1" fill="none" stroke="#eef2ff" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>
-          </svg>
-          
-          <div style="border-top: 2px solid #eef2ff; padding: 10px 15px 4px 6px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <div style="border-bottom: 2px solid #eef2ff; padding-bottom: 6px; margin-bottom: 6px; width: 100%; text-align: center;">
-              2 &middot; <em style="color: var(--cyan); font-style: normal;">m</em> &middot; g
-            </div>
-            <div style="text-align: center;">
-              &rho; &middot; C<sub style="font-size: 0.65em;">d</sub> &middot; <em style="color: var(--cyan); font-style: normal;">A</em>
-            </div>
-          </div>
-        </div>
+      <div class="formula-main" style="margin: 2.5rem 0;">
+        $$ v_t = \sqrt{\frac{2mg}{\rho_{udara} C_d A}} $$
       </div>
-
       <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr 1fr">
-        <div class="var-row"><span class="var-sym">m</span><span class="var-desc">Massa benda (kg)</span></div>
-        <div class="var-row"><span class="var-sym">g</span><span class="var-desc">Gravitasi 9,81 m/s²</span></div>
-        <div class="var-row"><span class="var-sym">ρ</span><span class="var-desc">Massa jenis udara</span></div>
-        <div class="var-row"><span class="var-sym">A</span><span class="var-desc">Luas penampang (m²)</span></div>
+        <div class="var-row"><span class="var-sym">\(m\)</span><span class="var-desc">Massa benda (\(\text{kg}\))</span></div>
+        <div class="var-row"><span class="var-sym">\(g\)</span><span class="var-desc">Gravitasi (\(9.81 \text{ m/s}^2\))</span></div>
+        <div class="var-row"><span class="var-sym">\(\rho\)</span><span class="var-desc">Massa jenis udara</span></div>
+        <div class="var-row"><span class="var-sym">\(A\)</span><span class="var-desc">Luas penampang (\(\text{m}^2\))</span></div>
       </div>
     </div>
 
     <div class="callout info">
       <div class="callout-icon">🎯</div>
-      <div class="callout-text"><strong>Inilah jawabannya!</strong> Benda masif (massa m besar) punya v<sub>t</sub> yang jauh lebih tinggi — artinya udara butuh waktu lebih lama untuk "menghentikan" lajunya. Sebaliknya, benda ringan dengan penampang lebar (A besar) memiliki v<sub>t</sub> rendah, sehingga cepat tertahan udara dan jatuh lebih lambat.</div>
+      <div class="callout-text"><strong>Hubungan Kecepatan Terminal dengan Massa Jenis:</strong> Jika massa (\(m\)) dijabarkan ke dalam rumus massa jenis (\(m = \rho_{obj} \cdot V\)), secara matematis dapat dibuktikan bahwa Kecepatan Terminal (\(v_t\)) sebanding dengan akar kuadrat dari massa jenis objek (\(\sqrt{\rho_{obj}}\)). <br><br>Inilah alasan mutlak mengapa <strong>Besi</strong> (\(\rho = 7800 \text{ kg/m}^3\)) memiliki \(v_t\) yang sangat tinggi dan jatuh menghujam dengan cepat, sedangkan <strong>Styrofoam</strong> (\(\rho = 50 \text{ kg/m}^3\)) memiliki \(v_t\) yang sangat rendah sehingga lebih mudah melayang di udara.</div>
     </div>
 
     <div class="callout warn" style="margin-top: 1rem;">
       <div class="callout-icon">📏</div>
-      <div class="callout-text"><strong>Mengapa butuh dijatuhkan dari tempat tinggi?</strong> Benda tidak langsung mencapai kecepatan terminal seketika. Jika benda dijatuhkan dari tempat rendah (misal 1 meter), kecepatan belum sempat membesar, sehingga <em>F<sub>d</sub></em> masih sangat kecil dan efek hambatan udara hampir tidak terlihat. Itulah sebabnya di simulasi nanti, cobalah atur <strong>Ketinggian</strong> hingga 50 atau 75 meter untuk melihat proses tercapainya <em>v<sub>t</sub></em>!</div>
+      <div class="callout-text"><strong>Mengapa butuh dijatuhkan dari tempat tinggi?</strong> Benda tidak langsung mencapai kecepatan terminal seketika. Jika benda dijatuhkan dari tempat rendah (misal \(1 \text{ m}\)), kecepatan belum sempat membesar, sehingga \(F_d\) masih sangat kecil dan efek hambatan udara hampir tidak terlihat. Itulah sebabnya di simulasi nanti, cobalah atur <strong>Ketinggian</strong> hingga \(50 \text{ m}\) atau \(75 \text{ m}\) untuk melihat proses tercapainya \(v_t\)!</div>
     </div>
 
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;margin:2.5rem 0 1rem;color:var(--cyan)">🌎 Fenomena di Dunia Nyata</h3>
@@ -693,7 +706,7 @@ nav{
         <div style="font-size:2.2rem;margin-bottom:0.8rem">🪂</div>
         <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Terjun Payung (Skydiving)</h4>
         <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
-          Saat penerjun melayang tengkurap, ia mencapai kecepatan terminal sekitar <strong>200 km/jam</strong>. Namun, ketika parasut dikembangkan, luas penampang (<em>A</em>) membesar drastis. Kecepatan terminalnya pun seketika turun menjadi hanya <strong>20 km/jam</strong>, memungkinkan pendaratan yang aman.
+          Saat penerjun melayang tengkurap, ia mencapai kecepatan terminal sekitar <strong>\(200 \text{ km/jam}\)</strong>. Namun, ketika parasut dikembangkan, luas penampang (\(A\)) membesar drastis. Kecepatan terminalnya pun seketika turun menjadi hanya <strong>\(20 \text{ km/jam}\)</strong>, memungkinkan pendaratan yang aman.
         </p>
       </div>
       
@@ -701,7 +714,7 @@ nav{
         <div style="font-size:2.2rem;margin-bottom:0.8rem">☄️</div>
         <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Jatuhnya Meteor</h4>
         <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
-          Meteor menembus atmosfer dengan kecepatan sangat ekstrem (puluhan ribu km/jam). Gaya hambat udara yang luar biasa besar menghasilkan panas yang membakarnya. Jika ada sisa batu yang selamat (meteorit), lajunya akan direm oleh atmosfer hingga stabil di <strong>kecepatan terminal</strong> sebelum membentur bumi.
+          Meteor menembus atmosfer dengan kecepatan sangat ekstrem. Gaya hambat udara yang luar biasa besar menghasilkan panas yang membakarnya. Jika ada sisa batu yang selamat (meteorit), lajunya akan direm oleh atmosfer hingga stabil di <strong>kecepatan terminal</strong> sebelum membentur bumi.
         </p>
       </div>
     </div>
@@ -709,8 +722,8 @@ nav{
 
   <div class="mat-divider"></div>
 
-  <section class="mat-section reveal" id="s5">
-    <div class="section-num">05 &nbsp; Ringkasan</div>
+  <section class="mat-section reveal" id="s6">
+    <div class="section-num">06 &nbsp; Ringkasan</div>
     <h2>Poin Kunci yang Perlu Diingat</h2>
 
     <div class="phase-flow">
@@ -718,61 +731,21 @@ nav{
         <span style="font-size:1.3rem;flex-shrink:0">🌑</span>
         <div class="phase-content">
           <h4>Di Vakum: Massa Tidak Berpengaruh</h4>
-          <p>Semua benda jatuh dengan a = g. Benda berat dan ringan tiba bersamaan. Ini membuktikan miskonsepsi Aristoteles salah.</p>
+          <p>Semua benda jatuh dengan percepatan konstan (\(a = g\)). Benda berat dan ringan tiba bersamaan. Ini membuktikan miskonsepsi Aristoteles salah.</p>
         </div>
       </div>
       <div class="phase-step p2">
         <span style="font-size:1.3rem;flex-shrink:0">💨</span>
         <div class="phase-content">
           <h4>Di Udara: Massa dan Luas Penampang Berpengaruh</h4>
-          <p>Benda dengan massa besar dan luas penampang kecil → v<sub>t</sub> tinggi → jatuh lebih cepat. Benda ringan dengan penampang lebar → v<sub>t</sub> rendah → jatuh lebih lambat.</p>
+          <p>Benda dengan massa besar dan luas penampang kecil → \(v_t\) tinggi → jatuh lebih cepat. Benda ringan dengan penampang lebar → \(v_t\) rendah → jatuh lebih lambat.</p>
         </div>
       </div>
       <div class="phase-step p3">
         <span style="font-size:1.3rem;flex-shrink:0">📐</span>
         <div class="phase-content">
-          <h4>F<sub>d</sub> ∝ v² — Hambatan Kuadratik</h4>
-          <p>Gaya hambat bertumbuh eksponensial seiring kecepatan. Kecepatan berlipat dua → hambatan berlipat empat. Inilah yang menciptakan batas kecepatan terminal.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="mat-divider"></div>
-
-  <section class="mat-section reveal" id="s6">
-    <div class="section-num">06 &nbsp; Analisis Grafik</div>
-    <h2>Cara Membaca Grafik Simulasi</h2>
-    
-    <p>Dalam laboratorium virtual, kamu akan dihadapkan dengan fitur analisis grafik interaktif. Memahami bentuk kurva ini adalah kunci untuk menganalisis gerak jatuh benda secara mendalam:</p>
-
-    <div class="phase-flow">
-      <div class="phase-step p1">
-        <span style="font-size:1.3rem;flex-shrink:0">📈</span>
-        <div class="phase-content">
-          <h4>Grafik Kecepatan thd Waktu (v-t)</h4>
-          <p>Pada awalnya, kurva akan naik linier (benda dipercepat). Namun, saat hambatan udara membesar, kurva perlahan melengkung dan akhirnya <strong>mendatar (horizontal)</strong>. Garis mendatar ini membuktikan benda telah mencapai <em>Kecepatan Terminal</em>.</p>
-        </div>
-      </div>
-      <div class="phase-step p2">
-        <span style="font-size:1.3rem;flex-shrink:0">📉</span>
-        <div class="phase-content">
-          <h4>Grafik Percepatan thd Waktu (a-t)</h4>
-          <p>Kurva dimulai di angka 9,81 m/s² (percepatan gravitasi maksimum). Seiring benda membelah udara, nilai percepatan akan terus turun melengkung ke bawah hingga <strong>menyentuh angka nol</strong>, yaitu saat gaya telah seimbang (ΣF = 0).</p>
-        </div>
-      </div>
-      <div class="phase-step p3">
-        <span style="font-size:1.3rem;flex-shrink:0">📊</span>
-        <div class="phase-content">
-          <h4>Grafik Ketinggian thd Waktu (h-t)</h4>
-          <p>Mulanya grafik membentuk kurva parabola seiring bertambahnya kecepatan. Namun, begitu benda mencapai kecepatan terminal (konstan), kurvanya akan berubah wujud menjadi <strong>garis lurus yang miring ke bawah</strong>.</p>
-        </div>
-      </div>
-      <div class="phase-step p4">
-        <span style="font-size:1.3rem;flex-shrink:0">🔄</span>
-        <div class="phase-content">
-          <h4>Grafik Ketinggian thd Kecepatan (h-v)</h4>
-          <p>Sumbu-X adalah Kecepatan dan Sumbu-Y adalah Ketinggian. Kurva bermula dari atas (ketinggian awal, kecepatan nol) lalu turun melengkung ke kanan. Jika benda mencapai kecepatan terminal, kurva akan berubah wujud menjadi <strong>garis lurus vertikal ke bawah</strong> — artinya ketinggian terus berkurang menuju tanah, namun kecepatan benda sudah stabil.</p>
+          <h4>\(F_d \propto v^2\) — Hambatan Kuadratik</h4>
+          <p>Gaya hambat bertumbuh secara eksponensial seiring pertambahan kecepatan. Kecepatan berlipat dua berarti hambatan berlipat empat.</p>
         </div>
       </div>
     </div>
@@ -781,7 +754,47 @@ nav{
   <div class="mat-divider"></div>
 
   <section class="mat-section reveal" id="s7">
-    <div class="section-num">07 &nbsp; Referensi</div>
+    <div class="section-num">07 &nbsp; Analisis Grafik</div>
+    <h2>Cara Membaca Grafik Simulasi</h2>
+    
+    <p>Dalam laboratorium virtual, kamu akan dihadapkan dengan fitur analisis grafik interaktif. Memahami bentuk kurva ini adalah kunci untuk menganalisis gerak jatuh benda secara mendalam:</p>
+
+    <div class="phase-flow">
+      <div class="phase-step p1">
+        <span style="font-size:1.3rem;flex-shrink:0">📈</span>
+        <div class="phase-content">
+          <h4>Grafik Kecepatan thd Waktu (\(v-t\))</h4>
+          <p>Pada awalnya, kurva akan naik linier (benda dipercepat). Namun, saat hambatan udara membesar, kurva perlahan melengkung dan akhirnya <strong>mendatar (horizontal)</strong>. Garis mendatar ini membuktikan benda telah mencapai kecepatan terminal (\(v_t\)).</p>
+        </div>
+      </div>
+      <div class="phase-step p2">
+        <span style="font-size:1.3rem;flex-shrink:0">📉</span>
+        <div class="phase-content">
+          <h4>Grafik Percepatan thd Waktu (\(a-t\))</h4>
+          <p>Kurva dimulai di angka \(9.81 \text{ m/s}^2\) (percepatan gravitasi maksimum). Seiring benda membelah udara, nilai percepatan akan terus turun melengkung ke bawah hingga <strong>menyentuh angka nol</strong>, yaitu saat gaya telah seimbang (\(\Sigma F = 0\)).</p>
+        </div>
+      </div>
+      <div class="phase-step p3">
+        <span style="font-size:1.3rem;flex-shrink:0">📊</span>
+        <div class="phase-content">
+          <h4>Grafik Ketinggian thd Waktu (\(h-t\))</h4>
+          <p>Mulanya grafik membentuk kurva parabola seiring bertambahnya kecepatan. Namun, begitu benda mencapai kecepatan terminal (konstan), kurvanya akan berubah wujud menjadi <strong>garis lurus yang miring ke bawah</strong>.</p>
+        </div>
+      </div>
+      <div class="phase-step p4">
+        <span style="font-size:1.3rem;flex-shrink:0">🔄</span>
+        <div class="phase-content">
+          <h4>Grafik Ketinggian thd Kecepatan (\(h-v\))</h4>
+          <p>Sumbu-X adalah Kecepatan dan Sumbu-Y adalah Ketinggian. Kurva bermula dari atas (ketinggian awal) lalu turun melengkung ke kanan. Jika benda mencapai kecepatan terminal, kurva akan berubah wujud menjadi <strong>garis lurus vertikal ke bawah</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mat-divider"></div>
+
+  <section class="mat-section reveal" id="s8">
+    <div class="section-num">08 &nbsp; Referensi</div>
     <h2>Daftar Pustaka</h2>
     <p>Konsep dan persamaan pada media simulasi ini dirujuk dari buku literatur fisika tingkat universitas yang diakui secara global:</p>
     
@@ -802,7 +815,7 @@ nav{
     <div style="font-size:2rem;margin-bottom:1rem">🚀</div>
     <h3>Siap Membuktikannya Sendiri?</h3>
     <p>Teori dan landasan matematis sudah kamu kuasai — sekarang saatnya eksperimen! Manipulasi massa, diameter, dan atmosfer secara real-time di ruang simulasi.</p>
-    <div>
+    <div class="btn-group">
       <a href="index1.html" class="btn-cta">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         Buka Simulasi
@@ -825,7 +838,7 @@ const obs=new IntersectionObserver(entries=>{
 },{threshold:0.07});
 reveals.forEach(r=>obs.observe(r));
 
-// PROGRESS NAV ACTIVE
+// PROGRESS NAV ACTIVE (Menyinkronkan highlight menu atas berdasarkan scroll)
 const sections=[...document.querySelectorAll('.mat-section')];
 const navItems=[...document.querySelectorAll('.pnav-item')];
 window.addEventListener('scroll',()=>{

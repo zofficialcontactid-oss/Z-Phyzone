@@ -10,8 +10,8 @@
     --accent-cyan: #06b6d4;     
     --accent-glow: 0 0 10px rgba(6, 182, 212, 0.5);
     --btn-play: #10b981;
-    --btn-pause: #f59e0b;
-    --btn-reset: #ef4444;
+    --btn-pause: #ef4444;
+    --btn-reset: #ffe607;
     --base-font: max(1.5vh, 11px); 
 }
 

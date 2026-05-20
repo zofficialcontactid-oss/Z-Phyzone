@@ -27,8 +27,6 @@ let currentGraph1 = 'speed';
 let currentGraph2 = 'accel';
 
 let chartBounds = { time: 10, speed: 40, height: 75, accel: 12 };
-
-// PERBAIKAN LAG: Penghitung frame untuk update grafik
 let frameCounter = 0; 
 
 /* =========================================
@@ -55,8 +53,16 @@ function updatePageTheme() {
     draw();
 }
 
+// FUNGSI PENGAMAN: Me-reset simulasi jika parameter diubah saat di-pause tengah jalan
+function resetIfStarted() {
+    if (leftBall && rightBall && (leftBall.time > 0 || rightBall.time > 0)) {
+        resetSimulation();
+    }
+}
+
 document.querySelectorAll('input[name="atm-left"], input[name="atm-right"]').forEach(radio => {
     radio.addEventListener('change', function(e) {
+        resetIfStarted(); // Reset jika diganti di tengah jalan
         if (leftBall && !isRunning) leftBall.atmosphere = document.querySelector('input[name="atm-left"]:checked').value;
         if (rightBall && !isRunning) rightBall.atmosphere = document.querySelector('input[name="atm-right"]:checked').value;
         updatePageTheme();
@@ -65,24 +71,20 @@ document.querySelectorAll('input[name="atm-left"], input[name="atm-right"]').for
 
 /* --- LOGIKA PERHITUNGAN MASSA JENIS & UPDATE UI --- */
 
-// Fungsi baru untuk menghitung dan menampilkan massa jenis ke layar
 function updateDensityDisplay(side) {
     const massVal = parseFloat(document.getElementById(`mass-${side}`).value);
     const diamVal = parseFloat(document.getElementById(`diameter-${side}`).value);
     const displayEl = document.getElementById(`density-display-${side}`);
     
-    // Cegah error jika input kosong/nol
     if (isNaN(massVal) || isNaN(diamVal) || diamVal <= 0) {
         displayEl.textContent = 'ρ = - kg/m³';
         return;
     }
     
-    // Rumus: Volume Bola = 4/3 * pi * r^3, lalu Rho = m / V
     const radius = diamVal / 2;
     const volume = (4 / 3) * Math.PI * Math.pow(radius, 3);
     const density = massVal / volume;
     
-    // Tampilkan format angka yang cantik tanpa desimal berlebih
     displayEl.textContent = `ρ = ${density.toLocaleString('id-ID', {maximumFractionDigits: 0})} kg/m³`;
 }
 
@@ -95,14 +97,10 @@ function hitungMassaOtomatis(side) {
     
     if (isNaN(diam) || diam <= 0) diam = 0.01; 
 
-    // Hitung Volume Bola ( V = 4/3 * pi * r^3 )
     const radius = diam / 2;
     const volume = (4 / 3) * Math.PI * Math.pow(radius, 3);
-    
-    // Hitung Massa ( m = rho * V )
     const hitungMassa = massaJenis * volume;
 
-    // Update angka di HTML
     const massInput = document.getElementById(`mass-${side}`);
     massInput.value = hitungMassa.toFixed(3);
     
@@ -110,48 +108,46 @@ function hitungMassaOtomatis(side) {
     if (ball && !isRunning) ball.mass = hitungMassa;
 }
 
-// Pasang pendeteksi perubahan (Event Listeners)
 ['left', 'right'].forEach(side => {
-    // Jalankan sekali saat halaman pertama dimuat agar angka rho muncul
     setTimeout(() => updateDensityDisplay(side), 100);
 
-    // Jika dropdown material diubah
     document.getElementById(`material-${side}`).addEventListener('change', () => {
+        resetIfStarted();
         hitungMassaOtomatis(side);
-        updateDensityDisplay(side); // Panggil fungsi update rho
+        updateDensityDisplay(side); 
     });
 
-    // Jika input diameter diketik manual
     document.getElementById(`diameter-${side}`).addEventListener('input', e => {
+        resetIfStarted();
         let ball = side === 'left' ? leftBall : rightBall;
         if (ball && !isRunning) {
             ball.diameter = parseFloat(e.target.value);
             hitungMassaOtomatis(side); 
-            updateDensityDisplay(side); // Panggil fungsi update rho
+            updateDensityDisplay(side); 
             draw();
         }
     });
 
-    // Jika input massa diketik manual
     document.getElementById(`mass-${side}`).addEventListener('input', e => {
+        resetIfStarted();
         document.getElementById(`material-${side}`).value = 'custom'; 
         let ball = side === 'left' ? leftBall : rightBall;
         if (ball && !isRunning) ball.mass = parseFloat(e.target.value);
-        updateDensityDisplay(side); // Panggil fungsi update rho
+        updateDensityDisplay(side); 
     });
 });
 
-// --- SINKRONISASI KETINGGIAN KIRI ---
+// SINKRONISASI KETINGGIAN KIRI
 const heightLeftRange = document.getElementById('height-left');
 const heightLeftInput = document.getElementById('height-left-val');
-heightLeftRange.addEventListener('input', function(e) { heightLeftInput.value = e.target.value; if (leftBall && !isRunning) updateBallPosition('left'); });
-heightLeftInput.addEventListener('input', function(e) { let val = parseFloat(e.target.value); if (isNaN(val)) val = 0; if (val > 75) val = 75; heightLeftRange.value = val; if (leftBall && !isRunning) updateBallPosition('left'); });
+heightLeftRange.addEventListener('input', function(e) { resetIfStarted(); heightLeftInput.value = e.target.value; if (leftBall && !isRunning) updateBallPosition('left'); });
+heightLeftInput.addEventListener('input', function(e) { resetIfStarted(); let val = parseFloat(e.target.value); if (isNaN(val)) val = 0; if (val > 75) val = 75; heightLeftRange.value = val; if (leftBall && !isRunning) updateBallPosition('left'); });
 
-// --- SINKRONISASI KETINGGIAN KANAN ---
+// SINKRONISASI KETINGGIAN KANAN
 const heightRightRange = document.getElementById('height-right');
 const heightRightInput = document.getElementById('height-right-val');
-heightRightRange.addEventListener('input', function(e) { heightRightInput.value = e.target.value; if (rightBall && !isRunning) updateBallPosition('right'); });
-heightRightInput.addEventListener('input', function(e) { let val = parseFloat(e.target.value); if (isNaN(val)) val = 0; if (val > 75) val = 75; heightRightRange.value = val; if (rightBall && !isRunning) updateBallPosition('right'); });
+heightRightRange.addEventListener('input', function(e) { resetIfStarted(); heightRightInput.value = e.target.value; if (rightBall && !isRunning) updateBallPosition('right'); });
+heightRightInput.addEventListener('input', function(e) { resetIfStarted(); let val = parseFloat(e.target.value); if (isNaN(val)) val = 0; if (val > 75) val = 75; heightRightRange.value = val; if (rightBall && !isRunning) updateBallPosition('right'); });
 
 document.getElementById('play-btn').addEventListener('click', startSimulation);
 document.getElementById('pause-btn').addEventListener('click', pauseSimulation);
@@ -235,12 +231,10 @@ function calculateTerminalVelocity(ball) {
     return Math.sqrt(effectiveWeight / k);
 }
 
-// PERBAIKAN BUG: Mencegah input 0 atau angka negatif agar tidak terjadi Infinity
 function refreshBallParams(ball, side) {
     let massVal = parseFloat(document.getElementById(`mass-${side}`).value);
     let diamVal = parseFloat(document.getElementById(`diameter-${side}`).value);
 
-    // KOREKSI OTOMATIS: Jika tidak valid, kembalikan ke angka aman terkecil
     if (isNaN(massVal) || massVal <= 0) { massVal = 0.001; document.getElementById(`mass-${side}`).value = 0.001; }
     if (isNaN(diamVal) || diamVal <= 0) { diamVal = 0.01; document.getElementById(`diameter-${side}`).value = 0.01; }
 
@@ -252,7 +246,7 @@ function refreshBallParams(ball, side) {
 }
 
 /* =========================================
-   4. CORE SIMULATION LOOP
+   4. CORE SIMULATION LOOP (PERBAIKAN PAUSE/RESUME)
    ========================================= */
 
 function calculateChartBounds() {
@@ -280,19 +274,39 @@ function calculateChartBounds() {
 }
 
 function startSimulation() {
+    if (isRunning) return; // Cegah double klik saat sudah jalan
+    
     if (!leftBall || !rightBall) initializeBalls();
-    [leftBall, rightBall].forEach(ball => {
-        ball.historySpeed = []; ball.historyAccel = []; ball.historyHeight = []; ball.historyHeightSpeed = []; ball.lastLogTime = -1; 
-    });
-    
-    refreshBallParams(leftBall, 'left'); refreshBallParams(rightBall, 'right');
-    updatePageTheme(); calculateChartBounds(); initCharts();           
 
-    isRunning = true; const now = Date.now();
-    leftBall.isActive = true; leftBall.startTime = now;
-    rightBall.isActive = true; rightBall.startTime = now;
+    // Cek status apakah bola sudah di tanah atau belum
+    const isFinished = (leftBall.hasHitGround && rightBall.hasHitGround);
+    const isResuming = (leftBall.time > 0 || rightBall.time > 0) && !isFinished;
+
+    // Jika MULAI BARU atau RESTART (bukan melanjutkan pause)
+    if (!isResuming) {
+        [leftBall, rightBall].forEach(ball => {
+            ball.historySpeed = []; ball.historyAccel = []; ball.historyHeight = []; ball.historyHeightSpeed = []; ball.lastLogTime = -1; 
+            ball.isActive = true;
+            ball.hasHitGround = false;
+        });
+        refreshBallParams(leftBall, 'left'); refreshBallParams(rightBall, 'right');
+        updatePageTheme(); calculateChartBounds(); initCharts();           
+        frameCounter = 0;
+    }
+
+    isRunning = true; 
+    const now = Date.now();
+
+    // Penyesuaian timer agar bisa di-resume
+    if (!isResuming) {
+        leftBall.startTime = now;
+        rightBall.startTime = now;
+    } else {
+        // Logika mundur waktu sesaat agar match dengan waktu pause
+        if (!leftBall.hasHitGround) leftBall.startTime = now - (leftBall.time * 1000);
+        if (!rightBall.hasHitGround) rightBall.startTime = now - (rightBall.time * 1000);
+    }
     
-    frameCounter = 0; // Reset counter saat mulai
     animate();    
 }
 
@@ -331,7 +345,6 @@ function animate() {
     draw(); 
     updateDisplays(); 
 
-    // PERBAIKAN LAG: Update grafik chart hanya setiap 4 frame (~15 FPS)
     frameCounter++;
     if (frameCounter % 4 === 0 || allFinished) {
         updateCharts();
@@ -440,19 +453,14 @@ function drawGrid() {
 }
 
 function drawBall(ball, color) {
-    // --- PEMBARUAN VISUAL BOLA & PUSAT VISUAL ---
     const displayRadius = Math.max(8, Math.min(60, ball.diameter * 120));
-    
-    // Titik y dikurangi radius agar permukaan Bawah bola pas di garis (tidak tenggelam)
     const visualY = ball.y - displayRadius; 
 
-    // Bayangan (tetap di posisi tanah)
     ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; 
     ctx.beginPath(); 
     ctx.ellipse(ball.x, groundY + 5, displayRadius * 0.8, displayRadius * 0.3, 0, 0, Math.PI * 2); 
     ctx.fill();
 
-    // Warna bola
     const ballGradient = ctx.createRadialGradient(
         ball.x - displayRadius * 0.3, visualY - displayRadius * 0.3, 0, 
         ball.x, visualY, displayRadius
@@ -465,13 +473,11 @@ function drawBall(ball, color) {
     ctx.arc(ball.x, visualY, displayRadius, 0, Math.PI * 2); 
     ctx.fill();
     
-    // Pantulan cahaya
     ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; 
     ctx.beginPath(); 
     ctx.arc(ball.x - displayRadius * 0.3, visualY - displayRadius * 0.3, displayRadius * 0.25, 0, Math.PI * 2); 
     ctx.fill();
     
-    // Efek motion blur mengikuti titik visualY baru
     if (ball.velocity > 5 && ball.isActive) {
         ctx.globalAlpha = 0.3; 
         ctx.fillStyle = color;
@@ -500,15 +506,17 @@ function updateBallStats(ball, side) {
 }
 
 /* =========================================
-   6. CHART.JS CONFIGURATION
+   6. CHART.JS CONFIGURATION 
    ========================================= */
+
+Chart.defaults.font.family = "'Cambria Math', 'Times New Roman', serif";
 
 function initCharts() {
     if (chart1) chart1.destroy(); if (chart2) chart2.destroy();
     const isMobile = window.innerWidth <= 768;
     Chart.defaults.color = '#ccc'; 
     Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'; 
-    Chart.defaults.font.size = isMobile ? 8 : 11; 
+    Chart.defaults.font.size = isMobile ? 8 : 12; 
     updateChartConfig(1); updateChartConfig(2);
 }
 
@@ -523,10 +531,10 @@ function updateChartConfig(chartNum) {
 function getChartConfig(graphType) {
     let xLabel, yLabel, xMax, yMax;
     switch(graphType) {
-        case 'speed': xLabel = 'Waktu (s)'; yLabel = 'Kecepatan (m/s)'; xMax = chartBounds.time; yMax = chartBounds.speed; break;
-        case 'accel': xLabel = 'Waktu (s)'; yLabel = 'Percepatan (m/s²)'; xMax = chartBounds.time; yMax = chartBounds.accel; break;
-        case 'height': xLabel = 'Waktu (s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.time; yMax = chartBounds.height; break;
-        case 'heightspeed': xLabel = 'Kecepatan (m/s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.speed; yMax = chartBounds.height; break;
+        case 'speed': xLabel = 'Waktu, t (s)'; yLabel = 'Kecepatan, v (m/s)'; xMax = chartBounds.time; yMax = chartBounds.speed; break;
+        case 'accel': xLabel = 'Waktu, t (s)'; yLabel = 'Percepatan, a (m/s²)'; xMax = chartBounds.time; yMax = chartBounds.accel; break;
+        case 'height': xLabel = 'Waktu, t (s)'; yLabel = 'Ketinggian, h (m)'; xMax = chartBounds.time; yMax = chartBounds.height; break;
+        case 'heightspeed': xLabel = 'Kecepatan, v (m/s)'; yLabel = 'Ketinggian, h (m)'; xMax = chartBounds.speed; yMax = chartBounds.height; break;
     }
     const isMobile = window.innerWidth <= 768;
     return {
@@ -540,11 +548,11 @@ function getChartConfig(graphType) {
         options: {
             responsive: true, maintainAspectRatio: false, animation: false, 
             scales: {
-                x: { type: 'linear', title: { display: true, text: xLabel, color: '#aaa', font: { size: isMobile ? 9 : 12 }, padding: {top: isMobile ? 2 : 4, bottom: 0} }, min: 0, max: xMax, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { size: isMobile ? 8 : 11 } } },
-                y: { title: { display: true, text: yLabel, color: '#aaa', font: { size: isMobile ? 9 : 12 }, padding: {bottom: isMobile ? 2 : 4} }, min: 0, max: yMax, beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { size: isMobile ? 8 : 11 } } }
+                x: { type: 'linear', title: { display: true, text: xLabel, color: '#aaa', font: { style: 'italic', size: isMobile ? 10 : 13 }, padding: {top: isMobile ? 2 : 4, bottom: 0} }, min: 0, max: xMax, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { size: isMobile ? 9 : 12 } } },
+                y: { title: { display: true, text: yLabel, color: '#aaa', font: { style: 'italic', size: isMobile ? 10 : 13 }, padding: {bottom: isMobile ? 2 : 4} }, min: 0, max: yMax, beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { font: { size: isMobile ? 9 : 12 } } }
             },
             plugins: {
-                legend: { position: isMobile ? 'right' : 'top', align: 'center', labels: { color: 'white', boxWidth: isMobile ? 10 : 40, boxHeight: isMobile ? 5 : 12, padding: isMobile ? 6 : 10, font: { size: isMobile ? 8 : 12 } } },
+                legend: { position: isMobile ? 'right' : 'top', align: 'center', labels: { color: 'white', boxWidth: isMobile ? 10 : 40, boxHeight: isMobile ? 5 : 12, padding: isMobile ? 6 : 10, font: { size: isMobile ? 9 : 13 } } },
                 zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }, pan: { enabled: true, mode: 'xy', modifierKey: null, threshold: 5 } }
             }
         }

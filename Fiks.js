@@ -634,3 +634,55 @@ document.addEventListener('DOMContentLoaded', () => {
 // Start Engine
 initStars();
 initializeBalls();
+
+/* =========================================
+   9. LOGIKA LKPD (LEMBAR KERJA INTERAKTIF)
+   ========================================= */
+const btnOpenLkpd = document.getElementById('btn-open-lkpd');
+const lkpdWidget = document.getElementById('lkpd-widget');
+const btnToggleLkpd = document.getElementById('btn-toggle-lkpd');
+const btnCloseLkpd = document.getElementById('btn-close-lkpd'); // Tombol X
+
+// Fungsi Buka / Tutup LKPD dari tombol kontrol utama (Toggle)
+if (btnOpenLkpd && lkpdWidget) {
+    btnOpenLkpd.addEventListener('click', () => {
+        lkpdWidget.classList.toggle('lkpd-hidden');
+        
+        // Jika widget sedang dibuka (tidak hidden), pastikan tidak dalam mode minimize
+        if (!lkpdWidget.classList.contains('lkpd-hidden')) {
+            lkpdWidget.classList.remove('minimized');
+            if (btnToggleLkpd) btnToggleLkpd.textContent = "_";
+        }
+    });
+}
+
+// Fungsi Tutup LKPD dari tombol X (Silang)
+if (btnCloseLkpd && lkpdWidget) {
+    btnCloseLkpd.addEventListener('click', () => {
+        lkpdWidget.classList.add('lkpd-hidden');
+    });
+}
+
+// Fungsi Minimize / Maximize LKPD
+if (btnToggleLkpd && lkpdWidget) {
+    btnToggleLkpd.addEventListener('click', () => {
+        lkpdWidget.classList.toggle('minimized');
+        // Ubah icon tombol berdasarkan status
+        btnToggleLkpd.textContent = lkpdWidget.classList.contains('minimized') ? "□" : "_";
+    });
+}
+
+// Fungsi Pindah Misi
+function switchMission(missionId) {
+    // Sembunyikan semua misi
+    document.querySelectorAll('.mission-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    // Tampilkan misi yang dipilih
+    const targetMission = document.getElementById(`mission-${missionId}`);
+    if (targetMission) {
+        targetMission.classList.add('active');
+        // Scroll widget kembali ke atas jika teks panjang
+        document.getElementById('lkpd-body').scrollTop = 0;
+    }
+}

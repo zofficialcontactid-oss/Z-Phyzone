@@ -215,3 +215,94 @@ body {
     .welcome-btn-group { gap: 0.5rem; }
     .welcome-btn-start, .welcome-btn-skip-all { padding: 8px 16px; font-size: 0.8rem; }
 }
+
+/* =========================================
+   8. WIDGET LKPD (LEMBAR KERJA)
+   ========================================= */
+.lkpd-btn:hover { background: #3b82f6; color: white; box-shadow: 0 0 15px #3b82f6; }
+
+#lkpd-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px; /* Panel di pojok kiri bawah */
+    width: 340px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(34,211,238,0.1);
+    z-index: 8500;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+#lkpd-widget.lkpd-hidden {
+    transform: translateY(120%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+}
+
+#lkpd-widget.minimized .lkpd-content {
+    display: none;
+}
+
+.lkpd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: linear-gradient(90deg, rgba(37,99,235,0.2), rgba(34,211,238,0.1));
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px 12px 0 0;
+}
+
+.lkpd-header h3 { font-size: 1rem; color: #f0f4ff; }
+
+#btn-toggle-lkpd {
+    background: transparent; border: none; color: #64748b; font-weight: bold; cursor: pointer; padding: 0 5px;
+}
+#btn-toggle-lkpd:hover { color: #22d3ee; }
+
+#btn-close-lkpd:hover { color: #f87171 !important; transform: scale(1.1); }
+
+.lkpd-content {
+    padding: 16px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.mission-card { display: none; animation: fadeIn 0.3s; }
+.mission-card.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.mission-badge {
+    font-family: 'Consolas', monospace; font-size: 0.7rem; color: #22d3ee;
+    background: rgba(34,211,238,0.1); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(34,211,238,0.3);
+}
+
+.mission-card h4 { margin: 10px 0 5px 0; color: #f0f4ff; font-size: 1.05rem; }
+.mission-card p { font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px; }
+
+.mission-inst {
+    background: rgba(0,0,0,0.4); border-left: 3px solid #3b82f6; padding: 10px;
+    font-size: 0.85rem; color: #cbd5e1; border-radius: 4px; margin-bottom: 12px;
+}
+
+.mission-qna label { font-size: 0.85rem; color: #f0f4ff; display: block; margin-bottom: 5px; font-weight: 500; }
+.mission-qna textarea {
+    width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #334155;
+    border-radius: 6px; padding: 8px; color: #22d3ee; font-family: 'Consolas', monospace;
+    font-size: 0.85rem; margin-bottom: 12px; resize: vertical;
+}
+.mission-qna textarea:focus { outline: none; border-color: #22d3ee; }
+
+.mission-btn {
+    width: 100%; padding: 8px; background: linear-gradient(135deg, #2563eb, #22d3ee);
+    color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
+    margin-top: 5px; flex: 1;
+}
+.mission-btn.outline { background: transparent; color: #22d3ee; border: 1px solid #22d3ee; }
+.mission-btn:hover { filter: brightness(1.1); }
+
+.mission-success { text-align: center; color: #10b981; font-weight: bold; margin-top: 15px; font-size: 0.9rem; }

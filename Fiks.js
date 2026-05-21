@@ -53,7 +53,6 @@ function updatePageTheme() {
     draw();
 }
 
-// FUNGSI PENGAMAN: Me-reset simulasi jika parameter diubah saat di-pause tengah jalan
 function resetIfStarted() {
     if (leftBall && rightBall && (leftBall.time > 0 || rightBall.time > 0)) {
         resetSimulation();
@@ -62,7 +61,7 @@ function resetIfStarted() {
 
 document.querySelectorAll('input[name="atm-left"], input[name="atm-right"]').forEach(radio => {
     radio.addEventListener('change', function(e) {
-        resetIfStarted(); // Reset jika diganti di tengah jalan
+        resetIfStarted(); 
         if (leftBall && !isRunning) leftBall.atmosphere = document.querySelector('input[name="atm-left"]:checked').value;
         if (rightBall && !isRunning) rightBall.atmosphere = document.querySelector('input[name="atm-right"]:checked').value;
         updatePageTheme();
@@ -137,13 +136,11 @@ function hitungMassaOtomatis(side) {
     });
 });
 
-// SINKRONISASI KETINGGIAN KIRI
 const heightLeftRange = document.getElementById('height-left');
 const heightLeftInput = document.getElementById('height-left-val');
 heightLeftRange.addEventListener('input', function(e) { resetIfStarted(); heightLeftInput.value = e.target.value; if (leftBall && !isRunning) updateBallPosition('left'); });
 heightLeftInput.addEventListener('input', function(e) { resetIfStarted(); let val = parseFloat(e.target.value); if (isNaN(val)) val = 0; if (val > 75) val = 75; heightLeftRange.value = val; if (leftBall && !isRunning) updateBallPosition('left'); });
 
-// SINKRONISASI KETINGGIAN KANAN
 const heightRightRange = document.getElementById('height-right');
 const heightRightInput = document.getElementById('height-right-val');
 heightRightRange.addEventListener('input', function(e) { resetIfStarted(); heightRightInput.value = e.target.value; if (rightBall && !isRunning) updateBallPosition('right'); });
@@ -246,7 +243,7 @@ function refreshBallParams(ball, side) {
 }
 
 /* =========================================
-   4. CORE SIMULATION LOOP (PERBAIKAN PAUSE/RESUME)
+   4. CORE SIMULATION LOOP
    ========================================= */
 
 function calculateChartBounds() {
@@ -274,15 +271,13 @@ function calculateChartBounds() {
 }
 
 function startSimulation() {
-    if (isRunning) return; // Cegah double klik saat sudah jalan
+    if (isRunning) return; 
     
     if (!leftBall || !rightBall) initializeBalls();
 
-    // Cek status apakah bola sudah di tanah atau belum
     const isFinished = (leftBall.hasHitGround && rightBall.hasHitGround);
     const isResuming = (leftBall.time > 0 || rightBall.time > 0) && !isFinished;
 
-    // Jika MULAI BARU atau RESTART (bukan melanjutkan pause)
     if (!isResuming) {
         [leftBall, rightBall].forEach(ball => {
             ball.historySpeed = []; ball.historyAccel = []; ball.historyHeight = []; ball.historyHeightSpeed = []; ball.lastLogTime = -1; 
@@ -297,12 +292,10 @@ function startSimulation() {
     isRunning = true; 
     const now = Date.now();
 
-    // Penyesuaian timer agar bisa di-resume
     if (!isResuming) {
         leftBall.startTime = now;
         rightBall.startTime = now;
     } else {
-        // Logika mundur waktu sesaat agar match dengan waktu pause
         if (!leftBall.hasHitGround) leftBall.startTime = now - (leftBall.time * 1000);
         if (!rightBall.hasHitGround) rightBall.startTime = now - (rightBall.time * 1000);
     }
@@ -399,7 +392,7 @@ function updateBallPhysics(ball, currentTime) {
 }
 
 /* =========================================
-   5. VISUALIZATION (THEME SWITCHING LOGIC)
+   5. VISUALIZATION 
    ========================================= */
 
 function draw() {
@@ -597,14 +590,17 @@ document.addEventListener('fullscreenchange', () => {
    8. INTERACTIVE TOUR / DEMO LOGIC
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
+    // MEMPERBARUI LANGKAH-LANGKAH DEMO MENJADI 11 LANGKAH TERMASUK LKPD
     const STEPS = [
-        { target: 'sec-obj-left', title: 'Panel Objek Kiri (Merah)', desc: 'Ini adalah pengaturan untuk <strong>Objek Pertama</strong>. Pilih <strong>Material</strong> secara bebas atau atur massa manual.', pos: 'right' },
-        { target: 'input-mass-left', title: '⚖️ Parameter Massa', desc: '<em>Massa</em> menentukan besarnya gaya berat benda. Pilih preset material seperti Besi untuk menghitung otomatis massa berdasarkan ukurannya.', pos: 'right' },
-        { target: 'input-diam-left', title: '📏 Parameter Diameter', desc: 'Diameter menentukan ukuran benda. Jika memilih material Besi, saat diameter diperbesar, <strong>massa akan otomatis bertambah berat!</strong>', pos: 'right' },
+        { target: 'sec-obj-left', title: 'Panel Objek Kiri (Merah)', desc: 'Ini adalah pengaturan untuk <strong>Objek Pertama</strong>. Mari kita lihat komponennya satu per satu.', pos: 'right' },
+        { target: 'material-left', title: '🧱 Pilihan Material', desc: 'Pilih jenis material di sini. Sistem akan otomatis menampilkan nilai <strong>Massa Jenis (<span class="math-sym">ρ</span>)</strong> dari benda tersebut.', pos: 'right' },
+        { target: 'input-mass-left', title: '⚖️ Parameter Massa', desc: 'Jika material diatur ke Kustom, kamu bisa mengubah massanya bebas. Jika menggunakan preset, massanya dihitung otomatis.', pos: 'right' },
+        { target: 'input-diam-left', title: '📏 Parameter Diameter', desc: 'Diameter memengaruhi <strong>Luas Penampang</strong> dan <strong>Volume</strong> benda. Pada benda nyata, ukuran memengaruhi gaya hambat udara!', pos: 'right' },
         { target: 'input-h-left', title: '📐 Ketinggian Awal', desc: 'Geser <em>slider</em> atau ketik angka langsung untuk mengatur ketinggian awal jatuh (0–75 m).', pos: 'right' },
         { target: 'sec-obj-right', title: 'Panel Objek Kanan (Biru)', desc: 'Pengaturan serupa untuk <strong>Objek Kedua</strong>. Coba bandingkan Besi dengan Kayu Jati, lalu lihat siapa yang lebih dulu menyentuh tanah!', pos: 'right' },
-        { target: 'sec-atm', title: '🌐 Pilih Kondisi Atmosfer', desc: '<strong>Vacuum</strong> = tidak ada hambatan udara, murni gravitasi. <strong>Udara</strong> = ada hambatan udara. Atur kondisi berbeda untuk tiap objek!', pos: 'right' },
-        { target: 'controls-bar', title: '🎮 Tombol Kontrol Simulasi', desc: '<strong>▶ Play</strong> — mulai. <strong>⏸ Pause</strong> — jeda. <strong>↻ Reset</strong> — kembalikan ke awal. <strong>⛶ Fullscreen</strong> — layar penuh.', pos: 'top' },
+        { target: 'sec-atm', title: '🌐 Pilih Kondisi Atmosfer', desc: '<strong>Vacuum</strong> = tidak ada hambatan udara, murni gravitasi. <strong>Udara</strong> = ada hambatan udara.', pos: 'right' },
+        { target: 'controls-bar', title: '🎮 Tombol Kontrol Simulasi', desc: 'Gunakan tombol ini untuk <strong>▶ Play</strong>, <strong>⏸ Pause</strong>, dan <strong>↻ Reset</strong> simulasi.', pos: 'top' },
+        { target: 'btn-open-lkpd', title: '📝 Lembar Kerja (LKPD)', desc: '<strong>Sangat Penting!</strong> Klik tombol ini untuk membuka Misi Eksperimen yang akan memandumu memecahkan masalah fisika.', pos: 'top' },
         { target: 'sec-data-right', title: '📋 Panel Data Real-Time', desc: 'Menampilkan data fisika secara <em>live</em>: jarak tempuh, kecepatan, <strong>kecepatan terminal</strong>, waktu jatuh, dan percepatan.', pos: 'left' },
         { target: 'panel-graphs', title: '📈 Grafik Interaktif', desc: 'Gunakan tombol <strong>+ / −</strong> untuk zoom, dan <strong>⟲</strong> untuk reset tampilan grafik (v-t, a-t, h-t, h-v).', pos: 'left' }
     ];
@@ -623,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function positionCard(tId, pos) { const el = document.getElementById(tId); if(!el) return; const r=el.getBoundingClientRect(), cW=card.offsetWidth||300, cH=card.offsetHeight||200, pad=18, vW=window.innerWidth, vH=window.innerHeight; let l,t; const vis = r.top>=0&&r.top<vH&&r.left>=0&&r.left<vW; if(!vis){l=Math.max(10,(vW-cW)/2);t=Math.max(10,(vH-cH)/2);}else if(pos==='right'){l=Math.min(r.right+pad,vW-cW-10);t=Math.max(10,Math.min(r.top+r.height/2-cH/2,vH-cH-10));}else if(pos==='left'){l=Math.max(10,r.left-cW-pad);t=Math.max(10,Math.min(r.top+r.height/2-cH/2,vH-cH-10));}else if(pos==='top'){l=Math.max(10,Math.min(r.left+r.width/2-cW/2,vW-cW-10));t=Math.max(10,r.top-cH-pad);}else{l=Math.max(10,Math.min(r.left+r.width/2-cW/2,vW-cW-10));t=Math.min(vH-cH-10,r.bottom+pad);} if(l+cW>vW)l=Math.max(10,vW-cW-10); if(t+cH>vH)t=Math.max(10,vH-cH-10); card.style.left=l+'px'; card.style.top=t+'px'; }
     function showStep(idx) { if(idx>=STEPS.length){endDemo();return;} currentStep=idx; const s=STEPS[idx]; badge.textContent=`Langkah ${idx+1} / ${STEPS.length}`; titleEl.textContent=s.title; descEl.innerHTML=s.desc; nextBtn.textContent=idx===STEPS.length-1?'Selesai ✓':'Lanjut →'; buildDots(); const el=document.getElementById(s.target); if(el){ el.scrollIntoView({behavior:'auto',block:'nearest',inline:'nearest'}); requestAnimationFrame(()=>{requestAnimationFrame(()=>{spotlightTo(s.target);positionCard(s.target,s.pos);});}); }else{requestAnimationFrame(()=>{spotlightTo(s.target);positionCard(s.target,s.pos);});} }
     function startDemo() { welcome.classList.add('hidden'); setTimeout(()=>welcome.style.display='none',500); demoActive=true; overlay.classList.remove('hidden'); showStep(0); }
-    function endDemo() { demoActive=false; overlay.classList.add('hidden'); const h=document.getElementById('hint-box'); if(h){h.textContent='🚀 Siap! Atur parameter & klik ▶ Play untuk mulai!'; h.style.borderColor='#22d3ee'; h.style.color='#22d3ee'; h.style.background='rgba(34,211,238,0.08)'; setTimeout(()=>{h.textContent='💡 Atur parameter lalu klik Play'; h.style.borderColor=''; h.style.color=''; h.style.background='';},3000); } }
+    function endDemo() { demoActive=false; overlay.classList.add('hidden'); const h=document.getElementById('hint-box'); if(h){h.textContent='🚀 Siap! Buka LKPD (📝) & mulai eksperimen!'; h.style.borderColor='#22d3ee'; h.style.color='#22d3ee'; h.style.background='rgba(34,211,238,0.08)'; setTimeout(()=>{h.textContent='💡 Atur parameter lalu klik Play'; h.style.borderColor=''; h.style.color=''; h.style.background='';},4000); } }
     function skipAll() { welcome.classList.add('hidden'); setTimeout(()=>welcome.style.display='none',500); overlay.classList.add('hidden'); }
     
     btnStart.addEventListener('click', startDemo); btnSkipAll.addEventListener('click', skipAll); nextBtn.addEventListener('click', ()=>showStep(currentStep+1)); skipBtn.addEventListener('click', endDemo);
@@ -631,24 +627,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', e=>{if(!demoActive)return; if(e.key==='Escape')endDemo(); if(e.key==='Enter'||e.key==='ArrowRight')showStep(currentStep+1);});
 });
 
-// Start Engine
-initStars();
-initializeBalls();
-
 /* =========================================
    9. LOGIKA LKPD (LEMBAR KERJA INTERAKTIF)
    ========================================= */
 const btnOpenLkpd = document.getElementById('btn-open-lkpd');
 const lkpdWidget = document.getElementById('lkpd-widget');
 const btnToggleLkpd = document.getElementById('btn-toggle-lkpd');
-const btnCloseLkpd = document.getElementById('btn-close-lkpd'); // Tombol X
+const btnCloseLkpd = document.getElementById('btn-close-lkpd'); 
 
-// Fungsi Buka / Tutup LKPD dari tombol kontrol utama (Toggle)
 if (btnOpenLkpd && lkpdWidget) {
     btnOpenLkpd.addEventListener('click', () => {
         lkpdWidget.classList.toggle('lkpd-hidden');
-        
-        // Jika widget sedang dibuka (tidak hidden), pastikan tidak dalam mode minimize
         if (!lkpdWidget.classList.contains('lkpd-hidden')) {
             lkpdWidget.classList.remove('minimized');
             if (btnToggleLkpd) btnToggleLkpd.textContent = "_";
@@ -656,33 +645,26 @@ if (btnOpenLkpd && lkpdWidget) {
     });
 }
 
-// Fungsi Tutup LKPD dari tombol X (Silang)
 if (btnCloseLkpd && lkpdWidget) {
     btnCloseLkpd.addEventListener('click', () => {
         lkpdWidget.classList.add('lkpd-hidden');
     });
 }
 
-// Fungsi Minimize / Maximize LKPD
 if (btnToggleLkpd && lkpdWidget) {
     btnToggleLkpd.addEventListener('click', () => {
         lkpdWidget.classList.toggle('minimized');
-        // Ubah icon tombol berdasarkan status
         btnToggleLkpd.textContent = lkpdWidget.classList.contains('minimized') ? "□" : "_";
     });
 }
 
-// Fungsi Pindah Misi
 function switchMission(missionId) {
-    // Sembunyikan semua misi
     document.querySelectorAll('.mission-card').forEach(card => {
         card.classList.remove('active');
     });
-    // Tampilkan misi yang dipilih
     const targetMission = document.getElementById(`mission-${missionId}`);
     if (targetMission) {
         targetMission.classList.add('active');
-        // Scroll widget kembali ke atas jika teks panjang
         document.getElementById('lkpd-body').scrollTop = 0;
     }
 }

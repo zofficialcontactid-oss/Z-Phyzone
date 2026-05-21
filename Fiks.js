@@ -175,6 +175,10 @@ function initializeBalls() {
 
     updatePageTheme(); 
     draw(); 
+    
+    // FIX BUG GRAFIK HITAM: Merender grafik kosong bersumbu sejak awal web dibuka
+    calculateChartBounds(); 
+    initCharts();
 }
 
 function createBallObject(params) {
@@ -590,7 +594,6 @@ document.addEventListener('fullscreenchange', () => {
    8. INTERACTIVE TOUR / DEMO LOGIC
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    // MEMPERBARUI LANGKAH-LANGKAH DEMO MENJADI 11 LANGKAH TERMASUK LKPD
     const STEPS = [
         { target: 'sec-obj-left', title: 'Panel Objek Kiri (Merah)', desc: 'Ini adalah pengaturan untuk <strong>Objek Pertama</strong>. Mari kita lihat komponennya satu per satu.', pos: 'right' },
         { target: 'material-left', title: '🧱 Pilihan Material', desc: 'Pilih jenis material di sini. Sistem akan otomatis menampilkan nilai <strong>Massa Jenis (<span class="math-sym">ρ</span>)</strong> dari benda tersebut.', pos: 'right' },
@@ -627,44 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', e=>{if(!demoActive)return; if(e.key==='Escape')endDemo(); if(e.key==='Enter'||e.key==='ArrowRight')showStep(currentStep+1);});
 });
 
-/* =========================================
-   9. LOGIKA LKPD (LEMBAR KERJA INTERAKTIF)
-   ========================================= */
-const btnOpenLkpd = document.getElementById('btn-open-lkpd');
-const lkpdWidget = document.getElementById('lkpd-widget');
-const btnToggleLkpd = document.getElementById('btn-toggle-lkpd');
-const btnCloseLkpd = document.getElementById('btn-close-lkpd'); 
-
-if (btnOpenLkpd && lkpdWidget) {
-    btnOpenLkpd.addEventListener('click', () => {
-        lkpdWidget.classList.toggle('lkpd-hidden');
-        if (!lkpdWidget.classList.contains('lkpd-hidden')) {
-            lkpdWidget.classList.remove('minimized');
-            if (btnToggleLkpd) btnToggleLkpd.textContent = "_";
-        }
-    });
-}
-
-if (btnCloseLkpd && lkpdWidget) {
-    btnCloseLkpd.addEventListener('click', () => {
-        lkpdWidget.classList.add('lkpd-hidden');
-    });
-}
-
-if (btnToggleLkpd && lkpdWidget) {
-    btnToggleLkpd.addEventListener('click', () => {
-        lkpdWidget.classList.toggle('minimized');
-        btnToggleLkpd.textContent = lkpdWidget.classList.contains('minimized') ? "□" : "_";
-    });
-}
-
-function switchMission(missionId) {
-    document.querySelectorAll('.mission-card').forEach(card => {
-        card.classList.remove('active');
-    });
-    const targetMission = document.getElementById(`mission-${missionId}`);
-    if (targetMission) {
-        targetMission.classList.add('active');
-        document.getElementById('lkpd-body').scrollTop = 0;
-    }
-}
+// START ENGINE
+initStars();
+initializeBalls();

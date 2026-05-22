@@ -528,10 +528,10 @@ function updateChartConfig(chartNum) {
 function getChartConfig(graphType) {
     let xLabel, yLabel, xMax, yMax;
     switch(graphType) {
-        case 'speed': xLabel = 'Waktu, t (s)'; yLabel = 'Kecepatan, v (m/s)'; xMax = chartBounds.time; yMax = chartBounds.speed; break;
-        case 'accel': xLabel = 'Waktu, t (s)'; yLabel = 'Percepatan, a (m/s²)'; xMax = chartBounds.time; yMax = chartBounds.accel; break;
-        case 'height': xLabel = 'Waktu, t (s)'; yLabel = 'Ketinggian, h (m)'; xMax = chartBounds.time; yMax = chartBounds.height; break;
-        case 'heightspeed': xLabel = 'Kecepatan, v (m/s)'; yLabel = 'Ketinggian, h (m)'; xMax = chartBounds.speed; yMax = chartBounds.height; break;
+        case 'speed': xLabel = 'Waktu (s)'; yLabel = 'Kecepatan (m/s)'; xMax = chartBounds.time; yMax = chartBounds.speed; break;
+        case 'accel': xLabel = 'Waktu (s)'; yLabel = 'Percepatan (m/s²)'; xMax = chartBounds.time; yMax = chartBounds.accel; break;
+        case 'height': xLabel = 'Waktu, (s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.time; yMax = chartBounds.height; break;
+        case 'heightspeed': xLabel = 'Kecepatan (m/s)'; yLabel = 'Ketinggian (m)'; xMax = chartBounds.speed; yMax = chartBounds.height; break;
     }
     const isMobile = window.innerWidth <= 768;
     return {

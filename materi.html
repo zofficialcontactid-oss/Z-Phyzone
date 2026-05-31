@@ -35,7 +35,7 @@ body{
 }
 
 /* SCROLLBAR */
-::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar{width:6px; height:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.4);border-radius:3px}
 
@@ -85,7 +85,7 @@ nav{
 
 .right-sidebar {
   position: fixed; top: 0; right: -320px;
-  width: 320px; height: 100vh;
+  width: 320px; height: 100vh; max-width: 100vw;
   background: rgba(10,16,32,0.95);
   backdrop-filter: blur(20px);
   border-left: 1px solid var(--border);
@@ -137,7 +137,7 @@ nav{
 /* HERO */
 .hero{
   position:relative;z-index:1;
-  padding:8rem 3rem 4rem; /* Padding atas disesuaikan agar tidak menabrak nav */
+  padding:8rem 3rem 4rem;
   max-width:900px;margin:0 auto;
   text-align:center;
 }
@@ -184,7 +184,7 @@ nav{
 /* SECTION */
 .mat-section{
   margin-bottom:4rem;
-  scroll-margin-top:130px;
+  scroll-margin-top:90px;
 }
 
 .section-num{
@@ -199,7 +199,7 @@ nav{
 .mat-section h2{
   font-family:'Orbitron',sans-serif;
   font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:700;
-  margin-bottom:1.2rem;line-height:1.25;
+  margin-bottom:1.2rem;line-height:1.3;
 }
 
 .mat-section p{
@@ -214,41 +214,30 @@ nav{
 .mat-section em{color:var(--cyan);font-style:normal;font-weight:500}
 
 /* MISKONSEPSI CARD */
+.miskonsepsi-card, .correction-card{
+  border-radius:10px;padding:1.4rem 1.6rem;
+  margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
+}
 .miskonsepsi-card{
   background:rgba(239,68,68,.08);
   border:1px solid rgba(239,68,68,.25);
-  border-radius:10px;padding:1.4rem 1.6rem;
-  margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
 }
-.misk-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
-
-.misk-text{
-  font-family:'Montserrat',sans-serif;
-  font-size:0.9rem;
-  color:#fca5a5;
-  line-height:1.7;
-  font-style:italic;
-}
-.misk-text strong{color:#f87171}
-
-/* CORRECTION CARD */
 .correction-card{
   background:rgba(34,197,94,.07);
   border:1px solid rgba(34,197,94,.2);
-  border-radius:10px;padding:1.4rem 1.6rem;
-  margin:1.4rem 0;display:flex;gap:1rem;align-items:flex-start;
 }
-.corr-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+.misk-icon, .corr-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
 
-.corr-text{
+.misk-text, .corr-text{
   font-family:'Montserrat',sans-serif;
-  font-size:0.9rem;
-  color:#86efac;
-  line-height:1.7;
+  font-size:0.9rem; line-height:1.7;
 }
+.misk-text{color:#fca5a5; font-style:italic;}
+.misk-text strong{color:#f87171}
+.corr-text{color:#86efac;}
 .corr-text strong{color:#4ade80}
 
-/* FORMULA BOX */
+/* FORMULA BOX & RESPONSIVE GRID VARIABLES */
 .formula-box{
   background:rgba(10,16,32,.9);
   border:1px solid rgba(59,130,246,.3);
@@ -265,15 +254,25 @@ nav{
   letter-spacing:.15em;color:var(--blue-l);text-transform:uppercase;
   margin-bottom:1rem;
 }
+
+/* Memastikan rumus tidak meluber ke luar kotak di HP */
 .formula-main{
   font-size:clamp(1.2rem,2vw,1.6rem);
   color:var(--white);text-align:center;
   margin:1.5rem 0;
+  overflow-x: auto; 
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
 }
+.formula-main::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+
 .formula-vars{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:.5rem;margin-top:1.2rem;
+  display:grid; gap:.5rem; margin-top:1.2rem;
 }
+.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
 .var-row{
   display:flex;gap:.6rem;align-items:flex-start;
   padding:.5rem .8rem;
@@ -287,27 +286,22 @@ nav{
 }
 .var-desc{
   font-family:'Montserrat',sans-serif;
-  font-size:0.85rem;
-  color:var(--muted);
-  line-height:1.5;
+  font-size:0.85rem; color:var(--muted); line-height:1.5;
 }
 
 /* PHASE DIAGRAM */
 .phase-flow{
-  display:flex;flex-direction:column;gap:.8rem;
-  margin:1.8rem 0;
+  display:flex;flex-direction:column;gap:.8rem; margin:1.8rem 0;
 }
 .phase-step{
   display:flex;align-items:flex-start;gap:1rem;
-  padding:1rem 1.2rem;
-  background:var(--glass);
+  padding:1rem 1.2rem; background:var(--glass);
   border:1px solid var(--border);border-radius:8px;
   position:relative;overflow:hidden;
   transition:border-color .2s,background .2s;
 }
 .phase-step:hover{
-  border-color:rgba(59,130,246,.45);
-  background:rgba(26,42,108,.2);
+  border-color:rgba(59,130,246,.45); background:rgba(26,42,108,.2);
 }
 .phase-step::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
@@ -332,46 +326,39 @@ nav{
 }
 .phase-content p{
   font-family:'Montserrat',sans-serif;
-  font-size:0.85rem;
-  color:var(--muted);
-  line-height:1.6;
-  margin:0;
+  font-size:0.85rem; color:var(--muted); line-height:1.6; margin:0;
 }
 
 /* INFO CALLOUT */
 .callout{
   display:flex;gap:1rem;align-items:flex-start;
-  padding:1.2rem 1.4rem;border-radius:8px;
-  margin:1.5rem 0;
+  padding:1.2rem 1.4rem;border-radius:8px; margin:1.5rem 0;
 }
-.callout.info{
-  background:rgba(59,130,246,.07);
-  border:1px solid rgba(59,130,246,.22);
-}
-.callout.warn{
-  background:rgba(245,158,11,.07);
-  border:1px solid rgba(245,158,11,.22);
-}
+.callout.info{ background:rgba(59,130,246,.07); border:1px solid rgba(59,130,246,.22); }
+.callout.warn{ background:rgba(245,158,11,.07); border:1px solid rgba(245,158,11,.22); }
 .callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
 
 .callout-text{
-  font-family:'Montserrat',sans-serif;
-  font-size:0.9rem;
-  color:#c8d5ec;
-  line-height:1.7;
+  font-family:'Montserrat',sans-serif; font-size:0.9rem;
+  color:#c8d5ec; line-height:1.7;
 }
 .callout.info .callout-text strong{color:var(--blue-g)}
 .callout.warn .callout-text strong{color:#fbbf24}
 
-/* TABLE PERBANDINGAN */
+/* TABLE PERBANDINGAN RESPONSIVE */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.8rem 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
 .compare-table{
-  width:100%;border-collapse:separate;border-spacing:0;
-  margin:1.8rem 0;border-radius:10px;overflow:hidden;
-  border:1px solid var(--border);
+  width:100%; min-width: 500px; /* Force minimum width to prevent squishing text */
+  border-collapse:collapse; 
 }
-.compare-table thead tr{
-  background:rgba(26,42,108,.5);
-}
+.compare-table thead tr{ background:rgba(26,42,108,.5); }
 .compare-table th{
   font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--blue-l);
@@ -379,12 +366,9 @@ nav{
   border-bottom:1px solid var(--border);
 }
 .compare-table td{
-  font-family:'Montserrat',sans-serif;
-  font-size:0.88rem;
-  padding:.8rem 1.2rem;
-  border-bottom:1px solid rgba(255,255,255,.04);
-  color:#c8d5ec;
-  vertical-align:top;
+  font-family:'Montserrat',sans-serif; font-size:0.88rem;
+  padding:.8rem 1.2rem; border-bottom:1px solid rgba(255,255,255,.04);
+  color:#c8d5ec; vertical-align:top;
 }
 .compare-table tbody tr:last-child td{border-bottom:none}
 .compare-table tbody tr:hover td{background:rgba(59,130,246,.05)}
@@ -400,35 +384,36 @@ nav{
   border:1px solid rgba(251,191,36,.2);padding:2px 8px;border-radius:2px;
 }
 
+/* GRID FENOMENA ALAM RESPONSIVE */
+.phenomena-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+.phenomena-card {
+  background:rgba(10,16,32,0.75); border:1px solid rgba(59,130,246,0.25);
+  border-radius:10px; padding:1.5rem; transition:transform 0.3s;
+}
+.phenomena-card:hover { transform: translateY(-5px); }
+
 /* DIVIDER */
 .mat-divider{
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent);
   margin:3rem 0;
 }
 
-/* DAFTAR PUSTAKA / REFERENSI */
-.reference-list {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 1.5rem;
-}
+/* DAFTAR PUSTAKA */
+.reference-list { list-style: none; padding-left: 0; margin-top: 1.5rem; }
 .reference-item {
-  position: relative;
-  padding-left: 2rem;
-  margin-bottom: 1rem;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.88rem;
-  color: #8899bb;
-  line-height: 1.6;
+  position: relative; padding-left: 2rem; margin-bottom: 1rem;
+  font-family: 'Montserrat', sans-serif; font-size: 0.88rem;
+  color: #8899bb; line-height: 1.6;
 }
 .reference-item .ref-num {
-  position: absolute;
-  left: 0; top: 0;
-  color: var(--cyan);
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  font-size: 0.85rem;
+  position: absolute; left: 0; top: 0;
+  color: var(--cyan); font-family: 'Space Mono', monospace;
+  font-weight: 700; font-size: 0.85rem;
 }
 
 /* CTA FINAL */
@@ -443,18 +428,11 @@ nav{
   background:linear-gradient(90deg,transparent,var(--blue-b),var(--cyan),var(--blue-b),transparent);
 }
 .cta-final h3{
-  font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700;
-  margin-bottom:.8rem;
+  font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700; margin-bottom:.8rem;
 }
 .cta-final p{
-  font-family:'Montserrat',sans-serif;
-  font-size:0.92rem;
-  color:var(--muted);
-  margin-bottom:2rem;
-  max-width:480px;
-  margin-left:auto;
-  margin-right:auto;
-  line-height:1.7;
+  font-family:'Montserrat',sans-serif; font-size:0.92rem; color:var(--muted);
+  margin-bottom:2rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;
 }
 
 .btn-cta{
@@ -482,15 +460,27 @@ nav{
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-/* RESPONSIVE */
+/* RESPONSIVE LAYOUT UNTUK HP */
 @media(max-width:700px){
-  nav{padding:0 1.2rem}
-  .hero{padding:7rem 1.2rem 2rem}
-  .content{padding:1.5rem 1.2rem 3rem}
-  .formula-vars{grid-template-columns:1fr}
-  .btn-cta2{margin-left:0;margin-top:.8rem}
-  .cta-final{padding:2rem 1.4rem}
-  .cta-final>div{flex-direction:column}
+  nav { padding:0 1.2rem; }
+  .logo-text { font-size: 0.9rem; }
+  .hero { padding: 6.5rem 1.2rem 2rem; }
+  .hero h1 { font-size: 2.1rem; }
+  
+  .content { padding: 1.5rem 1.2rem 3rem; }
+  .mat-section { padding: 1.5rem; }
+  .formula-box { padding: 1.2rem; }
+  
+  /* Kolom dipaksa jadi 1 susun bertumpuk ke bawah di HP */
+  .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; }
+  
+  /* Penyesuaian Flexbox Miskonsepsi & Correction Card */
+  .miskonsepsi-card, .correction-card { flex-direction: column; gap: 0.5rem; }
+  .callout { flex-direction: column; gap: 0.5rem; }
+  
+  .btn-cta2 { margin-left:0; margin-top:.8rem; }
+  .cta-final { padding:2rem 1.2rem; }
+  .cta-final > div.btn-group { flex-direction:column; display: flex; }
 }
 </style>
 </head>
@@ -505,6 +495,7 @@ nav{
   </a>
   <button class="menu-toggle" id="btn-open-sidebar">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    Daftar Isi
   </button>
 </nav>
 
@@ -600,7 +591,8 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Persamaan Massa Jenis</div>
       <div class="formula-main">$$ \rho = \frac{m}{V} $$</div>
-      <div class="formula-vars" style="grid-template-columns:1fr 1fr 1fr; margin-top: 1.5rem;">
+      
+      <div class="formula-vars cols-3">
         <div class="var-row"><span class="var-sym">\(\rho\)</span><span class="var-desc">Massa jenis (\(\text{kg/m}^3\))</span></div>
         <div class="var-row"><span class="var-sym">\(m\)</span><span class="var-desc">Massa benda (\(\text{kg}\))</span></div>
         <div class="var-row"><span class="var-sym">\(V\)</span><span class="var-desc">Volume benda (\(\text{m}^3\))</span></div>
@@ -636,9 +628,10 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Persamaan Gaya Hambat Udara</div>
       <div class="formula-main">$$ F_d = \frac{1}{2} \rho_{udara} v^2 C_d A $$</div>
-      <div class="formula-vars">
+      
+      <div class="formula-vars cols-2">
         <div class="var-row"><span class="var-sym">\(\rho_{udara}\)</span><span class="var-desc">Massa jenis udara \(\approx 1.225 \text{ kg/m}^3\)</span></div>
-        <div class="var-row"><span class="var-sym">\(v\)</span><span class="var-desc">Kecepatan jatuh benda saat itu (\(\text{m/s}\))</span></div>
+        <div class="var-row"><span class="var-sym">\(v\)</span><span class="var-desc">Kecepatan jatuh benda (\(\text{m/s}\))</span></div>
         <div class="var-row"><span class="var-sym">\(C_d\)</span><span class="var-desc">Koefisien hambatan bentuk benda</span></div>
         <div class="var-row"><span class="var-sym">\(A\)</span><span class="var-desc">Luas penampang lintang benda (\(\text{m}^2\))</span></div>
       </div>
@@ -655,42 +648,44 @@ nav{
 
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1rem;margin:1.8rem 0 1rem;color:var(--white)">Perbandingan: Vakum vs Udara</h3>
 
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th>Aspek</th>
-          <th><span class="tag-vakum">Vakum</span></th>
-          <th><span class="tag-udara">Udara</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Gaya yang bekerja</td>
-          <td>Hanya gaya berat (\(W\))</td>
-          <td>Berat (\(W\)) + Hambatan (\(F_d\))</td>
-        </tr>
-        <tr>
-          <td>Percepatan</td>
-          <td>Konstan (\(a = g\))</td>
-          <td>Berkurang seiring bertambahnya \(v\)</td>
-        </tr>
-        <tr>
-          <td>Pengaruh massa</td>
-          <td>Tidak ada</td>
-          <td>Ada, benda padat punya \(v_t\) lebih tinggi</td>
-        </tr>
-        <tr>
-          <td>Pengaruh diameter</td>
-          <td>Tidak ada</td>
-          <td>Besar, penampang lebar berarti hambatan besar</td>
-        </tr>
-        <tr>
-          <td>Kecepatan maksimum</td>
-          <td>Terus bertambah tiada henti</td>
-          <td>Terbatas pada nilai kecepatan terminal</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Aspek</th>
+            <th><span class="tag-vakum">Vakum</span></th>
+            <th><span class="tag-udara">Udara</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gaya yang bekerja</td>
+            <td>Hanya gaya berat (\(W\))</td>
+            <td>Berat (\(W\)) + Hambatan (\(F_d\))</td>
+          </tr>
+          <tr>
+            <td>Percepatan</td>
+            <td>Konstan (\(a = g\))</td>
+            <td>Berkurang seiring bertambahnya \(v\)</td>
+          </tr>
+          <tr>
+            <td>Pengaruh massa</td>
+            <td>Tidak ada</td>
+            <td>Ada, benda padat punya \(v_t\) lebih tinggi</td>
+          </tr>
+          <tr>
+            <td>Pengaruh diameter</td>
+            <td>Tidak ada</td>
+            <td>Besar, penampang lebar berarti hambatan besar</td>
+          </tr>
+          <tr>
+            <td>Kecepatan maksimum</td>
+            <td>Terus bertambah tiada henti</td>
+            <td>Terbatas pada nilai kecepatan terminal</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <div class="mat-divider"></div>
@@ -732,7 +727,8 @@ nav{
       <div class="formula-main" style="margin: 2.5rem 0;">
         $$ v_t = \sqrt{\frac{2mg}{\rho_{udara} C_d A}} $$
       </div>
-      <div class="formula-vars">
+      
+      <div class="formula-vars cols-2">
         <div class="var-row"><span class="var-sym">\(m\)</span><span class="var-desc">Massa benda (\(\text{kg}\))</span></div>
         <div class="var-row"><span class="var-sym">\(g\)</span><span class="var-desc">Gravitasi (\(9.81 \text{ m/s}^2\))</span></div>
         <div class="var-row"><span class="var-sym">\(\rho_{udara}\)</span><span class="var-desc">Massa jenis udara</span></div>
@@ -753,176 +749,9 @@ nav{
 
     <h3 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;margin:2.5rem 0 1rem;color:var(--cyan)">🌎 Fenomena di Dunia Nyata</h3>
     
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;margin-bottom:1rem;">
-      <div style="background:rgba(10,16,32,0.75);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:1.5rem;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+    <div class="phenomena-grid">
+      <div class="phenomena-card">
         <div style="font-size:2.2rem;margin-bottom:0.8rem">🪂</div>
         <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Terjun Payung (Skydiving)</h4>
         <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
-          Saat penerjun melayang tengkurap, ia mencapai kecepatan terminal sekitar <strong>\(200 \text{ km/jam}\)</strong>. Namun, ketika parasut dikembangkan, luas penampang (\(A\)) membesar drastis. Kecepatan terminalnya pun seketika turun menjadi hanya <strong>\(20 \text{ km/jam}\)</strong>, memungkinkan pendaratan yang aman.
-        </p>
-      </div>
-      
-      <div style="background:rgba(10,16,32,0.75);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:1.5rem;transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="font-size:2.2rem;margin-bottom:0.8rem">☄️</div>
-        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Jatuhnya Meteor</h4>
-        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
-          Meteor menembus atmosfer dengan kecepatan sangat ekstrem. Gaya hambat udara yang luar biasa besar menghasilkan panas yang membakarnya. Jika ada sisa batu yang selamat (meteorit), lajunya akan direm oleh atmosfer hingga stabil di <strong>kecepatan terminal</strong> sebelum membentur bumi.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <div class="mat-divider"></div>
-
-  <section class="mat-section reveal" id="s6">
-    <div class="section-num">06 &nbsp; Ringkasan</div>
-    <h2>Poin Kunci yang Perlu Diingat</h2>
-
-    <div class="phase-flow">
-      <div class="phase-step p1">
-        <span style="font-size:1.3rem;flex-shrink:0">🌑</span>
-        <div class="phase-content">
-          <h4>Di Vakum: Massa Tidak Berpengaruh</h4>
-          <p>Semua benda jatuh dengan percepatan konstan (\(a = g\)). Benda berat dan ringan tiba bersamaan. Ini membuktikan bahwa miskonsepsi Aristoteles salah.</p>
-        </div>
-      </div>
-      <div class="phase-step p2">
-        <span style="font-size:1.3rem;flex-shrink:0">💨</span>
-        <div class="phase-content">
-          <h4>Di Udara: Massa dan Luas Penampang Berpengaruh</h4>
-          <p>Benda dengan massa besar dan luas penampang kecil memiliki \(v_t\) tinggi sehingga jatuh lebih cepat. Benda ringan dengan penampang lebar memiliki \(v_t\) rendah sehingga jatuh lebih lambat.</p>
-        </div>
-      </div>
-      <div class="phase-step p3">
-        <span style="font-size:1.3rem;flex-shrink:0">📐</span>
-        <div class="phase-content">
-          <h4>\(F_d \propto v^2\) : Hambatan Kuadratik</h4>
-          <p>Gaya hambat bertumbuh secara eksponensial seiring pertambahan kecepatan. Kecepatan berlipat dua berarti hambatan berlipat empat.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="mat-divider"></div>
-
-  <section class="mat-section reveal" id="s7">
-    <div class="section-num">07 &nbsp; Analisis Grafik</div>
-    <h2>Cara Membaca Grafik Simulasi</h2>
-    
-    <p>Dalam laboratorium virtual, kamu akan dihadapkan dengan fitur analisis grafik interaktif. Memahami bentuk kurva ini adalah kunci untuk menganalisis gerak jatuh benda secara mendalam:</p>
-
-    <div class="phase-flow">
-      <div class="phase-step p1">
-        <span style="font-size:1.3rem;flex-shrink:0">📈</span>
-        <div class="phase-content">
-          <h4>Grafik Kecepatan thd Waktu (\(v-t\))</h4>
-          <p>Pada awalnya, kurva akan naik secara linier karena benda dipercepat. Namun, saat hambatan udara membesar, kurva perlahan melengkung dan akhirnya <strong>mendatar (horizontal)</strong>. Garis mendatar ini membuktikan benda telah mencapai kecepatan terminal (\(v_t\)).</p>
-        </div>
-      </div>
-      <div class="phase-step p2">
-        <span style="font-size:1.3rem;flex-shrink:0">📉</span>
-        <div class="phase-content">
-          <h4>Grafik Percepatan thd Waktu (\(a-t\))</h4>
-          <p>Kurva dimulai di angka \(9.81 \text{ m/s}^2\) (percepatan gravitasi maksimum). Seiring benda membelah udara, nilai percepatan akan terus turun melengkung ke bawah hingga <strong>menyentuh angka nol</strong>, yaitu saat gaya telah seimbang (\(\Sigma F = 0\)).</p>
-        </div>
-      </div>
-      <div class="phase-step p3">
-        <span style="font-size:1.3rem;flex-shrink:0">📊</span>
-        <div class="phase-content">
-          <h4>Grafik Ketinggian thd Waktu (\(h-t\))</h4>
-          <p>Mulanya grafik membentuk kurva parabola seiring bertambahnya kecepatan. Namun, begitu benda mencapai kecepatan terminal (kecepatan konstan), kurvanya akan berubah wujud menjadi <strong>garis lurus yang miring ke bawah</strong>.</p>
-        </div>
-      </div>
-      <div class="phase-step p4">
-        <span style="font-size:1.3rem;flex-shrink:0">🔄</span>
-        <div class="phase-content">
-          <h4>Grafik Ketinggian thd Kecepatan (\(h-v\))</h4>
-          <p>Sumbu-X adalah Kecepatan dan Sumbu-Y adalah Ketinggian. Kurva bermula dari atas lalu turun melengkung ke kanan. Jika benda mencapai kecepatan terminal, kurva akan berubah wujud menjadi <strong>garis lurus vertikal ke bawah</strong>.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="mat-divider"></div>
-
-  <section class="mat-section reveal" id="s8">
-    <div class="section-num">08 &nbsp; Referensi</div>
-    <h2>Daftar Pustaka</h2>
-    <p>Konsep dan persamaan pada media simulasi ini dirujuk dari buku literatur fisika tingkat universitas yang diakui secara global:</p>
-    
-    <ul class="reference-list">
-      <li class="reference-item">
-        <span class="ref-num">[1]</span> Halliday, D., Resnick, R., & Walker, J. (2014). <em>Fundamentals of Physics</em> (10th ed.). John Wiley & Sons.
-      </li>
-      <li class="reference-item">
-        <span class="ref-num">[2]</span> Tipler, P. A., & Mosca, G. (2007). <em>Physics for Scientists and Engineers</em> (6th ed.). W. H. Freeman and Company.
-      </li>
-      <li class="reference-item">
-        <span class="ref-num">[3]</span> Serway, R. A., & Jewett, J. W. (2018). <em>Physics for Scientists and Engineers with Modern Physics</em> (10th ed.). Cengage Learning.
-      </li>
-    </ul>
-  </section>
-
-  <div class="cta-final reveal">
-    <div style="font-size:2rem;margin-bottom:1rem">🚀</div>
-    <h3>Siap Membuktikannya Sendiri?</h3>
-    <p>Teori dan landasan matematis sudah kamu kuasai, sekarang saatnya eksperimen! Manipulasi massa, diameter, dan atmosfer secara real-time di ruang simulasi.</p>
-    <div class="btn-group">
-      <a href="index1.html" class="btn-cta">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        Buka Simulasi
-      </a>
-      <a href="index.html" class="btn-cta2">
-        ← Halaman Utama
-      </a>
-    </div>
-  </div>
-
-</main>
-
-<script>
-// SCROLL REVEAL
-const reveals=document.querySelectorAll('.reveal');
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{
-    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*60);
-  });
-},{threshold:0.07});
-reveals.forEach(r=>obs.observe(r));
-
-// SIDEBAR TOGGLE LOGIC
-const sidebar = document.getElementById('right-sidebar');
-const overlay = document.getElementById('sidebar-overlay');
-const openBtn = document.getElementById('btn-open-sidebar');
-const closeBtn = document.getElementById('btn-close-sidebar');
-
-function openSide() {
-  sidebar.classList.add('active');
-  overlay.classList.add('active');
-}
-function closeSide() {
-  sidebar.classList.remove('active');
-  overlay.classList.remove('active');
-}
-
-openBtn.addEventListener('click', openSide);
-closeBtn.addEventListener('click', closeSide);
-overlay.addEventListener('click', closeSide);
-
-// PROGRESS NAV ACTIVE (Update highlight pada menu sidebar berdasarkan scroll)
-const sections=[...document.querySelectorAll('.mat-section')];
-const navItems=[...document.querySelectorAll('.snav-item')];
-
-navItems.forEach(item => {
-  item.addEventListener('click', closeSide); // Menutup sidebar setelah link diklik
-});
-
-window.addEventListener('scroll',()=>{
-  const scroll=window.scrollY+160;
-  let active=0;
-  sections.forEach((s,i)=>{if(s.offsetTop<=scroll)active=i;});
-  navItems.forEach((n,i)=>n.classList.toggle('active',i===active));
-},{ passive:true });
-</script>
-</body>
-</html>
+          Saat penerjun melayang tengkurap, ia mencapai kecepatan terminal sekitar <strong>\(200 \text{ km/jam}\)</strong>. Namun, ketika paras

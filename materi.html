@@ -62,20 +62,82 @@ nav{
 .nav-logo img{width:36px;height:36px;border-radius:5px;object-fit:contain}
 .logo-text{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:var(--white)}
 .logo-text span{color:var(--blue-b)}
-.nav-back{
-  font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-  text-decoration:none;display:flex;align-items:center;gap:7px;
-  transition:color .2s;
+
+/* MENU TOGGLE BTN */
+.menu-toggle {
+  background: transparent; border: none;
+  color: var(--white); cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Rajdhani', sans-serif; text-transform: uppercase;
+  font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em;
+  transition: color 0.2s;
 }
-.nav-back:hover{color:var(--blue-l)}
-.nav-back svg{transition:transform .2s}
-.nav-back:hover svg{transform:translateX(-3px)}
+.menu-toggle:hover { color: var(--cyan); }
+
+/* SIDEBAR RIGHT */
+.sidebar-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  z-index: 999; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sidebar-overlay.active { opacity: 1; pointer-events: all; }
+
+.right-sidebar {
+  position: fixed; top: 0; right: -320px;
+  width: 320px; height: 100vh;
+  background: rgba(10,16,32,0.95);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid var(--border);
+  z-index: 1000;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex; flex-direction: column;
+  padding: 2rem;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+.right-sidebar.active { right: 0; }
+
+.sidebar-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--white); font-weight: 700;}
+.close-btn { background: transparent; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+.close-btn:hover { color: var(--cyan); }
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.6rem; overflow-y: auto; flex: 1; margin-bottom: 1rem; padding-right: 5px;}
+.sidebar-nav::-webkit-scrollbar{width:4px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.4);border-radius:3px}
+
+.snav-item {
+  font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.05em;
+  color: var(--muted); text-decoration: none; text-transform: uppercase;
+  padding: 0.8rem 1rem; border-radius: 6px;
+  border: 1px solid transparent; transition: all 0.2s;
+}
+.snav-item:hover, .snav-item.active {
+  color: var(--cyan); background: rgba(34,211,238,0.08);
+  border-color: rgba(34,211,238,0.3);
+}
+
+.sidebar-footer { border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.btn-kembali {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 12px;
+  background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5; border-radius: 6px; text-decoration: none;
+  font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.95rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+.btn-kembali:hover { background: rgba(239,68,68,0.2); color: #fecaca; }
 
 /* HERO */
 .hero{
   position:relative;z-index:1;
-  padding:7rem 3rem 4rem;
+  padding:8rem 3rem 4rem; /* Padding atas disesuaikan agar tidak menabrak nav */
   max-width:900px;margin:0 auto;
   text-align:center;
 }
@@ -110,28 +172,6 @@ nav{
   line-height:1.7;
   max-width:600px;
   margin:0 auto;
-}
-
-/* PROGRESS NAV */
-.progress-nav{
-  position:sticky;top:66px;z-index:50;
-  background:rgba(6,11,23,0.95);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  padding:.7rem 3rem;
-  display:flex;gap:.5rem;overflow-x:auto;
-  scrollbar-width:none;
-}
-.progress-nav::-webkit-scrollbar{display:none}
-.pnav-item{
-  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--muted);
-  padding:5px 14px;border-radius:2px;border:1px solid transparent;
-  text-decoration:none;white-space:nowrap;
-  transition:all .2s;flex-shrink:0;
-}
-.pnav-item:hover,.pnav-item.active{
-  color:var(--cyan);border-color:rgba(34,211,238,.3);
-  background:rgba(34,211,238,.06);
 }
 
 /* MAIN CONTENT */
@@ -445,8 +485,7 @@ nav{
 /* RESPONSIVE */
 @media(max-width:700px){
   nav{padding:0 1.2rem}
-  .progress-nav{padding:.7rem 1.2rem}
-  .hero{padding:5.5rem 1.2rem 2rem}
+  .hero{padding:7rem 1.2rem 2rem}
   .content{padding:1.5rem 1.2rem 3rem}
   .formula-vars{grid-template-columns:1fr}
   .btn-cta2{margin-left:0;margin-top:.8rem}
@@ -462,24 +501,36 @@ nav{
 <nav>
   <a href="index.html" class="nav-logo">
     <img src="A.png" alt="Logo Z-PHYZONE">
-    <span class="logo-text"><span>PHY</span>ZONE</span>
+    <span class="logo-text">Z-<span>PHY</span>ZONE</span>
   </a>
-  <a href="javascript:history.back()" class="nav-back">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    Kembali
-  </a>
+  <button class="menu-toggle" id="btn-open-sidebar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
 </nav>
 
-<nav class="progress-nav" id="pnav">
-  <a href="#s1" class="pnav-item">01 · Miskonsepsi</a>
-  <a href="#s2" class="pnav-item">02 · Kondisi Vakum</a>
-  <a href="#s3" class="pnav-item">03 · Massa Jenis</a>
-  <a href="#s4" class="pnav-item">04 · Hambatan Udara</a>
-  <a href="#s5" class="pnav-item">05 · Kec. Terminal</a>
-  <a href="#s6" class="pnav-item">06 · Ringkasan</a>
-  <a href="#s7" class="pnav-item">07 · Analisis Grafik</a>
-  <a href="#s8" class="pnav-item">08 · Referensi</a>
-</nav>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<aside class="right-sidebar" id="right-sidebar">
+  <div class="sidebar-header">
+    <span class="sidebar-title">Menu Navigasi</span>
+    <button class="close-btn" id="btn-close-sidebar">✖</button>
+  </div>
+  <div class="sidebar-nav" id="snav">
+    <a href="#s1" class="snav-item">01 · Miskonsepsi</a>
+    <a href="#s2" class="snav-item">02 · Kondisi Vakum</a>
+    <a href="#s3" class="snav-item">03 · Massa Jenis</a>
+    <a href="#s4" class="snav-item">04 · Hambatan Udara</a>
+    <a href="#s5" class="snav-item">05 · Kec. Terminal</a>
+    <a href="#s6" class="snav-item">06 · Ringkasan</a>
+    <a href="#s7" class="snav-item">07 · Analisis Grafik</a>
+    <a href="#s8" class="snav-item">08 · Referensi</a>
+  </div>
+  <div class="sidebar-footer">
+    <a href="javascript:history.back()" class="btn-kembali">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Kembali
+    </a>
+  </div>
+</aside>
 
 <header class="hero">
   <div class="hero-tag">Dasar Teori · Gerak Jatuh Benda</div>
@@ -497,7 +548,7 @@ nav{
 
     <div class="miskonsepsi-card">
       <div class="misk-icon">❌</div>
-      <div class="misk-text"><strong></strong> "Benda yang masif (berat) pasti akan menyentuh tanah lebih cepat daripada benda ringan, karena gaya gravitasinya lebih besar." (Miskonsepsi)</div>
+      <div class="misk-text"><strong>Miskonsepsi:</strong> "Benda yang masif (berat) pasti akan menyentuh tanah lebih cepat daripada benda ringan, karena gaya gravitasinya lebih besar."</div>
     </div>
 
     <p>Selama hampir 2000 tahun, pandangan ini diterima sebagai kebenaran mutlak. Baru pada abad ke-17, <strong>Galileo Galilei</strong> menggugat pemikiran ini melalui eksperimen legendaris dari Menara Pisa, dan hasilnya mengejutkan dunia.</p>
@@ -523,7 +574,7 @@ nav{
 
     <div class="formula-box">
       <div class="formula-label">Derivasi Percepatan di Vakum</div>
-      <div class="formula-main">$$ \ F_y = m \cdot a_y $$</div>
+      <div class="formula-main">$$ \Sigma F_y = m \cdot a_y $$</div>
       <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted);margin:0.5rem 0;text-align:center;">↓ satu-satunya gaya adalah gaya berat</div>
       <div class="formula-main">$$ m \cdot g = m \cdot a_y $$</div>
       <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted);margin:0.5rem 0;text-align:center;">↓ massa \(m\) saling meniadakan</div>
@@ -584,9 +635,9 @@ nav{
 
     <div class="formula-box">
       <div class="formula-label">Persamaan Gaya Hambat Udara</div>
-      <div class="formula-main">$$ F_d = \frac{1}{2} \rho v^2 C_d A $$</div>
+      <div class="formula-main">$$ F_d = \frac{1}{2} \rho_{udara} v^2 C_d A $$</div>
       <div class="formula-vars">
-        <div class="var-row"><span class="var-sym">\(\rho\)</span><span class="var-desc">Massa jenis udara \(\approx 1.225 \text{ kg/m}^3\)</span></div>
+        <div class="var-row"><span class="var-sym">\(\rho_{udara}\)</span><span class="var-desc">Massa jenis udara \(\approx 1.225 \text{ kg/m}^3\)</span></div>
         <div class="var-row"><span class="var-sym">\(v\)</span><span class="var-desc">Kecepatan jatuh benda saat itu (\(\text{m/s}\))</span></div>
         <div class="var-row"><span class="var-sym">\(C_d\)</span><span class="var-desc">Koefisien hambatan bentuk benda</span></div>
         <div class="var-row"><span class="var-sym">\(A\)</span><span class="var-desc">Luas penampang lintang benda (\(\text{m}^2\))</span></div>
@@ -626,12 +677,12 @@ nav{
         <tr>
           <td>Pengaruh massa</td>
           <td>Tidak ada</td>
-          <td>Ada — benda padat punya \(v_t\) lebih tinggi</td>
+          <td>Ada, benda padat punya \(v_t\) lebih tinggi</td>
         </tr>
         <tr>
           <td>Pengaruh diameter</td>
           <td>Tidak ada</td>
-          <td>Besar — penampang lebar → hambatan besar</td>
+          <td>Besar, penampang lebar berarti hambatan besar</td>
         </tr>
         <tr>
           <td>Kecepatan maksimum</td>
@@ -679,12 +730,12 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Persamaan Kecepatan Terminal</div>
       <div class="formula-main" style="margin: 2.5rem 0;">
-        $$ v_t = \sqrt{\frac{2mg}{\rho C_d A}} $$
+        $$ v_t = \sqrt{\frac{2mg}{\rho_{udara} C_d A}} $$
       </div>
       <div class="formula-vars">
         <div class="var-row"><span class="var-sym">\(m\)</span><span class="var-desc">Massa benda (\(\text{kg}\))</span></div>
         <div class="var-row"><span class="var-sym">\(g\)</span><span class="var-desc">Gravitasi (\(9.81 \text{ m/s}^2\))</span></div>
-        <div class="var-row"><span class="var-sym">\(\rho\)</span><span class="var-desc">Massa jenis udara</span></div>
+        <div class="var-row"><span class="var-sym">\(\rho_{udara}\)</span><span class="var-desc">Massa jenis udara</span></div>
         <div class="var-row"><span class="var-sym">\(C_d\)</span><span class="var-desc">Koefisien hambatan bentuk</span></div>
         <div class="var-row"><span class="var-sym">\(A\)</span><span class="var-desc">Luas penampang (\(\text{m}^2\))</span></div>
       </div>
@@ -732,14 +783,14 @@ nav{
         <span style="font-size:1.3rem;flex-shrink:0">🌑</span>
         <div class="phase-content">
           <h4>Di Vakum: Massa Tidak Berpengaruh</h4>
-          <p>Semua benda jatuh dengan percepatan konstan (\(a = g\)). Benda berat dan ringan tiba bersamaan. Ini membuktikan bahwa pandangan Aristoteles salah.</p>
+          <p>Semua benda jatuh dengan percepatan konstan (\(a = g\)). Benda berat dan ringan tiba bersamaan. Ini membuktikan bahwa miskonsepsi Aristoteles salah.</p>
         </div>
       </div>
       <div class="phase-step p2">
         <span style="font-size:1.3rem;flex-shrink:0">💨</span>
         <div class="phase-content">
           <h4>Di Udara: Massa dan Luas Penampang Berpengaruh</h4>
-          <p>Benda dengan massa besar dan luas penampang kecil → \(v_t\) tinggi → jatuh lebih cepat. Benda ringan dengan penampang lebar → \(v_t\) rendah → jatuh lebih lambat.</p>
+          <p>Benda dengan massa besar dan luas penampang kecil memiliki \(v_t\) tinggi sehingga jatuh lebih cepat. Benda ringan dengan penampang lebar memiliki \(v_t\) rendah sehingga jatuh lebih lambat.</p>
         </div>
       </div>
       <div class="phase-step p3">
@@ -765,7 +816,7 @@ nav{
         <span style="font-size:1.3rem;flex-shrink:0">📈</span>
         <div class="phase-content">
           <h4>Grafik Kecepatan thd Waktu (\(v-t\))</h4>
-          <p>Pada awalnya, kurva akan naik secara linier (benda dipercepat). Namun, saat hambatan udara membesar, kurva perlahan melengkung dan akhirnya <strong>mendatar (horizontal)</strong>. Garis mendatar ini membuktikan benda telah mencapai kecepatan terminal (\(v_t\)).</p>
+          <p>Pada awalnya, kurva akan naik secara linier karena benda dipercepat. Namun, saat hambatan udara membesar, kurva perlahan melengkung dan akhirnya <strong>mendatar (horizontal)</strong>. Garis mendatar ini membuktikan benda telah mencapai kecepatan terminal (\(v_t\)).</p>
         </div>
       </div>
       <div class="phase-step p2">
@@ -779,14 +830,14 @@ nav{
         <span style="font-size:1.3rem;flex-shrink:0">📊</span>
         <div class="phase-content">
           <h4>Grafik Ketinggian thd Waktu (\(h-t\))</h4>
-          <p>Mulanya grafik membentuk kurva parabola seiring bertambahnya kecepatan. Namun, begitu benda mencapai kecepatan terminal (konstan), kurvanya akan berubah wujud menjadi <strong>garis lurus yang miring ke bawah</strong>.</p>
+          <p>Mulanya grafik membentuk kurva parabola seiring bertambahnya kecepatan. Namun, begitu benda mencapai kecepatan terminal (kecepatan konstan), kurvanya akan berubah wujud menjadi <strong>garis lurus yang miring ke bawah</strong>.</p>
         </div>
       </div>
       <div class="phase-step p4">
         <span style="font-size:1.3rem;flex-shrink:0">🔄</span>
         <div class="phase-content">
           <h4>Grafik Ketinggian thd Kecepatan (\(h-v\))</h4>
-          <p>Sumbu-X adalah Kecepatan dan Sumbu-Y adalah Ketinggian. Kurva bermula dari atas (ketinggian awal) lalu turun melengkung ke kanan. Jika benda mencapai kecepatan terminal, kurva akan berubah wujud menjadi <strong>garis lurus vertikal ke bawah</strong>.</p>
+          <p>Sumbu-X adalah Kecepatan dan Sumbu-Y adalah Ketinggian. Kurva bermula dari atas lalu turun melengkung ke kanan. Jika benda mencapai kecepatan terminal, kurva akan berubah wujud menjadi <strong>garis lurus vertikal ke bawah</strong>.</p>
         </div>
       </div>
     </div>
@@ -839,9 +890,33 @@ const obs=new IntersectionObserver(entries=>{
 },{threshold:0.07});
 reveals.forEach(r=>obs.observe(r));
 
-// PROGRESS NAV ACTIVE (Menyinkronkan highlight menu atas berdasarkan scroll)
+// SIDEBAR TOGGLE LOGIC
+const sidebar = document.getElementById('right-sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+const openBtn = document.getElementById('btn-open-sidebar');
+const closeBtn = document.getElementById('btn-close-sidebar');
+
+function openSide() {
+  sidebar.classList.add('active');
+  overlay.classList.add('active');
+}
+function closeSide() {
+  sidebar.classList.remove('active');
+  overlay.classList.remove('active');
+}
+
+openBtn.addEventListener('click', openSide);
+closeBtn.addEventListener('click', closeSide);
+overlay.addEventListener('click', closeSide);
+
+// PROGRESS NAV ACTIVE (Update highlight pada menu sidebar berdasarkan scroll)
 const sections=[...document.querySelectorAll('.mat-section')];
-const navItems=[...document.querySelectorAll('.pnav-item')];
+const navItems=[...document.querySelectorAll('.snav-item')];
+
+navItems.forEach(item => {
+  item.addEventListener('click', closeSide); // Menutup sidebar setelah link diklik
+});
+
 window.addEventListener('scroll',()=>{
   const scroll=window.scrollY+160;
   let active=0;

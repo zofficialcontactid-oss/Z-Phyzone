@@ -166,7 +166,7 @@ body {
 .pause-btn:hover { background: var(--btn-pause); color: white; box-shadow: 0 0 15px var(--btn-pause); }
 .reset-btn:hover { background: var(--btn-reset); color: white; box-shadow: 0 0 15px var(--btn-reset); }
 .fullscreen-btn:hover { background: #8b5cf6; color: white; box-shadow: 0 0 15px #8b5cf6; }
-
+.back-btn:hover { background: #64748b; color: white; box-shadow: 0 0 15px #64748b; }
 /* =========================================
    6. GRAPHICS & CHARTS
    ========================================= */

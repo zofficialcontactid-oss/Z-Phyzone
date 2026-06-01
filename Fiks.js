@@ -602,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { target: 'input-h-left', title: '📐 Ketinggian Awal', desc: 'Geser <em>slider</em> atau ketik angka langsung untuk mengatur ketinggian awal jatuh (0–75 m).', pos: 'right' },
         { target: 'sec-obj-right', title: 'Panel Objek Kanan (Biru)', desc: 'Pengaturan serupa untuk <strong>Objek Kedua</strong>. Coba bandingkan Besi dengan Kayu Jati, lalu lihat siapa yang lebih dulu menyentuh tanah!', pos: 'right' },
         { target: 'sec-atm', title: '🌐 Pilih Kondisi Atmosfer', desc: '<strong>Vacuum</strong> = tidak ada hambatan udara, murni gravitasi. <strong>Udara</strong> = ada hambatan udara.', pos: 'right' },
-        { target: 'controls-bar', title: '🎮 Tombol Kontrol Simulasi', desc: 'Gunakan tombol ini untuk <strong>▶ Play</strong>, <strong>⏸ Pause</strong>, dan <strong>↻ Reset</strong> simulasi.', pos: 'top' },
+        { target: 'controls-bar', title: '🎮 Tombol Kontrol Simulasi', desc: 'Gunakan panel ini untuk <strong>🏠 Kembali</strong>, <strong>▶ Play</strong>, <strong>⏸ Pause</strong>, dan <strong>↻ Reset</strong> simulasi.', pos: 'top' },
         { target: 'btn-open-lkpd', title: '📝 Lembar Kerja (LKPD)', desc: '<strong>Sangat Penting!</strong> Klik tombol ini untuk membuka Misi Eksperimen yang akan memandumu memecahkan masalah fisika.', pos: 'top' },
         { target: 'sec-data-right', title: '📋 Panel Data Real-Time', desc: 'Menampilkan data fisika secara <em>live</em>: jarak tempuh, kecepatan, <strong>kecepatan terminal</strong>, waktu jatuh, dan percepatan.', pos: 'left' },
         { target: 'panel-graphs', title: '📈 Grafik Interaktif', desc: 'Gunakan tombol <strong>+ / −</strong> untuk zoom, dan <strong>⟲</strong> untuk reset tampilan grafik (v-t, a-t, h-t, h-v).', pos: 'left' }
@@ -637,6 +637,14 @@ const btnOpenLkpd = document.getElementById('btn-open-lkpd');
 const lkpdWidget = document.getElementById('lkpd-widget');
 const btnToggleLkpd = document.getElementById('btn-toggle-lkpd');
 const btnCloseLkpd = document.getElementById('btn-close-lkpd'); 
+const backBtn = document.getElementById('back-btn');
+
+if (backBtn) {
+    backBtn.addEventListener('click', () => {
+        // Menggunakan history.back() agar kembali ke halaman sebelumnya (Materi/Index)
+        window.history.back();
+    });
+}
 
 if (btnOpenLkpd && lkpdWidget) {
     btnOpenLkpd.addEventListener('click', () => {

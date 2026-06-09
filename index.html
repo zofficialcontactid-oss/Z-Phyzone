@@ -6,8 +6,13 @@
 <title>Z-PHYZONE | Physics Simulation Lab</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="opsi2.css">
+
+<script>
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-theme');
+    }
+</script>
 </head>
 <body>
 
@@ -22,15 +27,28 @@
     <span class="logo-text"><span>PHY</span>ZONE</span>
   </a>
 
-  <ul class="nav-links">
-    <li><a href="#features">Fitur</a></li>
-    <li><a href="#simulations">Simulasi</a></li>
-    <li><a href="#how">Cara Pakai</a></li>
-    <li><a href="#about">Tentang</a></li>
-  </ul>
-
-  <a href="#simulations" class="nav-cta">Mulai Simulasi</a>
+  <button class="menu-toggle" id="btn-open-sidebar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    MENU
+  </button>
 </nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<aside class="right-sidebar" id="right-sidebar">
+  <div class="sidebar-header">
+    <span class="sidebar-title">Menu Navigasi</span>
+    <button class="close-btn" id="btn-close-sidebar">✖</button>
+  </div>
+  <div class="sidebar-nav">
+    <a href="#features" class="snav-item">🚀 Fitur Platform</a>
+    <a href="#simulations" class="snav-item">🧪 Mode Simulasi</a>
+    <a href="#how" class="snav-item">📖 Cara Penggunaan</a>
+    <a href="#about" class="snav-item">ℹ️ Tentang Lab</a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="btn-theme-toggle">🌞 Mode Terang</button>
+  </div>
+</aside>
 
 <section class="hero" id="home">
   <svg class="hero-visual" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,8 +90,8 @@
 
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-num">Free</span>
-        <span class="stat-label">Simulations</span>
+        <span class="stat-num">Fokus</span>
+        <span class="stat-label">Miskonsepsi</span>
       </div>
       <div class="stat-item">
         <span class="stat-num">100%</span>

@@ -7,9 +7,17 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+<script>
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-theme');
+    }
+</script>
+
 <style>
+/* TEMA GELAP (DEFAULT) */
 :root {
   --bg: #060b17;
   --bg2: #0a1020;
@@ -18,19 +26,40 @@
   --blue-l: #60a5fa;
   --blue-g: #93c5fd;
   --cyan: #22d3ee;
-  --white: #eef2ff;
+  --white: #ffffff; /* Putih bersih */
+  --text-title: #f0f4ff;
   --muted: #7c92b8;
   --border: rgba(59,130,246,0.2);
   --glass: rgba(10,16,32,0.75);
+  --glass-sidebar: rgba(10,16,32,0.95);
 }
+
+/* TEMA TERANG */
+:root.light-theme {
+  --bg: #f4f7fb;
+  --bg2: #ffffff;
+  --blue: #2563eb;
+  --blue-b: #3b82f6;
+  --blue-l: #2563eb;
+  --blue-g: #1d4ed8;
+  --cyan: #0284c7;
+  --white: #000000; /* Hitam gelap di mode terang */
+  --text-title: #0f172a;
+  --muted: #475569; 
+  --border: rgba(37, 99, 235, 0.3);
+  --glass: rgba(255, 255, 255, 0.85);
+  --glass-sidebar: rgba(255, 255, 255, 0.95);
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   font-family:'Rajdhani',sans-serif;
   background:var(--bg);
-  color:var(--white);
+  color:var(--text-title);
   line-height:1.7;
   overflow-x:hidden;
+  transition: background 0.4s, color 0.4s;
 }
 
 /* SCROLLBAR */
@@ -42,10 +71,10 @@ body{
 .grid-bg{
   position:fixed;top:0;left:0;right:0;bottom:0;
   background-image:
-    linear-gradient(rgba(37,99,235,0.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(37,99,235,0.035) 1px,transparent 1px);
+    linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
   background-size:60px 60px;
-  pointer-events:none;z-index:0;
+  pointer-events:none;z-index:0; opacity:0.3;
 }
 
 /* NAV */
@@ -53,19 +82,20 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 3rem;height:66px;
-  background:rgba(6,11,23,0.9);
+  background:var(--glass);
   backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
+  transition: background 0.4s;
 }
 .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
 .nav-logo img{width:36px;height:36px;border-radius:5px;object-fit:contain}
-.logo-text{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:var(--white)}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:var(--text-title)}
 .logo-text span{color:var(--blue-b)}
 
 /* MENU TOGGLE BTN */
 .menu-toggle {
   background: transparent; border: none;
-  color: var(--white); cursor: pointer;
+  color: var(--text-title); cursor: pointer;
   display: flex; align-items: center; gap: 8px;
   font-family: 'Rajdhani', sans-serif; text-transform: uppercase;
   font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em;
@@ -85,11 +115,11 @@ nav{
 .right-sidebar {
   position: fixed; top: 0; right: -320px;
   width: 320px; height: 100vh; max-width: 100vw;
-  background: rgba(10,16,32,0.95);
+  background: var(--glass-sidebar);
   backdrop-filter: blur(20px);
   border-left: 1px solid var(--border);
   z-index: 1000;
-  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s;
   display: flex; flex-direction: column;
   padding: 2rem;
   box-shadow: -10px 0 30px rgba(0,0,0,0.5);
@@ -102,13 +132,13 @@ nav{
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
-.sidebar-title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--white); font-weight: 700;}
+.sidebar-title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--text-title); font-weight: 700;}
 .close-btn { background: transparent; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
 .close-btn:hover { color: var(--cyan); }
 
 .sidebar-nav { display: flex; flex-direction: column; gap: 0.6rem; overflow-y: auto; flex: 1; margin-bottom: 1rem; padding-right: 5px;}
 .sidebar-nav::-webkit-scrollbar{width:4px}
-.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.4);border-radius:3px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:var(--blue-b);border-radius:3px}
 
 .snav-item {
   font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.05em;
@@ -121,7 +151,17 @@ nav{
   border-color: rgba(34,211,238,0.3);
 }
 
-.sidebar-footer { border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.sidebar-footer { border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 10px;}
+
+.btn-theme-toggle {
+  display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px;
+  background: rgba(59,130,246,0.1); border: 1px solid var(--blue-b); color: var(--blue-b);
+  border-radius: 6px; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 700;
+  font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s;
+}
+.btn-theme-toggle:hover { background: var(--blue-b); color: #fff; }
+:root.light-theme .btn-theme-toggle:hover { color: #fff; }
+
 .btn-kembali {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   width: 100%; padding: 12px;
@@ -167,10 +207,11 @@ nav{
 .hero-sub{
   font-family:'Montserrat',sans-serif;
   font-size:0.95rem;
-  color:var(--muted);
+  color:var(--white); 
   line-height:1.7;
   max-width:600px;
   margin:0 auto;
+  transition: color 0.4s;
 }
 
 /* MAIN CONTENT */
@@ -204,9 +245,10 @@ nav{
 .mat-section p{
   font-family:'Montserrat',sans-serif;
   font-size:0.95rem;
-  color:#c8d5ec;
+  color:var(--white); 
   line-height:1.8;
   margin-bottom:1rem;
+  transition: color 0.4s;
 }
 
 .mat-section strong{color:var(--blue-g);font-weight:600}
@@ -229,16 +271,16 @@ nav{
 
 .misk-text, .corr-text{
   font-family:'Montserrat',sans-serif;
-  font-size:0.9rem; line-height:1.7;
+  font-size:0.9rem; line-height:1.7; transition: color 0.4s;
 }
-.misk-text{color:#fca5a5; font-style:italic;}
+.misk-text{color:var(--white); font-style:italic;} 
 .misk-text strong{color:#f87171}
-.corr-text{color:#86efac;}
+.corr-text{color:var(--white);} 
 .corr-text strong{color:#4ade80}
 
 /* FORMULA BOX & RESPONSIVE GRID VARIABLES */
 .formula-box{
-  background:rgba(10,16,32,.9);
+  background:var(--glass);
   border:1px solid rgba(59,130,246,.3);
   border-radius:10px;
   padding:1.6rem 2rem;margin:1.8rem 0;
@@ -254,16 +296,15 @@ nav{
   margin-bottom:1rem;
 }
 
-/* Memastikan rumus tidak meluber ke luar kotak di HP */
 .formula-main{
   font-size:clamp(1.2rem,2vw,1.6rem);
-  color:var(--white);text-align:center;
+  color:var(--text-title);text-align:center;
   margin:1.5rem 0;
   overflow-x: auto; 
-  scrollbar-width: none; /* Hide scrollbar Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
-.formula-main::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+.formula-main::-webkit-scrollbar { display: none; } 
 
 .formula-vars{
   display:grid; gap:.5rem; margin-top:1.2rem;
@@ -278,6 +319,8 @@ nav{
   background:rgba(255,255,255,.03);border-radius:6px;
   border:1px solid rgba(255,255,255,.05);
 }
+:root.light-theme .var-row { background:rgba(0,0,0,.03); border:1px solid rgba(0,0,0,.05); }
+
 .var-sym{
   font-family:'Space Mono',monospace;color:var(--cyan);
   font-weight:700;min-width:28px;
@@ -285,7 +328,7 @@ nav{
 }
 .var-desc{
   font-family:'Montserrat',sans-serif;
-  font-size:0.85rem; color:var(--muted); line-height:1.5;
+  font-size:0.85rem; color:var(--white); line-height:1.5; 
 }
 
 /* PHASE DIAGRAM */
@@ -321,11 +364,11 @@ nav{
 
 .phase-content h4{
   font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:600;
-  color:var(--white);margin-bottom:.3rem;
+  color:var(--text-title);margin-bottom:.3rem;
 }
 .phase-content p{
   font-family:'Montserrat',sans-serif;
-  font-size:0.85rem; color:var(--muted); line-height:1.6; margin:0;
+  font-size:0.85rem; color:var(--white); line-height:1.6; margin:0; 
 }
 
 /* INFO CALLOUT */
@@ -339,7 +382,7 @@ nav{
 
 .callout-text{
   font-family:'Montserrat',sans-serif; font-size:0.9rem;
-  color:#c8d5ec; line-height:1.7;
+  color:var(--white); line-height:1.7; 
 }
 .callout.info .callout-text strong{color:var(--blue-g)}
 .callout.warn .callout-text strong{color:#fbbf24}
@@ -354,10 +397,11 @@ nav{
   border: 1px solid var(--border);
 }
 .compare-table{
-  width:100%; min-width: 500px; /* Force minimum width to prevent squishing text */
+  width:100%; min-width: 500px; 
   border-collapse:collapse; 
 }
 .compare-table thead tr{ background:rgba(26,42,108,.5); }
+:root.light-theme .compare-table thead tr { background: rgba(59,130,246,0.1); }
 .compare-table th{
   font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--blue-l);
@@ -367,8 +411,10 @@ nav{
 .compare-table td{
   font-family:'Montserrat',sans-serif; font-size:0.88rem;
   padding:.8rem 1.2rem; border-bottom:1px solid rgba(255,255,255,.04);
-  color:#c8d5ec; vertical-align:top;
+  color:var(--white); vertical-align:top; 
 }
+:root.light-theme .compare-table td { border-bottom:1px solid rgba(0,0,0,.04); }
+
 .compare-table tbody tr:last-child td{border-bottom:none}
 .compare-table tbody tr:hover td{background:rgba(59,130,246,.05)}
 
@@ -391,10 +437,10 @@ nav{
   margin-bottom: 1rem;
 }
 .phenomena-card {
-  background:rgba(10,16,32,0.75); border:1px solid rgba(59,130,246,0.25);
+  background:var(--glass); border:1px solid var(--border);
   border-radius:10px; padding:1.5rem; transition:transform 0.3s;
 }
-.phenomena-card:hover { transform: translateY(-5px); }
+.phenomena-card:hover { transform: translateY(-5px); border-color:var(--blue-electric); }
 
 /* DIVIDER */
 .mat-divider{
@@ -407,7 +453,7 @@ nav{
 .reference-item {
   position: relative; padding-left: 2rem; margin-bottom: 1rem;
   font-family: 'Montserrat', sans-serif; font-size: 0.88rem;
-  color: #8899bb; line-height: 1.6;
+  color: var(--white); line-height: 1.6; 
 }
 .reference-item .ref-num {
   position: absolute; left: 0; top: 0;
@@ -427,10 +473,10 @@ nav{
   background:linear-gradient(90deg,transparent,var(--blue-b),var(--cyan),var(--blue-b),transparent);
 }
 .cta-final h3{
-  font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700; margin-bottom:.8rem;
+  font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:700; margin-bottom:.8rem; color:var(--text-title);
 }
 .cta-final p{
-  font-family:'Montserrat',sans-serif; font-size:0.92rem; color:var(--muted);
+  font-family:'Montserrat',sans-serif; font-size:0.92rem; color:var(--white); 
   margin-bottom:2rem; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;
 }
 
@@ -438,11 +484,12 @@ nav{
   display:inline-flex;align-items:center;gap:10px;
   font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;
-  color:#060b17;background:linear-gradient(135deg,var(--blue-b),var(--cyan));
+  color:#fff;background:linear-gradient(135deg,var(--blue-b),var(--cyan));
   padding:14px 38px;border-radius:4px;text-decoration:none;
   transition:transform .2s,box-shadow .2s;
   box-shadow:0 0 28px rgba(34,211,238,.2);
 }
+:root.light-theme .btn-cta { color: var(--blue-deep); }
 .btn-cta:hover{transform:translateY(-2px);box-shadow:0 4px 38px rgba(34,211,238,.35)}
 .btn-cta2{
   display:inline-flex;align-items:center;gap:10px;
@@ -470,10 +517,7 @@ nav{
   .mat-section { padding: 1.5rem; }
   .formula-box { padding: 1.2rem; }
   
-  /* Kolom dipaksa jadi 1 susun bertumpuk ke bawah di HP */
   .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; }
-  
-  /* Penyesuaian Flexbox Miskonsepsi & Correction Card */
   .miskonsepsi-card, .correction-card { flex-direction: column; gap: 0.5rem; }
   .callout { flex-direction: column; gap: 0.5rem; }
   
@@ -490,10 +534,11 @@ nav{
 <nav>
   <a href="index.html" class="nav-logo">
     <img src="Logo.png" alt="Logo Z-PHYZONE">
-    <span class="logo-text"><span>PHY</span>ZONE</span>
+    <span class="logo-text">Z-<span>PHY</span>ZONE</span>
   </a>
   <button class="menu-toggle" id="btn-open-sidebar">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    Daftar Isi
   </button>
 </nav>
 
@@ -514,6 +559,7 @@ nav{
     <a href="#s8" class="snav-item">08 · Referensi</a>
   </div>
   <div class="sidebar-footer">
+    <button class="btn-theme-toggle" id="theme-btn">🌞 Mode Terang</button>
     <a href="javascript:history.back()" class="btn-kembali">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Kembali
@@ -564,9 +610,9 @@ nav{
     <div class="formula-box">
       <div class="formula-label">Derivasi Percepatan di Vakum</div>
       <div class="formula-main">$$ \Sigma F_y = m \cdot a_y $$</div>
-      <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted);margin:0.5rem 0;text-align:center;">↓ satu-satunya gaya adalah gaya berat</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--white);margin:0.5rem 0;text-align:center;">↓ satu-satunya gaya adalah gaya berat</div>
       <div class="formula-main">$$ m \cdot g = m \cdot a_y $$</div>
-      <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--muted);margin:0.5rem 0;text-align:center;">↓ massa \(m\) saling meniadakan</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:var(--white);margin:0.5rem 0;text-align:center;">↓ massa \(m\) saling meniadakan</div>
       <div class="formula-main">$$ \color{#22d3ee}{a_y = g} $$</div>
     </div>
 
@@ -601,7 +647,7 @@ nav{
 
     <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin:2rem 0;">
       <h4 style="font-family:'Orbitron',sans-serif; font-size:1rem; color:var(--cyan); margin-bottom:0.8rem;">🧪 Studi Kasus: "Berat Sama, Massa Jenis Beda"</h4>
-      <p style="font-family:'Montserrat',sans-serif; font-size:0.9rem; color:var(--muted); line-height:1.7; margin-bottom:0;">
+      <p style="font-family:'Montserrat',sans-serif; font-size:0.9rem; color:var(--white); line-height:1.7; margin-bottom:0;">
         Mari kita patahkan miskonsepsi klasik! Bayangkan ada <strong>\(1 \text{ kg}\) Besi</strong> dan <strong>\(1 \text{ kg}\) Busa/Kapas</strong>. Keduanya memiliki massa dan gaya berat (\(W = m \cdot g\)) yang <strong>persis sama</strong>. Namun, karena massa jenis busa sangat kecil, \(1 \text{ kg}\) busa akan memiliki ukuran (volume dan luas penampang) yang <em>sangat raksasa</em> dibandingkan \(1 \text{ kg}\) besi yang hanya sebesar kepalan tangan.<br><br>
         Saat dijatuhkan di udara, busa raksasa tersebut akan menabrak jutaan partikel udara, menghasilkan gaya hambat (\(F_d\)) yang masif. Sementara itu, besi membelah udara dengan mudah. Hasilnya? Besi jatuh jauh lebih cepat, <strong>bukan karena ia lebih berat, melainkan karena ia lebih padat (massa jenisnya lebih besar).</strong>
       </p>
@@ -644,7 +690,7 @@ nav{
       <div class="callout-text">Perhatikan variabel <strong>\(v^2\)</strong> yang bermakna jika kecepatan benda berlipat ganda, gaya hambat udara bertambah empat kali lipat. Ini menjelaskan mengapa hambatan udara terasa jauh lebih kuat saat benda mulai meluncur cepat dibandingkan saat baru dijatuhkan.</div>
     </div>
 
-    <h3 style="font-family:'Orbitron',sans-serif;font-size:1rem;margin:1.8rem 0 1rem;color:var(--white)">Perbandingan: Vakum vs Udara</h3>
+    <h3 style="font-family:'Orbitron',sans-serif;font-size:1rem;margin:1.8rem 0 1rem;color:var(--text-title)">Perbandingan: Vakum vs Udara</h3>
 
     <div class="table-responsive">
       <table class="compare-table">
@@ -745,21 +791,21 @@ nav{
       <div class="callout-text"><strong>Mengapa butuh dijatuhkan dari tempat tinggi?</strong> Benda tidak langsung mencapai kecepatan terminal seketika. Jika benda dijatuhkan dari tempat rendah (misal \(1 \text{ m}\)), kecepatan belum sempat membesar, sehingga \(F_d\) masih sangat kecil dan efek hambatan udara hampir tidak terlihat. Itulah sebabnya di simulasi nanti, cobalah atur <strong>Ketinggian</strong> hingga \(50 \text{ m}\) atau \(75 \text{ m}\) untuk melihat proses tercapainya \(v_t\)!</div>
     </div>
 
-    <h3 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;margin:2.5rem 0 1rem;color:var(--cyan)">🌎 Fenomena di Dunia Nyata</h3>
+    <h3 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;margin:2.5rem 0 1rem;color:var(--text-title)">🌎 Fenomena di Dunia Nyata</h3>
     
     <div class="phenomena-grid">
       <div class="phenomena-card">
         <div style="font-size:2.2rem;margin-bottom:0.8rem">🪂</div>
-        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Terjun Payung (Skydiving)</h4>
-        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
+        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--text-title);margin-bottom:0.5rem">Terjun Payung (Skydiving)</h4>
+        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--white);line-height:1.6">
           Saat penerjun melayang tengkurap, ia mencapai kecepatan terminal sekitar <strong>\(200 \text{ km/jam}\)</strong>. Namun, ketika parasut dikembangkan, luas penampang (\(A\)) membesar drastis. Kecepatan terminalnya pun seketika turun menjadi hanya <strong>\(20 \text{ km/jam}\)</strong>, memungkinkan pendaratan yang aman.
         </p>
       </div>
       
       <div class="phenomena-card">
         <div style="font-size:2.2rem;margin-bottom:0.8rem">☄️</div>
-        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--white);margin-bottom:0.5rem">Jatuhnya Meteor</h4>
-        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--muted);line-height:1.6">
+        <h4 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:var(--text-title);margin-bottom:0.5rem">Jatuhnya Meteor</h4>
+        <p style="font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--white);line-height:1.6">
           Meteor menembus atmosfer dengan kecepatan sangat ekstrem. Gaya hambat udara yang luar biasa besar menghasilkan panas yang membakarnya. Jika ada sisa batu yang selamat (meteorit), lajunya akan direm oleh atmosfer hingga stabil di <strong>kecepatan terminal</strong> sebelum membentur bumi.
         </p>
       </div>
@@ -875,6 +921,22 @@ nav{
 </main>
 
 <script>
+// THEME TOGGLE SCRIPT KHUSUS MATERI
+const themeBtn = document.getElementById('theme-btn');
+function updateThemeUI() {
+    const isLight = document.documentElement.classList.contains('light-theme');
+    if(themeBtn) themeBtn.innerHTML = isLight ? '🌙 Mode Gelap' : '🌞 Mode Terang';
+}
+updateThemeUI();
+if(themeBtn) {
+    themeBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('light-theme');
+        const isLight = document.documentElement.classList.contains('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        updateThemeUI();
+    });
+}
+
 // SCROLL REVEAL
 const reveals=document.querySelectorAll('.reveal');
 const obs=new IntersectionObserver(entries=>{
@@ -908,7 +970,7 @@ const sections=[...document.querySelectorAll('.mat-section')];
 const navItems=[...document.querySelectorAll('.snav-item')];
 
 navItems.forEach(item => {
-  item.addEventListener('click', closeSide); // Menutup sidebar setelah link diklik
+  item.addEventListener('click', closeSide); 
 });
 
 window.addEventListener('scroll',()=>{

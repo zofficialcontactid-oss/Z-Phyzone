@@ -603,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { target: 'sec-obj-right', title: 'Panel Objek Kanan (Biru)', desc: 'Pengaturan serupa untuk <strong>Objek Kedua</strong>. Coba bandingkan Besi dengan Kayu Jati, lalu lihat siapa yang lebih dulu menyentuh tanah!', pos: 'right' },
         { target: 'sec-atm', title: '🌐 Pilih Kondisi Atmosfer', desc: '<strong>Vacuum</strong> = tidak ada hambatan udara, murni gravitasi. <strong>Udara</strong> = ada hambatan udara.', pos: 'right' },
         { target: 'controls-bar', title: '🎮 Tombol Kontrol Simulasi', desc: 'Gunakan panel ini untuk <strong>🏠 Kembali</strong>, <strong>▶ Play</strong>, <strong>⏸ Pause</strong>, dan <strong>↻ Reset</strong> simulasi.', pos: 'top' },
-        { target: 'btn-open-lkpd', title: '📝 Lembar Kerja', desc: '<strong>Sangat Penting!</strong> Klik tombol ini untuk membuka Misi Eksperimen yang akan memandumu memecahkan masalah fisika.', pos: 'top' },
+        { target: 'btn-open-lkpd', title: '📝 Lembar Kerja (LKPD)', desc: '<strong>Sangat Penting!</strong> Klik tombol ini untuk membuka Misi Eksperimen yang akan memandumu memecahkan masalah fisika.', pos: 'top' },
         { target: 'sec-data-right', title: '📋 Panel Data Real-Time', desc: 'Menampilkan data fisika secara <em>live</em>: jarak tempuh, kecepatan, <strong>kecepatan terminal</strong>, waktu jatuh, dan percepatan.', pos: 'left' },
         { target: 'panel-graphs', title: '📈 Grafik Interaktif', desc: 'Gunakan tombol <strong>+ / −</strong> untuk zoom, dan <strong>⟲</strong> untuk reset tampilan grafik (v-t, a-t, h-t, h-v).', pos: 'left' }
     ];
@@ -683,3 +683,56 @@ function switchMission(missionId) {
 // START ENGINE
 initStars();
 initializeBalls();
+
+
+/* =========================================
+   10. GLOBAL TOOLTIP SYSTEM (ANTI-CLIPPING)
+   ========================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Buat kotak melayang di <body>
+    const tooltipBox = document.createElement('div');
+    tooltipBox.className = 'global-tooltip';
+    document.body.appendChild(tooltipBox);
+
+    // 2. Pasang event listener ke setiap ikon "?"
+    const icons = document.querySelectorAll('.tooltip-icon');
+    icons.forEach(icon => {
+        icon.addEventListener('mouseenter', (e) => {
+            const text = icon.getAttribute('data-tooltip');
+            if (!text) return;
+            
+            tooltipBox.innerHTML = text;
+            tooltipBox.classList.add('visible');
+
+            // Kalkulasi ukuran dan kordinat
+            const rect = icon.getBoundingClientRect();
+            const tooltipWidth = tooltipBox.offsetWidth;
+            const tooltipHeight = tooltipBox.offsetHeight;
+
+            // Default: Taruh di tengah tepat di bawah ikon
+            let top = rect.bottom + 8;
+            let left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+
+            // Cek Tabrakan: Kanan Layar
+            if (left + tooltipWidth > window.innerWidth - 10) {
+                left = window.innerWidth - tooltipWidth - 10;
+            }
+            // Cek Tabrakan: Kiri Layar
+            if (left < 10) {
+                left = 10;
+            }
+            // Cek Tabrakan: Bawah Layar (pindahkan ke atas ikon)
+            if (top + tooltipHeight > window.innerHeight - 10) {
+                top = rect.top - tooltipHeight - 8;
+            }
+
+            // Terapkan posisi baru
+            tooltipBox.style.top = `${top}px`;
+            tooltipBox.style.left = `${left}px`;
+        });
+
+        icon.addEventListener('mouseleave', () => {
+            tooltipBox.classList.remove('visible');
+        });
+    });
+});

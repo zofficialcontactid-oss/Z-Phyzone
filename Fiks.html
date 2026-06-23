@@ -15,7 +15,7 @@
             <p>Sebelum memulai eksperimen, ikuti tur singkat untuk mengenal semua kontrol simulasi ini. Hanya butuh ~1 menit!</p>
             <div class="welcome-feature-list">
                 <div class="welcome-feature"><span class="wf-icon">🎛️</span><span>Kenali panel parameter: <strong>material, massa jenis, dan ukuran</strong></span></div>
-                <div class="welcome-feature"><span class="wf-icon">📝</span><span>Selesaikan <strong>Misi Eksperimen</strong> secara berurutan</span></div>
+                <div class="welcome-feature"><span class="wf-icon">📝</span><span>Selesaikan <strong>Misi Eksperimen (LKPD)</strong> secara berurutan</span></div>
                 <div class="welcome-feature"><span class="wf-icon">🌐</span><span>Pilih kondisi <strong>Vakum atau Udara</strong> untuk tiap benda</span></div>
                 <div class="welcome-feature"><span class="wf-icon">📊</span><span>Pahami cara membaca <strong>grafik real-time</strong> interaktif</span></div>
             </div>
@@ -49,7 +49,10 @@
             <div class="section" id="sec-obj-left">
                 <div class="section-header">Objek Kiri (Merah)</div>
                 <div class="input-group" style="align-items: flex-start;">
-                    <label style="margin-top: 6px;">Material</label>
+                    <label style="margin-top: 6px;">
+                        Material 
+                        <span class="tooltip-icon" data-tooltip="Menentukan tingkat kerapatan (Massa Jenis/ρ). Benda yang lebih padat akan lebih tangguh melawan gaya gesek udara.">?</span>
+                    </label>
                     <div style="width: 45%; display: flex; flex-direction: column; align-items: flex-end;">
                         <select id="material-left" class="material-select" style="width: 100%;">
                             <option value="custom" selected>Kustom</option>
@@ -62,16 +65,25 @@
                     </div>
                 </div>
                 <div class="input-group" id="input-mass-left">
-                    <label>Massa <span class="math-sym">m</span> <span class="unit-label">(kg)</span></label>
+                    <label>
+                        Massa <span class="math-sym">m</span> <span class="unit-label">(kg)</span>
+                        <span class="tooltip-icon" data-tooltip="Total materi penyusun benda. Di udara, massa yang besar membantu benda mengatasi gaya hambat (drag force).">?</span>
+                    </label>
                     <input type="number" id="mass-left" value="0.145" step="0.001" min="0.001" max="50">
                 </div>
                 <div class="input-group" id="input-diam-left">
-                    <label>Diameter <span class="math-sym">d</span> <span class="unit-label">(m)</span></label>
+                    <label>
+                        Diameter <span class="math-sym">d</span> <span class="unit-label">(m)</span>
+                        <span class="tooltip-icon" data-tooltip="Memengaruhi Luas Penampang. Semakin lebar ukuran benda, semakin besar volume udara yang ditabraknya.">?</span>
+                    </label>
                     <input type="number" id="diameter-left" value="0.074" step="0.001" min="0.01" max="0.5">
                 </div>
                 <div class="input-group height-group" id="input-h-left">
                     <div class="height-top-row">
-                        <label>Ketinggian <span class="math-sym">h<span class="math-sub">0</span></span> <span class="unit-label">(m)</span></label>
+                        <label>
+                            Ketinggian <span class="math-sym">h<span class="math-sub">0</span></span> <span class="unit-label">(m)</span>
+                            <span class="tooltip-icon" data-tooltip="Titik awal jatuh. Benda butuh waktu tempuh dan jarak yang cukup jauh untuk bisa mencapai Kecepatan Terminal.">?</span>
+                        </label>
                         <input type="number" id="height-left-val" class="range-value-input" value="50" min="0" max="75">
                     </div>
                     <input type="range" id="height-left" min="0" max="75" value="50" step="1">
@@ -81,7 +93,10 @@
             <div class="section" id="sec-obj-right">
                 <div class="section-header">Objek Kanan (Biru)</div>
                 <div class="input-group" style="align-items: flex-start;">
-                    <label style="margin-top: 6px;">Material</label>
+                    <label style="margin-top: 6px;">
+                        Material
+                        <span class="tooltip-icon" data-tooltip="Menentukan tingkat kerapatan (Massa Jenis/ρ). Benda yang lebih padat akan lebih tangguh melawan gaya gesek udara.">?</span>
+                    </label>
                     <div style="width: 45%; display: flex; flex-direction: column; align-items: flex-end;">
                         <select id="material-right" class="material-select" style="width: 100%;">
                             <option value="custom" selected>Kustom</option>
@@ -94,16 +109,25 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Massa <span class="math-sym">m</span> <span class="unit-label">(kg)</span></label>
+                    <label>
+                        Massa <span class="math-sym">m</span> <span class="unit-label">(kg)</span>
+                        <span class="tooltip-icon" data-tooltip="Total materi penyusun benda. Di udara, massa yang besar membantu benda mengatasi gaya hambat (drag force).">?</span>
+                    </label>
                     <input type="number" id="mass-right" value="0.624" step="0.001" min="0.001" max="50">
                 </div>
                 <div class="input-group">
-                    <label>Diameter <span class="math-sym">d</span> <span class="unit-label">(m)</span></label>
+                    <label>
+                        Diameter <span class="math-sym">d</span> <span class="unit-label">(m)</span>
+                        <span class="tooltip-icon" data-tooltip="Memengaruhi Luas Penampang. Semakin lebar ukuran benda, semakin besar volume udara yang ditabraknya.">?</span>
+                    </label>
                     <input type="number" id="diameter-right" value="0.24" step="0.001" min="0.01" max="0.5">
                 </div>
                 <div class="input-group height-group">
                     <div class="height-top-row">
-                        <label>Ketinggian <span class="math-sym">h<span class="math-sub">0</span></span> <span class="unit-label">(m)</span></label>
+                        <label>
+                            Ketinggian <span class="math-sym">h<span class="math-sub">0</span></span> <span class="unit-label">(m)</span>
+                            <span class="tooltip-icon" data-tooltip="Titik awal jatuh. Benda butuh waktu tempuh dan jarak yang cukup jauh untuk bisa mencapai Kecepatan Terminal.">?</span>
+                        </label>
                         <input type="number" id="height-right-val" class="range-value-input" value="50" min="0" max="75">
                     </div>
                     <input type="range" id="height-right" min="0" max="75" value="50" step="1">
@@ -111,7 +135,10 @@
             </div>
 
             <div class="section" id="sec-atm">
-                <div class="section-header">Pilih Atmosfer</div>
+                <div class="section-header">
+                    Pilih Atmosfer
+                    <span class="tooltip-icon" data-tooltip="Vacuum: Ruang hampa udara (murni gravitasi). Udara: Terdapat molekul gas yang memberikan gaya hambat.">?</span>
+                </div>
                 <div style="margin-bottom: 5px; font-weight: bold; color: #d6dde4; font-size: 11px;">Objek Kiri (Merah) :</div>
                 <div class="radio-group horizontal">
                     <div class="radio-option">
@@ -143,28 +170,76 @@
             <div class="section">
                 <div class="section-header">Data Kiri (Merah) :</div>
                 <div class="info-box">
-                    <div class="info-row"><span class="info-label">Ketinggian <span class="math-sym">h</span> <span class="unit-label">(m)</span></span><span class="info-value" id="current-height-left">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Jarak Tempuh <span class="math-sym">s</span> <span class="unit-label">(m)</span></span><span class="info-value" id="distance-left">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Kecepatan <span class="math-sym">v</span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="speed-left">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Kec. Awal <span class="math-sym">v<span class="math-sub">0</span></span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="v-initial-left">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Kec. Akhir <span class="math-sym">v<span class="math-sub">t</span></span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="v-final-left">-</span></div>
-                    <div class="info-row"><span class="info-label">Kec. Terminal <span class="math-sym">v<span class="math-sub">term</span></span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="v-terminal-left">-</span></div>
-                    <div class="info-row"><span class="info-label">Waktu Jatuh <span class="math-sym">t</span> <span class="unit-label">(s)</span></span><span class="info-value" id="time-left">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Percepatan <span class="math-sym">a</span> <span class="unit-label">(m/s²)</span></span><span class="info-value" id="accel-left">0.00</span></div>
+                    <div class="info-row">
+                        <span class="info-label">Ketinggian <span class="math-sym">h</span> <span class="unit-label">(m)</span><span class="tooltip-icon" data-tooltip="Posisi vertikal saat ini dari atas permukaan tanah (0m).">?</span></span>
+                        <span class="info-value" id="current-height-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Jarak Tempuh <span class="math-sym">s</span> <span class="unit-label">(m)</span><span class="tooltip-icon" data-tooltip="Total lintasan yang telah dilewati benda.">?</span></span>
+                        <span class="info-value" id="distance-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kecepatan <span class="math-sym">v</span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Laju benda saat ini secara real-time.">?</span></span>
+                        <span class="info-value" id="speed-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kec. Awal <span class="math-sym">v<span class="math-sub">0</span></span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Selalu 0 m/s karena tidak ada dorongan lemparan awal.">?</span></span>
+                        <span class="info-value" id="v-initial-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kec. Akhir <span class="math-sym">v<span class="math-sub">t</span></span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Laju maksimum yang tercatat tepat sebelum benda membentur tanah.">?</span></span>
+                        <span class="info-value" id="v-final-left">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kec. Terminal <span class="math-sym">v<span class="math-sub">term</span></span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Batas laju konstan saat tarikan gravitasi seimbang sepenuhnya dengan hambatan udara.">?</span></span>
+                        <span class="info-value" id="v-terminal-left">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Waktu Jatuh <span class="math-sym">t</span> <span class="unit-label">(s)</span><span class="tooltip-icon" data-tooltip="Waktu tempuh aktual sejak benda dijatuhkan.">?</span></span>
+                        <span class="info-value" id="time-left">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Percepatan <span class="math-sym">a</span> <span class="unit-label">(m/s²)</span><span class="tooltip-icon" data-tooltip="Tingkat penambahan kecepatan. Semakin cepat benda, semakin besar hambatan, dan percepatan akan turun menuju 0.">?</span></span>
+                        <span class="info-value" id="accel-left">0.00</span>
+                    </div>
                 </div>
             </div>
 
             <div class="section" id="sec-data-right">
                 <div class="section-header">Data Kanan (Biru) :</div>
                 <div class="info-box">
-                    <div class="info-row"><span class="info-label">Ketinggian <span class="math-sym">h</span> <span class="unit-label">(m)</span></span><span class="info-value" id="current-height-right">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Jarak Tempuh <span class="math-sym">s</span> <span class="unit-label">(m)</span></span><span class="info-value" id="distance-right">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Kecepatan <span class="math-sym">v</span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="speed-right">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Kec. Awal <span class="math-sym">v<span class="math-sub">0</span></span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="v-initial-right">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Kec. Akhir <span class="math-sym">v<span class="math-sub">t</span></span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="v-final-right">-</span></div>
-                    <div class="info-row"><span class="info-label">Kec. Terminal <span class="math-sym">v<span class="math-sub">term</span></span> <span class="unit-label">(m/s)</span></span><span class="info-value" id="v-terminal-right">-</span></div>
-                    <div class="info-row"><span class="info-label">Waktu Jatuh <span class="math-sym">t</span> <span class="unit-label">(s)</span></span><span class="info-value" id="time-right">0.00</span></div>
-                    <div class="info-row"><span class="info-label">Percepatan <span class="math-sym">a</span> <span class="unit-label">(m/s²)</span></span><span class="info-value" id="accel-right">0.00</span></div>
+                    <div class="info-row">
+                        <span class="info-label">Ketinggian <span class="math-sym">h</span> <span class="unit-label">(m)</span><span class="tooltip-icon" data-tooltip="Posisi vertikal saat ini dari atas permukaan tanah (0m).">?</span></span>
+                        <span class="info-value" id="current-height-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Jarak Tempuh <span class="math-sym">s</span> <span class="unit-label">(m)</span><span class="tooltip-icon" data-tooltip="Total lintasan yang telah dilewati benda.">?</span></span>
+                        <span class="info-value" id="distance-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kecepatan <span class="math-sym">v</span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Laju benda saat ini secara real-time.">?</span></span>
+                        <span class="info-value" id="speed-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kec. Awal <span class="math-sym">v<span class="math-sub">0</span></span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Selalu 0 m/s karena tidak ada dorongan lemparan awal.">?</span></span>
+                        <span class="info-value" id="v-initial-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kec. Akhir <span class="math-sym">v<span class="math-sub">t</span></span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Laju maksimum yang tercatat tepat sebelum benda membentur tanah.">?</span></span>
+                        <span class="info-value" id="v-final-right">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Kec. Terminal <span class="math-sym">v<span class="math-sub">term</span></span> <span class="unit-label">(m/s)</span><span class="tooltip-icon" data-tooltip="Batas laju konstan saat tarikan gravitasi seimbang sepenuhnya dengan hambatan udara.">?</span></span>
+                        <span class="info-value" id="v-terminal-right">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Waktu Jatuh <span class="math-sym">t</span> <span class="unit-label">(s)</span><span class="tooltip-icon" data-tooltip="Waktu tempuh aktual sejak benda dijatuhkan.">?</span></span>
+                        <span class="info-value" id="time-right">0.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Percepatan <span class="math-sym">a</span> <span class="unit-label">(m/s²)</span><span class="tooltip-icon" data-tooltip="Tingkat penambahan kecepatan. Semakin cepat benda, semakin besar hambatan, dan percepatan akan turun menuju 0.">?</span></span>
+                        <span class="info-value" id="accel-right">0.00</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,7 +265,10 @@
                 
                 <div class="graph-wrapper" id="graph1-wrapper">
                     <div class="graph-header">
-                        <span class="graph-label">📈 Grafik 1:</span>
+                        <span class="graph-label">
+                            📈 Grafik 1:
+                            <span class="tooltip-icon" data-tooltip="Gunakan tombol + / − untuk zoom, dan tombol ⟲ untuk mereset tampilan grafik.">?</span>
+                        </span>
                         <div class="graph-selector">
                             <button class="graph-btn active" data-graph="speed" data-chart="1"><span class="math-sym">v</span>-<span class="math-sym">t</span></button>
                             <button class="graph-btn" data-graph="accel" data-chart="1"><span class="math-sym">a</span>-<span class="math-sym">t</span></button>
@@ -210,7 +288,10 @@
 
                 <div class="graph-wrapper" id="graph2-wrapper">
                     <div class="graph-header">
-                        <span class="graph-label">📈 Grafik 2:</span>
+                        <span class="graph-label">
+                            📈 Grafik 2:
+                            <span class="tooltip-icon" data-tooltip="Garis vertikal melambangkan Sumbu Y, sedangkan garis horizontal melambangkan Sumbu X.">?</span>
+                        </span>
                         <div class="graph-selector">
                             <button class="graph-btn" data-graph="speed" data-chart="2"><span class="math-sym">v</span>-<span class="math-sym">t</span></button>
                             <button class="graph-btn active" data-graph="accel" data-chart="2"><span class="math-sym">a</span>-<span class="math-sym">t</span></button>
